@@ -11,6 +11,7 @@ import { useEffect, useRef, useState } from "react";
 import { Camera } from "expo-camera";
 import { shareAsync } from "expo-sharing";
 import * as MediaLibrary from "expo-media-library";
+import * as ImageManipulator from "expo-image-manipulator";
 
 export default function CameraComponent() {
   const [hasPermission, setHasPermission] = useState();
@@ -29,14 +30,21 @@ export default function CameraComponent() {
     })();
   }, []);
 
+
   const takePic = async () => {
-    const options = {
-      quality: 1,
-      base64: true,
-      exif: false,
-    };
-    const newPhoto = await cameraRef.current.takePictureAsync(options);
-    setPhoto(newPhoto);
+    try{
+      const options = {
+        quality: 1,
+        base64: true,
+        exif: false,
+      };
+      let newPhoto = await cameraRef.current.takePictureAsync(options);
+      newPhoto = await resize(newPhoto);
+      setPhoto(newPhoto);
+    }
+    catch(error){
+      console.error("Error al tomar la foto", error.message);
+    }
   };
 
   const sharePic = () => {
@@ -49,6 +57,19 @@ export default function CameraComponent() {
     MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
       setPhoto(undefined);
     });
+  };
+
+  const resize = async (photo) => {
+    try {
+      const compressed = await ImageManipulator.manipulateAsync(
+        photo.uri,
+        [],
+        { compress: 0 } // Ajusta el valor de compresión según tus necesidades
+      );
+      return compressed;
+    } catch (error) {
+      console.error("Error al comprimir la imagen", error.message);
+    }
   };
 
   return !hasPermission ? (
