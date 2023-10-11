@@ -1,42 +1,129 @@
-import { View, Text, Image, StyleSheet, Button, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Button,
+  Pressable,
+  Dimensions,
+  Animated,
+} from "react-native";
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import colors from "../constants/colors";
 
+// Obtener el ancho y alto de la ventana
+const { width, height } = Dimensions.get("window");
+
 export default function OnBoarding(props) {
-  // TODO: Falta agregar funcionalidad para hacer scroll entre varios pasos antes de terminar el onboarding.
+  const onBoardingSteps = [
+    {
+      header: "Valida tu planograma en segundos.",
+      description: "Explicación paso a paso de como usar la aplicación.",
+      image: require("../assets/gondola1.jpeg"),
+    },
+    {
+      header: "Valida tu planograma en segundos 1.",
+      description: "Explicación paso a paso de como usar la aplicación.",
+      image: require("../assets/gondola2.jpeg"),
+    },
+    {
+      header: "Valida tu planograma en segundos 2.",
+      description: "Explicación paso a paso de como usar la aplicación.",
+      image: require("../assets/gondola3.jpeg"),
+    },
+  ];
+
+  const scrollX = new Animated.Value(0);
+
+  const renderContent = () => {
+    return (
+      <Animated.ScrollView
+        horizontal
+        pagingEnabled
+        scrollEnabled
+        decelerationRate={0}
+        scrollEventThrottle={16}
+        snapToAlignment="center"
+        showsHorizontalScrollIndicator={false}
+        onScroll={Animated.event(
+          [
+            {
+              nativeEvent: {
+                contentOffset: {
+                  x: scrollX,
+                },
+              },
+            },
+          ],
+          { useNativeDriver: false }
+        )}
+      >
+        {onBoardingSteps.map((step, index) => {
+          return (
+            <View>
+              <View style={OnBoardingStyles.imageContainer}>
+                <Image
+                  source={step.image}
+                  style={OnBoardingStyles.image}
+                ></Image>
+              </View>
+              <View style={OnBoardingStyles.footer}>
+                <View key={index} style={OnBoardingStyles.textContainer}>
+                  <Text style={OnBoardingStyles.header}>{step.header}</Text>
+                  <Text style={OnBoardingStyles.description}>
+                    {step.description}
+                  </Text>
+                </View>
+              </View>
+            </View>
+          );
+        })}
+      </Animated.ScrollView>
+    );
+  };
+
+  const renderDots = () => {
+    const dotPosition = Animated.divide(scrollX, width);
+
+    return (
+      <View style={OnBoardingStyles.dotContainer}>
+        {onBoardingSteps.map((step, index) => {
+          const opacity = dotPosition.interpolate({
+            inputRange: [index - 1, index, index + 1],
+            outputRange: [0.3, 1, 0.3],
+            extrapolate: "clamp",
+          });
+
+          const dotSize = dotPosition.interpolate({
+            inputRange: [index - 1, index, index + 1],
+            outputRange: [12, 24, 12],
+            extrapolate: "clamp",
+          });
+
+          // Añadir que el color del punto cambie cuando se cambie de pantalla
+          const dotColor = dotPosition.interpolate({
+            inputRange: [index - 1, index, index + 1],
+            outputRange: [colors.SECONDARY, colors.PRIMARY, colors.SECONDARY],
+            extrapolate: "clamp",
+          });
+
+          return (
+            <Animated.View
+              key={`dot-${index}`}
+              style={[OnBoardingStyles.dot, { width: dotSize, height: dotSize, backgroundColor: dotColor }]}
+              opacity={opacity}
+            ></Animated.View>
+          );
+        })}
+      </View>
+    );
+  };
 
   return (
-    <View style={{ flex: 1 }}>
-      <View style={OnBoardingStyles.imageContainer}>
-        <Image
-          source={require("../assets/GondolaEx.jpeg")}
-          style={OnBoardingStyles.image}
-        ></Image>
-      </View>
-      <View style={OnBoardingStyles.footer}>
-        <View style={OnBoardingStyles.textContainer}>
-          <Text style={OnBoardingStyles.header}>
-            Valida tu planograma en segundos.
-          </Text>
-          <Text style={OnBoardingStyles.description}>
-            Explicación paso a paso de como usar la aplicación.
-          </Text>
-        </View>
-        <View style={OnBoardingStyles.buttonContainer}>
-          <Pressable onPress={()=>props.navigation.navigate("Login")}>
-            <LinearGradient
-              colors={[colors.PRIMARY, colors.SECONDARY]}
-              start={[0, 0]}
-              end={[1, 1]}
-              location={[0.25, 1]}
-              style={OnBoardingStyles.button}
-            >
-              <Text style={OnBoardingStyles.buttonText}>Entendido</Text>
-            </LinearGradient>
-          </Pressable>
-        </View>
-      </View>
+    <View>
+      <View>{renderContent()}</View>
+      <View style={OnBoardingStyles.dotRootContainer}>{renderDots()}</View>
     </View>
   );
 }
@@ -48,9 +135,9 @@ const OnBoardingStyles = StyleSheet.create({
     backgroundColor: "black",
   },
   image: {
-    width: "100%",
-    height: "100%",
+    width: width,
     opacity: 0.5,
+    resizeMode: "cover",
   },
   footer: {
     width: "100%",
@@ -67,6 +154,7 @@ const OnBoardingStyles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     gap: 12,
+    marginTop: 64,
   },
   header: {
     fontSize: 28,
@@ -98,5 +186,18 @@ const OnBoardingStyles = StyleSheet.create({
     color: "white",
     textAlign: "center",
     lineHeight: 48,
+  },
+  dotRootContainer: {
+    position: "absolute",
+    bottom: height > 700 ? "20%" : "16%",
+    left: 16,
+  },
+  dotContainer: {
+    flexDirection: "row",
+    height: 24,
+  },
+  dot: {
+    borderRadius: "50%",
+    marginHorizontal: 12,
   },
 });
