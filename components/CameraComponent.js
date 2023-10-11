@@ -12,6 +12,8 @@ import { Camera } from "expo-camera";
 import { shareAsync } from "expo-sharing";
 import * as MediaLibrary from "expo-media-library";
 import * as ImageManipulator from "expo-image-manipulator";
+import LineDrawing from './LineDrawing';
+
 
 export default function CameraComponent() {
   const [hasPermission, setHasPermission] = useState();
@@ -88,7 +90,9 @@ export default function CameraComponent() {
     </SafeAreaView>
   ) : (
     <Camera style={styles["camera-container"]} ref={cameraRef}>
-      <View style={styles["camera-red-box"]}></View>
+      <View style={styles["camera-red-box"]}>
+        <LineDrawing />
+      </View>
       <StatusBar style="auto" />
       <View style={styles["camera-button-container"]}>
         <Button title="Tomar foto" onPress={takePic}></Button>
@@ -104,19 +108,20 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   "camera-button-container": {
-    backgroundColor: "white",
-    alignSelf: "center",
+    height: "100%",
+    flexDirection: "column",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    marginBottom: 42,
   },
   "camera-preview": {
     alignSelf: "stretch",
     flex: 1,
   },
   "camera-red-box": {
-    width: "80%",
-    height: "80%",
-    backgroundColor: "transparent",
-    borderWidth: 1,
-    borderColor: "red",
-    marginBottom: 64,
+    width: "100%",
+    height: "100%",
+    zIndex: 5 ,
+    position: "absolute",
   },
 });
