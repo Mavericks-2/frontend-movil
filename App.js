@@ -1,7 +1,7 @@
 import { Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Home, OnBoarding, Login, Register } from "./screens";
+import { Home, OnBoarding, Login, Register, VerifyCode } from "./screens";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +27,11 @@ export default function App() {
         <Stack.Screen
           name="Register"
           component={Register}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="VerifyCode"
+          component={VerifyCode}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

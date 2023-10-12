@@ -62,7 +62,7 @@ export default function Register(props) {
             }
           />
           <View style={registerStyles.buttonContainer}>
-            <Pressable onPress={() => props.navigation.navigate("Home")}>
+            <Pressable onPress={() => props.navigation.navigate("VerifyCode")}>
               <LinearGradient
                 colors={[colors.PRIMARY, colors.SECONDARY]}
                 start={[0, 0]}
