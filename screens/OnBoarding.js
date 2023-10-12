@@ -8,7 +8,7 @@ import {
   Dimensions,
   Animated,
 } from "react-native";
-import React from "react";
+import React, { useRef } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import colors from "../constants/colors";
 
@@ -16,6 +16,8 @@ import colors from "../constants/colors";
 const { width, height } = Dimensions.get("window");
 
 export default function OnBoarding(props) {
+  const scrollViewRef = useRef(null);
+
   const onBoardingSteps = [
     {
       header: "Valida tu planograma en segundos.",
@@ -36,9 +38,22 @@ export default function OnBoarding(props) {
 
   const scrollX = new Animated.Value(0);
 
+  const handleButtonNext = (index) => {
+    if (index < onBoardingSteps.length - 1) {
+      scrollViewRef.current.scrollTo({
+        x: width * (index + 1),
+        y: 0,
+        animated: true,
+      });
+    } else if (index === onBoardingSteps.length - 1) {
+      return props.navigation.navigate("Login");
+    }
+  }
+
   const renderContent = () => {
     return (
       <Animated.ScrollView
+        ref={scrollViewRef}
         horizontal
         pagingEnabled
         scrollEnabled
@@ -74,6 +89,21 @@ export default function OnBoarding(props) {
                   <Text style={OnBoardingStyles.description}>
                     {step.description}
                   </Text>
+                </View>
+                <View style={OnBoardingStyles.buttonContainer}>
+                  <Pressable onPress={()=>handleButtonNext(index)}>
+                    <LinearGradient
+                      colors={[colors.PRIMARY, colors.SECONDARY]}
+                      start={[0, 0]}
+                      end={[1, 1]}
+                      location={[0.25, 1]}
+                      style={OnBoardingStyles.button}
+                    >
+                      <Text style={OnBoardingStyles.buttonText}>{
+                        index===onBoardingSteps.length-1 ? "Comenzar" : "Siguiente"
+                      }</Text>
+                    </LinearGradient>
+                  </Pressable>
                 </View>
               </View>
             </View>
@@ -111,7 +141,10 @@ export default function OnBoarding(props) {
           return (
             <Animated.View
               key={`dot-${index}`}
-              style={[OnBoardingStyles.dot, { width: dotSize, height: dotSize, backgroundColor: dotColor }]}
+              style={[
+                OnBoardingStyles.dot,
+                { width: dotSize, height: dotSize, backgroundColor: dotColor },
+              ]}
               opacity={opacity}
             ></Animated.View>
           );

@@ -23,7 +23,9 @@ export default function Login(props) {
         ></Image>
       </View>
       <View style={LoginStyles.body}>
+        <Pressable onPress={() => props.navigation.navigate("OnBoarding")}>
         <Text style={LoginStyles.header}>¡Bienvenido Colaborador!</Text>
+        </Pressable>
         <View style={LoginStyles.inputs}>
           <Input placeholder="Ingresa correo electrónico" />
           <Input
