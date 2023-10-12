@@ -19,7 +19,7 @@ export default function Login(props) {
     <View style={LoginStyles.mainContainer}>
       <View style={LoginStyles.imageContainer}>
         <Image
-          source={require("../assets/Oxxo.png")}
+          source={require("../assets/Oxxo.jpg")}
           style={LoginStyles.image}
         ></Image>
       </View>
