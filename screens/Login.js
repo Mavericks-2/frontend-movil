@@ -21,7 +21,7 @@ export default function Login(props) {
         <Image
           source={require("../assets/Oxxo.jpg")}
           style={LoginStyles.image}
-        ></Image>
+        />
       </View>
       <View style={LoginStyles.body}>
         <Pressable onPress={() => props.navigation.navigate("OnBoarding")}>

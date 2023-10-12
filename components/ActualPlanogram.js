@@ -1,7 +1,9 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
 import React, { useState, Fragment } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import colors from "../constants/colors";
+
+const { width, height } = Dimensions.get("window");
 
 export default function ActualPlanogram() {
   const [planogram, setPlanogram] = useState(null);
@@ -10,7 +12,7 @@ export default function ActualPlanogram() {
     <Fragment>
       <Image
         source={require("../assets/EmptyImage.jpg")}
-        style={{ width: 150, height: 150 }}
+        style={{ width: 100, height: 100 }}
       />
       <View
         style={[
@@ -86,16 +88,17 @@ const actualPlanogramStyles = StyleSheet.create({
     flexDirection: "column",
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     height: "100%",
     width: "100%",
     gap: 80,
+    marginTop: height *  0.25,
   },
   textContainer: {
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    gap: 16,
+    gap: 32,
   },
   header: {
     fontSize: 24,
