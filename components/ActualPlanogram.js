@@ -121,7 +121,6 @@ const actualPlanogramStyles = StyleSheet.create({
     justifyContent: "center",
     width: "90%",
     height: "42%",
-    backgroundColor: "red",
     borderRadius: 24,
   },
 });
