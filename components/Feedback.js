@@ -48,7 +48,7 @@ export default function Feedback() {
             },
             feedbackStyles.button,
           ]}
-          onPress={() => console.log("Se presionó")}
+          onPress={() => {}}
           disabled={completedSteps}
         >
           <Text style={feedbackStyles.buttonText}>Evaluar nuevamente</Text>
