@@ -89,8 +89,8 @@ export default function VerifyCode(props) {
 
 const verifyCodeStyles = StyleSheet.create({
   mainContainer: {
-    width: width,
-    height: height,
+    width: "100%",
+    height: "100%",
     backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center",
