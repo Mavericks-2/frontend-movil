@@ -1,11 +1,14 @@
-import { View, Text, Image, StyleSheet, Pressable } from "react-native";
-import React, { useState } from "react";
+import { View, Text, Image, StyleSheet, Pressable, useWindowDimensions } from "react-native";
+import React, { useEffect, useState } from "react";
 import colors from "../constants/colors";
 import { Input, Icon } from "@rneui/themed";
 import { LinearGradient } from "expo-linear-gradient";
 
 export default function Login(props) {
   const [iconName, setIconName] = useState("eye-slash");
+  const [imageHeight, setImageHeight] = useState("100%");
+  const [bodyGap, setBodyGap] = useState(16);
+  const { width, height } = useWindowDimensions();
 
   const handlePassowrdIcon = () => {
     if (iconName === "eye-slash") {
@@ -15,19 +18,35 @@ export default function Login(props) {
     }
   };
 
+  useEffect(() => {
+    if (width < height) {
+      setImageHeight("45%");
+      setBodyGap(40);
+    }else if (width > height) {
+      setImageHeight("40%");
+      setBodyGap(24);
+    }
+  }, [width, height]);
+
   return (
-    <View style={LoginStyles.mainContainer}>
-      <View style={LoginStyles.imageContainer}>
+    <View style={[LoginStyles.mainContainer, {width: width, height: height}]}>
+      <View style={{width: width * .8, height: imageHeight}}>
         <Image
           source={require("../assets/Oxxo.jpg")}
-          style={LoginStyles.image}
+          style={[LoginStyles.image, {width: width * .8, height: "100%"}]}
         />
       </View>
-      <View style={LoginStyles.body}>
+      <View style={[LoginStyles.body, {gap: bodyGap}]}>
         <Pressable onPress={() => props.navigation.navigate("OnBoarding")}>
-          <Text style={LoginStyles.header}>¡Bienvenido Colaborador!</Text>
+          <Text style={[LoginStyles.header, {
+            fontSize: width < 600 ? 24 : 28,
+          }]}>¡Bienvenido Colaborador!</Text>
         </Pressable>
-        <View style={LoginStyles.inputs}>
+        <View style={[LoginStyles.inputs, {
+          width: width * .8,
+          height: height * .4,
+          justifyContent: "space-around",
+        }]}>
           <Input placeholder="Ingresa correo electrónico" />
           <Input
             placeholder="Contraseña"
@@ -72,8 +91,6 @@ export default function Login(props) {
 
 const LoginStyles = StyleSheet.create({
   mainContainer: {
-    width: "100%",
-    height: "100%",
     backgroundColor: "white",
     display: "flex",
     flexDirection: "column",
@@ -81,28 +98,21 @@ const LoginStyles = StyleSheet.create({
     gap: 16,
     paddingBottom: 32,
   },
-  imageContainer: {
-    width: "100%",
-  },
   image: {
-    width: "100%",
     resizeMode: "contain",
   },
   body: {
     width: "100%",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     alignItems: "center",
-    gap: 40,
   },
   header: {
-    fontSize: 28,
     fontWeight: "800",
     color: colors.PRIMARY,
   },
   inputs: {
-    width: "60%",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -124,12 +134,10 @@ const LoginStyles = StyleSheet.create({
     padding: 24,
     display: "flex",
     flexDirection: "column",
-    gap: 12,
   },
   button: {
     width: "100%",
     height: 48,
-    backgroundColor: "black",
     color: "white",
     borderRadius: 12,
   },
