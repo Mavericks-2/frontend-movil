@@ -11,9 +11,8 @@ import React, { useRef } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import colors from "../constants/colors";
 
-const { width, height } = useWindowDimensions();
-
 export default function OnBoarding(props) {
+  const { width, height } = useWindowDimensions();
   const scrollViewRef = useRef(null);
 
   const onBoardingSteps = [
@@ -76,38 +75,57 @@ export default function OnBoarding(props) {
           return (
             <View key={`main-container-${index}`}>
               <View
-                style={OnBoardingStyles.imageContainer}
+                style={[
+                  OnBoardingStyles.imageContainer,
+                  {
+                    width: width,
+                    maxHeight: height * 0.75,
+                    height: height * 0.75,
+                  },
+                ]}
                 key={`image-container-${index}`}
               >
                 <Image
                   key={`image-${index}`}
                   source={step.image}
-                  style={OnBoardingStyles.image}
+                  style={[OnBoardingStyles.image, { width: width }]}
                 />
               </View>
               <View
-                style={OnBoardingStyles.footer}
+                style={[
+                  OnBoardingStyles.footer,
+                  { width: width, height: height * 0.25 },
+                ]}
                 key={`footer-container-${index}`}
               >
                 <View
-                  style={OnBoardingStyles.textContainer}
+                  style={[
+                    OnBoardingStyles.textContainer,
+                    { width: width, marginTop: width > 700 ? 64 : 24 },
+                  ]}
                   key={`text-container-${index}`}
                 >
                   <Text
-                    style={OnBoardingStyles.header}
+                    style={[
+                      OnBoardingStyles.header,
+                      { fontSize: width > 700 ? 28 : 16 },
+                    ]}
                     key={`text-header-${index}`}
                   >
                     {step.header}
                   </Text>
                   <Text
-                    style={OnBoardingStyles.description}
+                    style={[
+                      OnBoardingStyles.description,
+                      { fontSize: width > 700 ? 18 : 14 },
+                    ]}
                     key={`text-description-${index}`}
                   >
                     {step.description}
                   </Text>
                 </View>
                 <View
-                  style={OnBoardingStyles.buttonContainer}
+                  style={[OnBoardingStyles.buttonContainer, { width: width }]}
                   key={`button-container-${index}`}
                 >
                   <Pressable
@@ -122,7 +140,10 @@ export default function OnBoarding(props) {
                       start={[0, 0]}
                       end={[1, 1]}
                       location={[0.25, 1]}
-                      style={OnBoardingStyles.button}
+                      style={[
+                        OnBoardingStyles.button,
+                        { width: width - 48, height: width > 700 ? 48 : 40 },
+                      ]}
                     >
                       <Text
                         style={OnBoardingStyles.buttonText}
@@ -173,7 +194,12 @@ export default function OnBoarding(props) {
               key={`dot-${index}`}
               style={[
                 OnBoardingStyles.dot,
-                { width: dotSize, height: dotSize, backgroundColor: dotColor },
+                {
+                  width: dotSize,
+                  height: dotSize,
+                  backgroundColor: dotColor,
+                  marginHorizontal: width > 700 ? 12 : 6,
+                },
               ]}
               opacity={opacity}
             ></Animated.View>
@@ -186,26 +212,27 @@ export default function OnBoarding(props) {
   return (
     <View>
       <View>{renderContent()}</View>
-      <View style={OnBoardingStyles.dotRootContainer}>{renderDots()}</View>
+      <View
+        style={[
+          OnBoardingStyles.dotRootContainer,
+          { bottom: height > 700 ? "20%" : "16%" },
+        ]}
+      >
+        {renderDots()}
+      </View>
     </View>
   );
 }
 
 const OnBoardingStyles = StyleSheet.create({
   imageContainer: {
-    width: width,
-    maxHeight: height * 0.75,
-    height: height * 0.75,
     backgroundColor: "black",
   },
   image: {
-    width: width,
     opacity: 0.5,
     resizeMode: "cover",
   },
   footer: {
-    width: width,
-    height: height * 0.25,
     backgroundColor: "white",
     display: "flex",
     flexDirection: "column",
@@ -213,25 +240,20 @@ const OnBoardingStyles = StyleSheet.create({
     paddingBottom: 12,
   },
   textContainer: {
-    width: width,
     padding: 24,
     display: "flex",
     flexDirection: "column",
     gap: 12,
-    marginTop: width > 700 ? 64 : 24,
   },
   header: {
-    fontSize: width > 700 ? 28 : 16,
     fontWeight: "800",
     color: "black",
   },
   description: {
-    fontSize: width > 700 ? 18 : 14,
     fontWeight: "300",
     color: "black",
   },
   buttonContainer: {
-    width: width,
     padding: 24,
     display: "flex",
     flexDirection: "column",
@@ -239,8 +261,6 @@ const OnBoardingStyles = StyleSheet.create({
     justifyContent: "center",
   },
   button: {
-    width: width - 48,
-    height: width > 700 ? 48 : 40,
     backgroundColor: "black",
     color: "white",
     borderRadius: 12,
@@ -255,7 +275,6 @@ const OnBoardingStyles = StyleSheet.create({
   },
   dotRootContainer: {
     position: "absolute",
-    bottom: height > 700 ? "20%" : "16%",
     left: 16,
   },
   dotContainer: {
@@ -264,6 +283,5 @@ const OnBoardingStyles = StyleSheet.create({
   },
   dot: {
     borderRadius: "50%",
-    marginHorizontal: width > 700 ? 12 : 6,
   },
 });
