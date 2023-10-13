@@ -3,17 +3,15 @@ import {
   Text,
   Image,
   StyleSheet,
-  Button,
   Pressable,
-  Dimensions,
   Animated,
+  useWindowDimensions,
 } from "react-native";
 import React, { useRef } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import colors from "../constants/colors";
 
-// Obtener el ancho y alto de la ventana
-const { width, height } = Dimensions.get("window");
+const { width, height } = useWindowDimensions();
 
 export default function OnBoarding(props) {
   const scrollViewRef = useRef(null);
@@ -48,7 +46,7 @@ export default function OnBoarding(props) {
     } else if (index === onBoardingSteps.length - 1) {
       return props.navigation.navigate("Login");
     }
-  }
+  };
 
   const renderContent = () => {
     return (
@@ -76,32 +74,64 @@ export default function OnBoarding(props) {
       >
         {onBoardingSteps.map((step, index) => {
           return (
-            <View>
-              <View style={OnBoardingStyles.imageContainer}>
+            <View key={`main-container-${index}`}>
+              <View
+                style={OnBoardingStyles.imageContainer}
+                key={`image-container-${index}`}
+              >
                 <Image
+                  key={`image-${index}`}
                   source={step.image}
                   style={OnBoardingStyles.image}
-                ></Image>
+                />
               </View>
-              <View style={OnBoardingStyles.footer}>
-                <View key={index} style={OnBoardingStyles.textContainer}>
-                  <Text style={OnBoardingStyles.header}>{step.header}</Text>
-                  <Text style={OnBoardingStyles.description}>
+              <View
+                style={OnBoardingStyles.footer}
+                key={`footer-container-${index}`}
+              >
+                <View
+                  style={OnBoardingStyles.textContainer}
+                  key={`text-container-${index}`}
+                >
+                  <Text
+                    style={OnBoardingStyles.header}
+                    key={`text-header-${index}`}
+                  >
+                    {step.header}
+                  </Text>
+                  <Text
+                    style={OnBoardingStyles.description}
+                    key={`text-description-${index}`}
+                  >
                     {step.description}
                   </Text>
                 </View>
-                <View style={OnBoardingStyles.buttonContainer}>
-                  <Pressable onPress={()=>handleButtonNext(index)}>
+                <View
+                  style={OnBoardingStyles.buttonContainer}
+                  key={`button-container-${index}`}
+                >
+                  <Pressable
+                    onPress={() => {
+                      handleButtonNext(index);
+                    }}
+                    key={`pressable-button-${index}`}
+                  >
                     <LinearGradient
+                      key={`linear-gradient-button-${index}`}
                       colors={[colors.PRIMARY, colors.SECONDARY]}
                       start={[0, 0]}
                       end={[1, 1]}
                       location={[0.25, 1]}
                       style={OnBoardingStyles.button}
                     >
-                      <Text style={OnBoardingStyles.buttonText}>{
-                        index===onBoardingSteps.length-1 ? "Comenzar" : "Siguiente"
-                      }</Text>
+                      <Text
+                        style={OnBoardingStyles.buttonText}
+                        key={`button-text-${index}`}
+                      >
+                        {index === onBoardingSteps.length - 1
+                          ? "Comenzar"
+                          : "Siguiente"}
+                      </Text>
                     </LinearGradient>
                   </Pressable>
                 </View>
@@ -127,7 +157,7 @@ export default function OnBoarding(props) {
 
           const dotSize = dotPosition.interpolate({
             inputRange: [index - 1, index, index + 1],
-            outputRange: [12, 24, 12],
+            outputRange: width > 700 ? [12, 24, 12] : [8, 16, 8],
             extrapolate: "clamp",
           });
 
@@ -163,8 +193,9 @@ export default function OnBoarding(props) {
 
 const OnBoardingStyles = StyleSheet.create({
   imageContainer: {
-    width: "100%",
-    height: "75%",
+    width: width,
+    maxHeight: height * 0.75,
+    height: height * 0.75,
     backgroundColor: "black",
   },
   image: {
@@ -173,52 +204,54 @@ const OnBoardingStyles = StyleSheet.create({
     resizeMode: "cover",
   },
   footer: {
-    width: "100%",
-    height: "25%",
+    width: width,
+    height: height * 0.25,
     backgroundColor: "white",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     paddingBottom: 12,
   },
   textContainer: {
-    width: "100%",
+    width: width,
     padding: 24,
     display: "flex",
     flexDirection: "column",
     gap: 12,
-    marginTop: 64,
+    marginTop: width > 700 ? 64 : 24,
   },
   header: {
-    fontSize: 28,
+    fontSize: width > 700 ? 28 : 16,
     fontWeight: "800",
     color: "black",
   },
   description: {
-    fontSize: 18,
+    fontSize: width > 700 ? 18 : 14,
     fontWeight: "300",
     color: "black",
   },
   buttonContainer: {
-    width: "100%",
+    width: width,
     padding: 24,
     display: "flex",
     flexDirection: "column",
-    gap: 12,
+    alignItems: "center",
+    justifyContent: "center",
   },
   button: {
-    width: "100%",
-    height: 48,
+    width: width - 48,
+    height: width > 700 ? 48 : 40,
     backgroundColor: "black",
     color: "white",
     borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
   },
   buttonText: {
     fontSize: 18,
     fontWeight: "700",
     color: "white",
     textAlign: "center",
-    lineHeight: 48,
   },
   dotRootContainer: {
     position: "absolute",
@@ -231,6 +264,6 @@ const OnBoardingStyles = StyleSheet.create({
   },
   dot: {
     borderRadius: "50%",
-    marginHorizontal: 12,
+    marginHorizontal: width > 700 ? 12 : 6,
   },
 });
