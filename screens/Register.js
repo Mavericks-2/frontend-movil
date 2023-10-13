@@ -1,15 +1,19 @@
-import { View, Text, Pressable, StyleSheet, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  Pressable,
+  StyleSheet,
+  useWindowDimensions,
+} from "react-native";
 import React, { useState } from "react";
 import colors from "../constants/colors";
 import { Input, Icon } from "@rneui/themed";
 import { LinearGradient } from "expo-linear-gradient";
 
-
-const { width, height } = Dimensions.get("window");
-
 export default function Register(props) {
   const [iconName, setIconName] = useState("eye-slash");
   const [iconConfirmName, setIconConfirmName] = useState("eye-slash");
+  const { width, height } = useWindowDimensions();
 
   const handlePassowrdIcon = () => {
     if (iconName === "eye-slash") {
@@ -28,39 +32,81 @@ export default function Register(props) {
   };
 
   return (
-    <View style={registerStyles.mainContainer}>
-      <View style={registerStyles.bodyContainer}>
-        <Text style={registerStyles.header}>Crea tu cuenta de colaborador</Text>
-        <View style={registerStyles.inputs}>
-          <Text>Nombre</Text>
-          <Input placeholder="Juan Perez" />
+    <View
+      style={[
+        registerStyles.mainContainer,
+        {
+          width: width,
+          height: height,
+        },
+      ]}
+    >
+      <View
+        style={[
+          registerStyles.bodyContainer,
+          {
+            gap: width < 600 ? 32 : 64,
+            padding: width < 600 ? 16 : 32,
+          },
+        ]}
+      >
+        <Text
+          style={[
+            registerStyles.header,
+            {
+              width: width * 0.8,
+              fontSize: width < 600 ? 24 : 32,
+            },
+          ]}
+        >
+          Crea tu cuenta de colaborador
+        </Text>
+        <View
+          style={[
+            registerStyles.inputs,
+            {
+              gap: width < 600 ? 16 : 32,
+            },
+          ]}
+        >
+          <View style={registerStyles.input}>
+            <Text style={registerStyles.inputTitle}>Nombre</Text>
+            <Input placeholder="Juan Perez" />
+          </View>
 
-          <Text>Correo</Text>
-          <Input placeholder="name@example.com" />
-          <Text>Contraseña</Text>
-          <Input
-            placeholder="Crea una contraseña"
-            secureTextEntry={iconName === "eye-slash"}
-            rightIcon={
-              <Icon
-                name={iconName}
-                type="font-awesome"
-                onPress={handlePassowrdIcon}
-              />
-            }
-          />
-          <Text>Confirmar contraseña</Text>
-          <Input
-            placeholder="Confirma tu contraseña"
-            secureTextEntry={iconConfirmName === "eye-slash"}
-            rightIcon={
-              <Icon
-                name={iconConfirmName}
-                type="font-awesome"
-                onPress={handleConfirmPassowrdIcon}
-              />
-            }
-          />
+          <View style={registerStyles.input}>
+            <Text style={registerStyles.inputTitle}>Correo</Text>
+            <Input placeholder="name@example.com" />
+          </View>
+          <View style={registerStyles.input}>
+            <Text style={registerStyles.inputTitle}>Contraseña</Text>
+            <Input
+              placeholder="Crea una contraseña"
+              secureTextEntry={iconName === "eye-slash"}
+              rightIcon={
+                <Icon
+                  name={iconName}
+                  type="font-awesome"
+                  onPress={handlePassowrdIcon}
+                />
+              }
+            />
+          </View>
+          <View style={registerStyles.input}>
+            <Text style={registerStyles.inputTitle}>Confirmar contraseña</Text>
+            <Input
+              placeholder="Confirma tu contraseña"
+              secureTextEntry={iconConfirmName === "eye-slash"}
+              rightIcon={
+                <Icon
+                  name={iconConfirmName}
+                  type="font-awesome"
+                  onPress={handleConfirmPassowrdIcon}
+                />
+              }
+            />
+          </View>
+
           <View style={registerStyles.buttonContainer}>
             <Pressable onPress={() => props.navigation.navigate("VerifyCode")}>
               <LinearGradient
@@ -84,8 +130,6 @@ const registerStyles = StyleSheet.create({
   mainContainer: {
     flexDirection: "column",
     backgroundColor: "white",
-    height: height,
-    width: width,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -94,11 +138,8 @@ const registerStyles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
-    gap: 64,
-    padding: 64,
   },
   header: {
-    fontSize: 32,
     fontWeight: "800",
     color: colors.PRIMARY,
   },
@@ -107,7 +148,17 @@ const registerStyles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
-    gap: 24,
+  },
+  input: {
+    width: "100%",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    gap: 8,
+  },
+  inputTitle: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "black",
   },
   buttonContainer: {
     width: "100%",
@@ -115,12 +166,11 @@ const registerStyles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     gap: 12,
-    marginTop: 24,
+    marginTop: 16,
   },
   button: {
     width: "100%",
     height: 48,
-    backgroundColor: "black",
     color: "white",
     borderRadius: 12,
   },
@@ -130,5 +180,5 @@ const registerStyles = StyleSheet.create({
     color: "white",
     textAlign: "center",
     lineHeight: 48,
-  }
+  },
 });
