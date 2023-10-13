@@ -1,13 +1,19 @@
-import { View, Text, StyleSheet, Dimensions } from "react-native";
+import { View, Text, StyleSheet, useWindowDimensions } from "react-native";
 import React from "react";
 import colors from "../constants/colors";
 
-const { width, height } = Dimensions.get("window");
-
 export default function EvaluatePlanogram() {
+
+  const { width, height } = useWindowDimensions();
+
   return (
-    <View style={evalueatePlanogramStyles.mainContainer}>
-      <View style={evalueatePlanogramStyles.headerContainer}>
+    <View style={[evalueatePlanogramStyles.mainContainer, {
+      marginTop: width > height ? 32 : 90,
+    }]}>
+      <View style={[evalueatePlanogramStyles.headerContainer, {
+        marginBottom: width > height ? 16 : 32,
+        gap: width > height ? 16 : 32,
+      }]}>
         <View style={evalueatePlanogramStyles.headerTextContainer}>
           <Text style={evalueatePlanogramStyles.headerText}>
             Registra tu acomódo para evaluar el planograma
@@ -29,17 +35,15 @@ export default function EvaluatePlanogram() {
 
 const evalueatePlanogramStyles = StyleSheet.create({
   mainContainer: {
-    flex: 1,
-    marginTop: 90,
+    width: "100%",
+    height: "100%",
     justifyContent: "flex-start",
     alignItems: "center",
-    gap: 64
   },
   headerContainer: {
-    width: width * 0.9,
-    marginBottom: 32,
+    width: "90%",
     flexDirection: "row",
-    gap: 24,
+    justifyContent: "space-between",
     backgroundColor: "#F8F9FE",
     borderRadius: 12,
     padding: 24,
@@ -76,7 +80,7 @@ const evalueatePlanogramStyles = StyleSheet.create({
     textAlign: "center",
   },
   cameraContainer: {
-    width: width * 0.9,
+    width: "90%",
     height: 400,
     backgroundColor: "black",
     borderRadius: 12,
