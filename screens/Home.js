@@ -1,13 +1,13 @@
-import { View, Text, Pressable, Dimensions, StyleSheet } from "react-native";
-import React from "react";
+import { View, Text, Pressable, useWindowDimensions, StyleSheet } from "react-native";
+import React, { useState } from "react";
 import ActualPlanogram from "../components/ActualPlanogram";
 import EvaluatePlanogram from "../components/EvaluatePlanogram";
 import Feedback from "../components/Feedback";
 
-const { width, height } = Dimensions.get("window");
 
 export default function Home(props) {
-  const [selected, setSelected] = React.useState(0);
+  const [selected, setSelected] = useState(0);
+  const { width, height } = useWindowDimensions();
 
   const setStyleBySelected = (index) => {
     if (index === selected) {
@@ -43,7 +43,7 @@ export default function Home(props) {
         >
           <View
             style={
-              setStyleBySelected(0)
+              [setStyleBySelected(0), { width: width * 0.25 }]
             }
           >
             <Text>Planograma actual</Text>
@@ -56,7 +56,7 @@ export default function Home(props) {
         >
           <View
             style={
-              setStyleBySelected(1)
+              [setStyleBySelected(1), { width: width * 0.25}]
             }
           >
             <Text>Evalúa tu planograma</Text>
@@ -69,7 +69,7 @@ export default function Home(props) {
         >
           <View
             style={
-              setStyleBySelected(2)
+              [setStyleBySelected(2), { width: width * 0.25 }]
             }
           >
             <Text>Retroalimentación</Text>
@@ -85,8 +85,8 @@ const homeStyles = StyleSheet.create({
   mainContainer: {
     flexDirection: "column",
     backgroundColor: "white",
-    height: height,
-    width: width,
+    height: "100%",
+    width: "100%",
     alignItems: "center",
     paddingTop: 64,
   },
@@ -99,7 +99,6 @@ const homeStyles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    width: width,
     padding: 16,
     marginTop: 24,
     backgroundColor: "#F8F9FE",
@@ -121,17 +120,20 @@ const homeStyles = StyleSheet.create({
     },
     elevation: 4,
     backgroundColor: "white",
-    width: width * 0.22,
     height: 35,
   },
   topBarItem: {
     borderRightColor: "black",
     borderRightWidth: 1,
-    width: width * 0.22,
     color: "gray",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
   },
   topBarItemLast: {
-    width: width * 0.22,
     color: "gray",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

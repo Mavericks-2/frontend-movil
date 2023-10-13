@@ -1,12 +1,17 @@
-import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  useWindowDimensions,
+} from "react-native";
 import React, { useState, Fragment } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import colors from "../constants/colors";
 
-const { width, height } = Dimensions.get("window");
-
 export default function ActualPlanogram() {
-  const [planogram, setPlanogram] = useState(null);
+  const [planogram, setPlanogram] = useState(1);
+  const { width, height } = useWindowDimensions();
 
   const emptyPlanogram = (
     <Fragment>
@@ -66,18 +71,34 @@ export default function ActualPlanogram() {
         start={[0, 0]}
         end={[1, 1]}
         location={[0.25, 1]}
-        style={actualPlanogramStyles.imageContainer}
+        style={[
+          actualPlanogramStyles.imageContainer,
+          {
+            height: width > height ? height * 0.55 : height * 0.35,
+            width: width > height ? width * 0.6 : width * 0.8,
+          },
+        ]}
       >
         <Image
           source={require("../assets/GondolaEx.jpeg")}
-          style={{ width: "90%", resizeMode: "contain", borderRadius: 24 }}
+          style={{
+            resizeMode: "contain",
+            width: width > height ? "75%" : "90%",
+          }}
         />
       </LinearGradient>
     </Fragment>
   );
 
   return (
-    <View style={actualPlanogramStyles.mainContainer}>
+    <View
+      style={[
+        actualPlanogramStyles.mainContainer,
+        { marginTop: width > height ? height * 0.05 : height * 0.2, 
+          gap: width > height ? 32 : 80,
+        },
+      ]}
+    >
       {planogram === null ? emptyPlanogram : planogramFilled}
     </View>
   );
@@ -91,8 +112,6 @@ const actualPlanogramStyles = StyleSheet.create({
     justifyContent: "flex-start",
     height: "100%",
     width: "100%",
-    gap: 80,
-    marginTop: height *  0.25,
   },
   textContainer: {
     flexDirection: "column",
@@ -122,8 +141,6 @@ const actualPlanogramStyles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    width: "90%",
-    height: "42%",
     borderRadius: 24,
   },
 });
