@@ -1,18 +1,27 @@
-import { View, StyleSheet, Dimensions, Pressable, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  useWindowDimensions,
+  Pressable,
+  Text,
+  ScrollView,
+} from "react-native";
 import React, { Fragment, useEffect, useState } from "react";
 import LinearProgressComponent from "./LinearProgressComponent";
 import StepComponent from "./StepComponent";
 import colors from "../constants/colors";
 
-const { width, height } = Dimensions.get("window");
-
 export default function Feedback() {
   const [progress, setProgress] = useState([0, 0, 0, 0]);
   const [steps, setSteps] = useState([0, 0, 0, 0]);
   const [completedSteps, setCompletedSteps] = useState(false);
-  let stepWidth = ((width - 64) * 0.7) / steps.length;
+  const { width, height } = useWindowDimensions();
+
+  let stepWidth = ((width) * 0.7) / steps.length;
+
   useEffect(() => {
-    let completedSteps = progress.filter((element) => element === 1).length !== progress.length;
+    let completedSteps =
+      progress.filter((element) => element === 1).length !== progress.length;
     setCompletedSteps(completedSteps);
   }, [progress]);
 
@@ -29,7 +38,21 @@ export default function Feedback() {
           </Fragment>
         ))}
       </View>
-      <View style={feedbackStyles.stepContainer}>
+      <ScrollView
+        style={{ maxHeight: width > height ? height * .4 : height * 0.5 }}
+        showsVerticalScrollIndicator={true}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{
+          alignItems: "flex-start",
+          justifyContent: "center",
+          flexDirection: "column",
+          gap: 40,
+          width: "90%",
+          maxWidth: "90%",
+        }}
+        horizontal={false}
+        vertical = {true}
+      >
         {steps.map((step, index) => (
           <Fragment key={index}>
             <StepComponent
@@ -39,12 +62,16 @@ export default function Feedback() {
             />
           </Fragment>
         ))}
-      </View>
+      </ScrollView>
       <View style={feedbackStyles.buttonContainer}>
         <Pressable
           style={({ pressed }) => [
             {
-              backgroundColor: pressed ? colors.SECONDARY_60 : completedSteps ? colors.SECONDARY_60 : colors.SECONDARY,
+              backgroundColor: pressed
+                ? colors.SECONDARY_60
+                : completedSteps
+                ? colors.SECONDARY_60
+                : colors.SECONDARY,
             },
             feedbackStyles.button,
           ]}
@@ -60,29 +87,21 @@ export default function Feedback() {
 
 const feedbackStyles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    justifyContent: "center",
     marginTop: 32,
     gap: 64,
   },
   progressBarContainer: {
-    width: (width - 64) * 0.7,
+    width: "90%",
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
     gap: 4,
   },
-  stepContainer: {
-    width: (width - 64) * 0.95,
-    alignItems: "flex-start",
-    justifyContent: "center",
-    flexDirection: "column",
-    gap: 40,
-  },
   buttonContainer: {
-    width: (width - 64) * 0.95,
+    width: "90%",
     alignItems: "flex-start",
     justifyContent: "center",
     flexDirection: "column",

@@ -3,8 +3,6 @@ import React, { useState, useEffect } from "react";
 import { CheckBox } from "@rneui/themed";
 import colors from "../constants/colors";
 
-const { width, height } = Dimensions.get("window");
-
 export default function StepComponent(props) {
   const [isSelected, setSelection] = useState(false);
 
@@ -35,7 +33,7 @@ export default function StepComponent(props) {
 
 const stepStyles = StyleSheet.create({
   container: {
-    width: (width - 64) * 0.95,
+    width: "100%",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -44,7 +42,7 @@ const stepStyles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "flex-start",
     gap: 8,
-    maxWidth: (width - 64) * 0.7,
+    maxWidth: "70%",
   },
   header: {
     fontSize: 18,
@@ -53,6 +51,7 @@ const stepStyles = StyleSheet.create({
   subheader: {
     fontSize: 15,
     fontWeight: "normal",
-    color: "#71727A"
+    color: "#71727A",
+    lineHeight: 20,
   },
 });
