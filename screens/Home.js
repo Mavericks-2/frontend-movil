@@ -19,6 +19,14 @@ export default function Home(props) {
     }
   }
 
+  const setTextStyleBySelected = (index) => {
+    if (index === selected) {
+      return homeStyles.topBarItemSelectedText;
+    } else {
+      return homeStyles.topBarItemText;
+    }
+  }
+
   const setComponentBySelected = () => {
     if (selected === 0) {
       return <ActualPlanogram />;
@@ -46,7 +54,7 @@ export default function Home(props) {
               [setStyleBySelected(0), { width: width * 0.25 }]
             }
           >
-            <Text>Planograma actual</Text>
+            <Text style={setTextStyleBySelected(0)}>Planograma actual</Text>
           </View>
         </Pressable>
         <Pressable
@@ -59,7 +67,7 @@ export default function Home(props) {
               [setStyleBySelected(1), { width: width * 0.25}]
             }
           >
-            <Text>Evalúa tu planograma</Text>
+            <Text style={setTextStyleBySelected(1)}>Evalúa tu planograma</Text>
           </View>
         </Pressable>
         <Pressable
@@ -72,7 +80,7 @@ export default function Home(props) {
               [setStyleBySelected(2), { width: width * 0.25 }]
             }
           >
-            <Text>Retroalimentación</Text>
+            <Text style={setTextStyleBySelected(2)}>Retroalimentación</Text>
           </View>
         </Pressable>
       </View>
@@ -136,4 +144,11 @@ const homeStyles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  topBarItemSelectedText:{
+    color: "black",
+    fontWeight: "bold",
+  },
+  topBarItemText: {
+    color: "gray",
+  }
 });
