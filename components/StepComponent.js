@@ -7,12 +7,22 @@ export default function StepComponent(props) {
   const [isSelected, setSelection] = useState(false);
 
     useEffect(() => {
-        let index = props.progressValues.indexOf(isSelected ? 0 : 1);
-        let newProgressValues = [...props.progressValues];
-        newProgressValues[index] = isSelected ? 1 : 0;
-        props.setProgressValues(newProgressValues);
+        handleSelect();
 
     }, [isSelected]);
+
+    const handleSelect = () => {
+      let index = 0
+      if (isSelected) {
+        index = props.progressValues.indexOf(0);
+      }
+      else {
+        index = props.progressValues.lastIndexOf(1);
+      }
+      let newProgressValues = [...props.progressValues];
+      newProgressValues[index] = isSelected ? 1 : 0;
+      props.setProgressValues(newProgressValues);
+    }
 
   return (
     <View style={stepStyles.container}>
