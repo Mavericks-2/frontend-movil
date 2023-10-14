@@ -65,8 +65,15 @@ const styles = StyleSheet.create({
         height: 100,
         backgroundColor: "#fff",
         justifyContent: "space-around",
+        alignItems: "center",
         width: "100%",
         padding: 16,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: -3,
+        },
+        shadowOpacity: 0.05,
     },  
 });
 
