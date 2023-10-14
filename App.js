@@ -2,6 +2,7 @@ import { useWindowDimensions } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Home, OnBoarding, Login, Register, VerifyCode } from "./screens";
+import BottomTabNavigator from "./components/BottomTabNavigator";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,7 +23,7 @@ export default function App() {
         />
         <Stack.Screen
           name="Home"
-          component={Home}
+          component={BottomTabNavigator}
           options={{ headerShown: false }}
         />
         <Stack.Screen
