@@ -25,7 +25,10 @@ export default function ActualPlanogram() {
           actualPlanogramStyles.emptyWidth,
         ]}
       >
-        <Text style={actualPlanogramStyles.header}>
+        <Text style={[actualPlanogramStyles.header,
+        {
+          fontSize: width > 600 ? 24 : 16,
+        }]}>
           Todavía no se ha registrado un nuevo planograma.
         </Text>
         <View
@@ -34,7 +37,10 @@ export default function ActualPlanogram() {
             actualPlanogramStyles.emptyWidth,
           ]}
         >
-          <Text style={actualPlanogramStyles.description}>
+          <Text style={[actualPlanogramStyles.description,{
+            fontSize: width > 600 ? 16 : 12,
+            width: width > 600 ? "90%" : "80%",
+          }]}>
             Aquí encontrarás las actualizaciones que se manden desde OXXO.
           </Text>
         </View>
@@ -50,7 +56,9 @@ export default function ActualPlanogram() {
           actualPlanogramStyles.filledWidth,
         ]}
       >
-        <Text style={actualPlanogramStyles.header}>
+        <Text style={[actualPlanogramStyles.header, {
+          fontSize: width > 600 ? 24 : 16,
+        }]}>
           ¡Se ha registrado un nuevo planograma!
         </Text>
         <View
@@ -59,7 +67,9 @@ export default function ActualPlanogram() {
             actualPlanogramStyles.filledWidth,
           ]}
         >
-          <Text style={actualPlanogramStyles.description}>
+          <Text style={[actualPlanogramStyles.description,{
+            fontSize: width > 600 ? 16 : 12,
+          }]}>
             Realiza el acomodo de la góndola según te lo indique el siguiente
             planograma.
           </Text>
@@ -74,7 +84,7 @@ export default function ActualPlanogram() {
         style={[
           actualPlanogramStyles.imageContainer,
           {
-            height: width > height ? height * 0.55 : height * 0.35,
+            height: width > 600 ? width > height ? height * 0.55 : height * 0.40 : width * 0.6,
             width: width > height ? width * 0.6 : width * 0.8,
           },
         ]}
@@ -94,8 +104,9 @@ export default function ActualPlanogram() {
     <View
       style={[
         actualPlanogramStyles.mainContainer,
-        { marginTop: width > height ? height * 0.05 : height * 0.2, 
+        { marginTop: planogram === null ? 0 : width > 600 ? width > height ? height * 0.05 : height * 0.15 : 32, 
           gap: width > height ? 32 : 80,
+          justifyContent: planogram === null ? "center" : "flex-start" ,
         },
       ]}
     >
@@ -109,7 +120,6 @@ const actualPlanogramStyles = StyleSheet.create({
     flexDirection: "column",
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "flex-start",
     height: "100%",
     width: "100%",
   },
@@ -120,19 +130,18 @@ const actualPlanogramStyles = StyleSheet.create({
     gap: 32,
   },
   header: {
-    fontSize: 24,
     fontWeight: "800",
     color: "black",
     textAlign: "center",
   },
   description: {
-    fontSize: 16,
     fontWeight: "400",
     color: "#71727A",
     textAlign: "center",
   },
   emptyWidth: {
-    width: "60%",
+    width: "90%",
+    alignItems: "center",
   },
   filledWidth: {
     width: "80%",

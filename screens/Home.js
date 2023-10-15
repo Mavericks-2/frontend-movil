@@ -20,10 +20,11 @@ export default function Home(props) {
   }
 
   const setTextStyleBySelected = (index) => {
+    let fontSize = width > 600 ? 16 : 8;
     if (index === selected) {
-      return homeStyles.topBarItemSelectedText;
+      return [homeStyles.topBarItemSelectedText, { fontSize: fontSize }];
     } else {
-      return homeStyles.topBarItemText;
+      return [homeStyles.topBarItemText, { fontSize: fontSize }];
     }
   }
 

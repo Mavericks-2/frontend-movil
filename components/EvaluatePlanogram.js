@@ -1,4 +1,10 @@
-import { View, Text, StyleSheet, useWindowDimensions, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  useWindowDimensions,
+  TouchableOpacity,
+} from "react-native";
 import React, { useState } from "react";
 import colors from "../constants/colors";
 import CameraComponent from "./CameraComponent";
@@ -13,7 +19,7 @@ export default function EvaluatePlanogram() {
       style={[
         evalueatePlanogramStyles.mainContainer,
         {
-          marginTop: width > height ? 32 : 90,
+          marginTop: width > 600 ? (width > height ? 32 : 90) : 32,
         },
       ]}
     >
@@ -21,21 +27,40 @@ export default function EvaluatePlanogram() {
         style={[
           evalueatePlanogramStyles.headerContainer,
           {
-            marginBottom: width > height ? 16 : 32,
+            marginBottom: width > 600 ? (width > height ? 16 : 32) : 16,
             gap: width > height ? 16 : 32,
+            padding: width > 600 ? 24 : 16,
           },
         ]}
       >
-        <View style={evalueatePlanogramStyles.headerTextContainer}>
-          <Text style={evalueatePlanogramStyles.headerText}>
-            Registra tu acomódo para evaluar el planograma
+        <View style={[evalueatePlanogramStyles.headerTextContainer, {
+          width: width > 600 ? "50%" : "60%",
+        }]}>
+          <Text style={[evalueatePlanogramStyles.headerText,
+          {
+            fontSize: width > 600 ? 16 : 12,
+          }]}>
+            {width > 600 ? "Registra tu acomódo para evaluar el planograma" : "Evalúa tu acomódo"}
           </Text>
-          <Text style={evalueatePlanogramStyles.descriptionText}>
-            Asegúrate de ajustar los productos dentro de los espacios marcados
+          <Text style={[evalueatePlanogramStyles.descriptionText,{
+            fontSize: width > 600 ? 14 : 10,
+            width: width > 600 ? "90%" : "80%",
+          }]}>
+            {
+              width > 600 ?
+              "Asegúrate de ajustar los productos dentro de los espacios marcados"
+              :
+              "Toma una foto de tu acomódo y compara."
+            }
           </Text>
         </View>
-        <TouchableOpacity style={evalueatePlanogramStyles.button} onPress={()=>setPhotoTaked(!photoTaked)}>
-          <Text style={evalueatePlanogramStyles.buttonText}>{photoTaked ? "Descartar foto" : "Tomar foto"}</Text>
+        <TouchableOpacity
+          style={evalueatePlanogramStyles.button}
+          onPress={() => setPhotoTaked(!photoTaked)}
+        >
+          <Text style={evalueatePlanogramStyles.buttonText}>
+            {photoTaked ? "Descartar foto" : "Tomar foto"}
+          </Text>
         </TouchableOpacity>
       </View>
       <View
@@ -43,13 +68,13 @@ export default function EvaluatePlanogram() {
           evalueatePlanogramStyles.cameraContainer,
           {
             width: width * 0.9,
-            height: width > height ? height * 0.5 : height * 0.6,
+            height: width > 600 ? width > height ? height * 0.5 : height * 0.6 : height * 0.4,
           },
         ]}
       >
         <CameraComponent
           width={width * 0.9}
-          height={width > height ? height * 0.5 : height * 0.6}
+          height={width > 600 ? width > height ? height * 0.5 : height * 0.6 : height * 0.4}
           photoTaked={photoTaked}
         />
       </View>
@@ -70,23 +95,20 @@ const evalueatePlanogramStyles = StyleSheet.create({
     justifyContent: "space-between",
     backgroundColor: "#F8F9FE",
     borderRadius: 12,
-    padding: 24,
   },
   headerTextContainer: {
     flexDirection: "column",
     gap: 8,
   },
   headerText: {
-    fontSize: 16,
     fontWeight: "800",
     color: "black",
-    textAlign: "left",
+    textAlign: "justify",
   },
   descriptionText: {
-    fontSize: 14,
     fontWeight: "400",
     color: "#71727A",
-    textAlign: "left",
+    textAlign: "justify",
   },
   button: {
     borderRadius: 12,

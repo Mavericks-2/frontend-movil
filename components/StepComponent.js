@@ -1,10 +1,11 @@
-import { View, Text, StyleSheet, Dimensions } from "react-native";
+import { View, Text, StyleSheet, useWindowDimensions } from "react-native";
 import React, { useState, useEffect } from "react";
 import { CheckBox } from "@rneui/themed";
 import colors from "../constants/colors";
 
 export default function StepComponent(props) {
   const [isSelected, setSelection] = useState(false);
+  const { width, height } = useWindowDimensions();
 
     useEffect(() => {
         handleSelect();
@@ -27,15 +28,20 @@ export default function StepComponent(props) {
   return (
     <View style={stepStyles.container}>
       <View style={stepStyles.textContainer}>
-        <Text style={stepStyles.header}>Error en repisa 1, producto 10</Text>
-        <Text style={stepStyles.subheader}>Se detectó el producto "tal" en donde se esperaba un producto "tal"</Text>
+        <Text style={[stepStyles.header,{
+          fontSize: width > 600 ? 18 : 14,
+        }]}>Error en repisa 1, producto 10</Text>
+        <Text style={[stepStyles.subheader,{
+          fontSize: width > 600 ? 16 : 12,
+          lineHeight: width > 600 ? 24 : 16,
+        }]}>Se detectó el producto "tal" en donde se esperaba un producto "tal"</Text>
       </View>
       <CheckBox
         checked={isSelected}
         onPress={() => setSelection(!isSelected)}
         checkedIcon={"check-square"}
         checkedColor={colors.SECONDARY}
-        size={30}
+        size={width > 600 ? 30 : 24}
       />
     </View>
   );
@@ -55,13 +61,12 @@ const stepStyles = StyleSheet.create({
     maxWidth: "70%",
   },
   header: {
-    fontSize: 18,
     fontWeight: "bold",
   },
   subheader: {
-    fontSize: 15,
     fontWeight: "normal",
     color: "#71727A",
-    lineHeight: 20,
+    textAlign: "justify",
+    width: "80%",
   },
 });

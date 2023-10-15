@@ -1,8 +1,10 @@
-import { View, Text, TouchableOpacity, StyleSheet} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, useWindowDimensions} from "react-native";
 import { Icon } from "@rneui/base";
 import colors from "../constants/colors";
 
 export default function BottomTabCustom({ state, descriptors, navigation }) {
+  const { width, height } = useWindowDimensions();
+
   return (
     <View
       style={styles.container}
@@ -48,8 +50,11 @@ export default function BottomTabCustom({ state, descriptors, navigation }) {
             onLongPress={onLongPress}
             style={{ flex: 1 }}
           >
-            <Icon name={options.iconName} size={24} color={isFocused ? colors.PRIMARY : "#222"} /> 
-            <Text style={{ color: isFocused ? colors.PRIMARY : "#222", textAlign: "center" }}>
+            <Icon name={options.iconName} size={width > 600 ? 24 : 16} color={isFocused ? colors.PRIMARY : "#222"} /> 
+            <Text style={{ color: isFocused ? colors.PRIMARY : "#222", textAlign: "center", 
+              fontSize: width > 600 ? 16 : 12,
+              marginTop: width > 600 ? 8 : 4,
+          }}>
               {label}
             </Text>
           </TouchableOpacity>

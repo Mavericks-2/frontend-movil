@@ -39,14 +39,14 @@ export default function Feedback() {
         ))}
       </View>
       <ScrollView
-        style={{ maxHeight: width > height ? height * .4 : height * 0.5 }}
+        style={{ maxHeight: width > 600 ? width > height ? height * .4 : height * 0.5 : height * 0.35 }}
         showsVerticalScrollIndicator={true}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
           alignItems: "flex-start",
           justifyContent: "center",
           flexDirection: "column",
-          gap: 40,
+          gap: width > 600 ? 40 : 24,
           width: "90%",
           maxWidth: "90%",
         }}
@@ -74,11 +74,17 @@ export default function Feedback() {
                 : colors.SECONDARY,
             },
             feedbackStyles.button,
+            {
+              paddingVertical: width > 600 ? 16 : 8,
+              paddingHorizontal: width > 600 ? 32 : 16,
+            }
           ]}
           onPress={() => {}}
           disabled={completedSteps}
         >
-          <Text style={feedbackStyles.buttonText}>Evaluar nuevamente</Text>
+          <Text style={[feedbackStyles.buttonText, {
+            fontSize: width > 600 ? 16 : 12,
+          }]}>Evaluar nuevamente</Text>
         </Pressable>
       </View>
     </View>
@@ -107,13 +113,10 @@ const feedbackStyles = StyleSheet.create({
     flexDirection: "column",
   },
   button: {
-    paddingVertical: 16,
-    paddingHorizontal: 32,
-    borderRadius: 16,
+    borderRadius: 12,
   },
   buttonText: {
     color: "#fff",
-    fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
   },
