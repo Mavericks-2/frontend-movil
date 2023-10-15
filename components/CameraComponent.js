@@ -15,7 +15,7 @@ import * as ImageManipulator from "expo-image-manipulator";
 import LineDrawing from './LineDrawing';
 
 
-export default function CameraComponent() {
+export default function CameraComponent(props) {
   const [hasPermission, setHasPermission] = useState();
   const [hasMediaPermission, setHasMediaPermission] = useState();
   const [photo, setPhoto] = useState();
@@ -31,6 +31,14 @@ export default function CameraComponent() {
       setHasMediaPermission(mediaStatus === "granted");
     })();
   }, []);
+
+  useEffect(() => {
+    if (props.photoTaked) {
+      takePic();
+    } else {
+      setPhoto(undefined);
+    }
+  }, [props.photoTaked]);
 
 
   const takePic = async () => {
@@ -65,8 +73,13 @@ export default function CameraComponent() {
     try {
       const compressed = await ImageManipulator.manipulateAsync(
         photo.uri,
-        [],
-        { compress: 0 } // Ajusta el valor de compresión según tus necesidades
+        [{
+          resize: {
+            width: props.width,
+            height: props.height,
+          },
+        }],
+        { compress: 0} // Ajusta el valor de compresión según tus necesidades
       );
       return compressed;
     } catch (error) {
@@ -75,28 +88,23 @@ export default function CameraComponent() {
   };
 
   return !hasPermission ? (
-    <Text>No access to camera. Please change this in settings.</Text>
+    <Text>
+      No se ha otorgado permiso para usar la cámara, por favor otorga el permiso desde configuraciones.
+    </Text>
   ) : photo ? (
     <SafeAreaView style={styles["camera-container"]}>
       <Image
         style={styles["camera-preview"]}
-        source={{ uri: "data:image/jpg;base64," + photo.base64 }}
+        source={{ uri: photo.uri }}
       />
-      <Button title="Share" onPress={sharePic} />
-      {hasMediaPermission ? (
-        <Button title="Save" onPress={savePhoto} />
-      ) : undefined}
-      <Button title="Discard" onPress={() => setPhoto(undefined)} />
+      <Button title="Compartir" onPress={sharePic} />
     </SafeAreaView>
   ) : (
     <Camera style={styles["camera-container"]} ref={cameraRef}>
       <View style={styles["camera-red-box"]}>
-        <LineDrawing />
+        <LineDrawing width={props.width} height={props.height} />
       </View>
       <StatusBar style="auto" />
-      <View style={styles["camera-button-container"]}>
-        <Button title="Tomar foto" onPress={takePic}></Button>
-      </View>
     </Camera>
   );
 }

@@ -1,19 +1,31 @@
-import { View, Text, StyleSheet, useWindowDimensions } from "react-native";
-import React from "react";
+import { View, Text, StyleSheet, useWindowDimensions, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
 import colors from "../constants/colors";
+import CameraComponent from "./CameraComponent";
 
 export default function EvaluatePlanogram() {
+  const [photoTaked, setPhotoTaked] = useState(false);
 
   const { width, height } = useWindowDimensions();
 
   return (
-    <View style={[evalueatePlanogramStyles.mainContainer, {
-      marginTop: width > height ? 32 : 90,
-    }]}>
-      <View style={[evalueatePlanogramStyles.headerContainer, {
-        marginBottom: width > height ? 16 : 32,
-        gap: width > height ? 16 : 32,
-      }]}>
+    <View
+      style={[
+        evalueatePlanogramStyles.mainContainer,
+        {
+          marginTop: width > height ? 32 : 90,
+        },
+      ]}
+    >
+      <View
+        style={[
+          evalueatePlanogramStyles.headerContainer,
+          {
+            marginBottom: width > height ? 16 : 32,
+            gap: width > height ? 16 : 32,
+          },
+        ]}
+      >
         <View style={evalueatePlanogramStyles.headerTextContainer}>
           <Text style={evalueatePlanogramStyles.headerText}>
             Registra tu acomódo para evaluar el planograma
@@ -22,12 +34,24 @@ export default function EvaluatePlanogram() {
             Asegúrate de ajustar los productos dentro de los espacios marcados
           </Text>
         </View>
-        <View style={evalueatePlanogramStyles.button}>
-          <Text style={evalueatePlanogramStyles.buttonText}>Tomar foto</Text>
-        </View>
+        <TouchableOpacity style={evalueatePlanogramStyles.button} onPress={()=>setPhotoTaked(!photoTaked)}>
+          <Text style={evalueatePlanogramStyles.buttonText}>{photoTaked ? "Descartar foto" : "Tomar foto"}</Text>
+        </TouchableOpacity>
       </View>
-      <View style={evalueatePlanogramStyles.cameraContainer}>
-
+      <View
+        style={[
+          evalueatePlanogramStyles.cameraContainer,
+          {
+            width: width * 0.9,
+            height: width > height ? height * 0.5 : height * 0.6,
+          },
+        ]}
+      >
+        <CameraComponent
+          width={width * 0.9}
+          height={width > height ? height * 0.5 : height * 0.6}
+          photoTaked={photoTaked}
+        />
       </View>
     </View>
   );
@@ -64,7 +88,7 @@ const evalueatePlanogramStyles = StyleSheet.create({
     color: "#71727A",
     textAlign: "left",
   },
-  button:{
+  button: {
     borderRadius: 12,
     paddingVertical: 8,
     paddingHorizontal: 16,
@@ -80,9 +104,7 @@ const evalueatePlanogramStyles = StyleSheet.create({
     textAlign: "center",
   },
   cameraContainer: {
-    width: "90%",
-    height: 400,
     backgroundColor: "black",
     borderRadius: 12,
-  }
+  },
 });
