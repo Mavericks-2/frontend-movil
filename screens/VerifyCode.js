@@ -2,7 +2,7 @@ import {
   View,
   Text,
   StyleSheet,
-  Dimensions,
+  useWindowDimensions,
   Pressable,
   TextInput,
   TouchableWithoutFeedback,
@@ -13,13 +13,14 @@ import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import colors from "../constants/colors";
 
-const { width, height } = Dimensions.get("window");
 
 export default function VerifyCode(props) {
   const [firstInput, setFirstInput] = useState(0);
   const [secondInput, setSecondInput] = useState(0);
   const [thirdInput, setThirdInput] = useState(0);
   const [fourthInput, setFourthInput] = useState(0);
+
+  const { width, height } = useWindowDimensions();
 
   const [focus, setFocus] = useState([false, false, false, false]);
 
@@ -35,20 +36,37 @@ export default function VerifyCode(props) {
       style={{ flex: 1 }}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={verifyCodeStyles.mainContainer}>
+        <View style={[verifyCodeStyles.mainContainer, {
+          gap: width > 600 ? 128 : 64,
+        }]}>
           <View style={verifyCodeStyles.headerContainer}>
-            <Text style={verifyCodeStyles.header}>
+            <Text style={[verifyCodeStyles.header,{
+              fontSize: width > 600 ? 32 : 18,
+            }]}>
               Ingresa el código de confirmación
             </Text>
-            <Text>
+            <Text 
+            style={
+              {
+                fontSize: width > 600 ? 16 : 12,
+                textAlign: "center",
+                width: "80%",
+              }
+            }
+            >
               Un código de 4 dígitos ha sido enviado a tu correo electrónico
             </Text>
           </View>
-          <View style={verifyCodeStyles.inputsContainer}>
+          <View style={[verifyCodeStyles.inputsContainer,{
+            gap: width > 600 ? 32 : 24,
+          }]}>
             <TextInput
               style={[
                 verifyCodeStyles.input,
-                { borderColor: focus[0] ? colors.PRIMARY : "black" },
+                { borderColor: focus[0] ? colors.PRIMARY : "black", 
+                width: width > 600 ? 64 : 40,
+                height: width > 600 ? 64 : 40,
+                },
               ]}
               keyboardType="numeric"
               maxLength={1}
@@ -56,41 +74,54 @@ export default function VerifyCode(props) {
               onChangeText={(text) => handleTextChange(text, setFirstInput)}
               onFocus={() => setFocus([true, false, false, false])}
             />
-            <TextInput
+             <TextInput
               style={[
                 verifyCodeStyles.input,
-                { borderColor: focus[1] ? colors.PRIMARY : "black" },
+                { borderColor: focus[1] ? colors.PRIMARY : "black", 
+                width: width > 600 ? 64 : 40,
+                height: width > 600 ? 64 : 40,
+                },
               ]}
               keyboardType="numeric"
               maxLength={1}
-              value={firstInput}
-              onChangeText={(text) => handleTextChange(text, setFirstInput)}
+              value={secondInput}
+              onChangeText={(text) => handleTextChange(text, setSecondInput)}
               onFocus={() => setFocus([false, true, false, false])}
             />
-            <TextInput
+             <TextInput
               style={[
                 verifyCodeStyles.input,
-                { borderColor: focus[2] ? colors.PRIMARY : "black" },
+                { borderColor: focus[2] ? colors.PRIMARY : "black", 
+                width: width > 600 ? 64 : 40,
+                height: width > 600 ? 64 : 40,
+                },
               ]}
               keyboardType="numeric"
               maxLength={1}
-              value={firstInput}
-              onChangeText={(text) => handleTextChange(text, setFirstInput)}
+              value={thirdInput}
+              onChangeText={(text) => handleTextChange(text, setThirdInput)}
               onFocus={() => setFocus([false, false, true, false])}
             />
-            <TextInput
+             <TextInput
               style={[
                 verifyCodeStyles.input,
-                { borderColor: focus[3] ? colors.PRIMARY : "black" },
+                { borderColor: focus[3] ? colors.PRIMARY : "black", 
+                width: width > 600 ? 64 : 40,
+                height: width > 600 ? 64 : 40,
+                },
               ]}
               keyboardType="numeric"
               maxLength={1}
-              value={firstInput}
-              onChangeText={(text) => handleTextChange(text, setFirstInput)}
+              value={fourthInput}
+              onChangeText={(text) => handleTextChange(text, setFourthInput)}
               onFocus={() => setFocus([false, false, false, true])}
             />
+            
           </View>
-          <View style={verifyCodeStyles.buttonContainer}>
+          <View style={[verifyCodeStyles.buttonContainer, {
+            width: width > 600 ? "50%" : "60%",
+            marginTop: width > 600 ? 24 : 0,
+          }]}>
             <Pressable onPress={() => props.navigation.navigate("Home")}>
               <LinearGradient
                 colors={[colors.PRIMARY, colors.SECONDARY]}
@@ -99,7 +130,9 @@ export default function VerifyCode(props) {
                 location={[0.25, 1]}
                 style={verifyCodeStyles.button}
               >
-                <Text style={verifyCodeStyles.buttonText}>Verificar</Text>
+                <Text style={[verifyCodeStyles.buttonText, {
+                  fontSize: width > 600 ? 18 : 16,
+                }]}>Verificar</Text>
               </LinearGradient>
             </Pressable>
           </View>
@@ -116,7 +149,6 @@ const verifyCodeStyles = StyleSheet.create({
     backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center",
-    gap: 128,
   },
   headerContainer: {
     width: "80%",
@@ -126,29 +158,23 @@ const verifyCodeStyles = StyleSheet.create({
     gap: 8,
   },
   header: {
-    fontSize: 32,
+    textAlign: "center",
     fontWeight: "800",
     color: colors.PRIMARY,
   },
   inputsContainer: {
     display: "flex",
     flexDirection: "row",
-    gap: 32,
   },
   input: {
-    width: 64,
-    height: 64,
     borderRadius: 12,
     borderWidth: 1,
     textAlign: "center",
   },
   buttonContainer: {
-    width: "50%",
     padding: 24,
     display: "flex",
     flexDirection: "column",
-    gap: 12,
-    marginTop: 24,
   },
   button: {
     width: "100%",
@@ -158,7 +184,6 @@ const verifyCodeStyles = StyleSheet.create({
     borderRadius: 12,
   },
   buttonText: {
-    fontSize: 18,
     fontWeight: "700",
     color: "white",
     textAlign: "center",
