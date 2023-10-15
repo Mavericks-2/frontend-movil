@@ -4,6 +4,9 @@ import {
   Pressable,
   StyleSheet,
   useWindowDimensions,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import React, { useState } from "react";
 import colors from "../constants/colors";
@@ -32,97 +35,108 @@ export default function Register(props) {
   };
 
   return (
-    <View
-      style={[
-        registerStyles.mainContainer,
-        {
-          width: width,
-          height: height,
-        },
-      ]}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
     >
-      <View
-        style={[
-          registerStyles.bodyContainer,
-          {
-            gap: width < 600 ? 32 : 64,
-            padding: width < 600 ? 16 : 32,
-          },
-        ]}
-      >
-        <Text
-          style={[
-            registerStyles.header,
-            {
-              width: width * 0.8,
-              fontSize: width < 600 ? 24 : 32,
-            },
-          ]}
-        >
-          Crea tu cuenta de colaborador
-        </Text>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View
           style={[
-            registerStyles.inputs,
+            registerStyles.mainContainer,
             {
-              gap: width < 600 ? 16 : 32,
+              width: width,
+              height: height,
             },
           ]}
         >
-          <View style={registerStyles.input}>
-            <Text style={registerStyles.inputTitle}>Nombre</Text>
-            <Input placeholder="Juan Perez" />
-          </View>
+          <View
+            style={[
+              registerStyles.bodyContainer,
+              {
+                gap: width < 600 ? 32 : 64,
+                padding: width < 600 ? 16 : 32,
+              },
+            ]}
+          >
+            <Text
+              style={[
+                registerStyles.header,
+                {
+                  width: width * 0.8,
+                  fontSize: width < 600 ? 24 : 32,
+                },
+              ]}
+            >
+              Crea tu cuenta de colaborador
+            </Text>
+            <View
+              style={[
+                registerStyles.inputs,
+                {
+                  gap: width < 600 ? 16 : 32,
+                },
+              ]}
+            >
+              <View style={registerStyles.input}>
+                <Text style={registerStyles.inputTitle}>Nombre</Text>
+                <Input placeholder="Juan Perez" />
+              </View>
 
-          <View style={registerStyles.input}>
-            <Text style={registerStyles.inputTitle}>Correo</Text>
-            <Input placeholder="name@example.com" />
-          </View>
-          <View style={registerStyles.input}>
-            <Text style={registerStyles.inputTitle}>Contraseña</Text>
-            <Input
-              placeholder="Crea una contraseña"
-              secureTextEntry={iconName === "eye-slash"}
-              rightIcon={
-                <Icon
-                  name={iconName}
-                  type="font-awesome"
-                  onPress={handlePassowrdIcon}
+              <View style={registerStyles.input}>
+                <Text style={registerStyles.inputTitle}>Correo</Text>
+                <Input placeholder="name@example.com" />
+              </View>
+              <View style={registerStyles.input}>
+                <Text style={registerStyles.inputTitle}>Contraseña</Text>
+                <Input
+                  placeholder="Crea una contraseña"
+                  secureTextEntry={iconName === "eye-slash"}
+                  rightIcon={
+                    <Icon
+                      name={iconName}
+                      type="font-awesome"
+                      onPress={handlePassowrdIcon}
+                    />
+                  }
                 />
-              }
-            />
-          </View>
-          <View style={registerStyles.input}>
-            <Text style={registerStyles.inputTitle}>Confirmar contraseña</Text>
-            <Input
-              placeholder="Confirma tu contraseña"
-              secureTextEntry={iconConfirmName === "eye-slash"}
-              rightIcon={
-                <Icon
-                  name={iconConfirmName}
-                  type="font-awesome"
-                  onPress={handleConfirmPassowrdIcon}
+              </View>
+              <View style={registerStyles.input}>
+                <Text style={registerStyles.inputTitle}>
+                  Confirmar contraseña
+                </Text>
+                <Input
+                  placeholder="Confirma tu contraseña"
+                  secureTextEntry={iconConfirmName === "eye-slash"}
+                  rightIcon={
+                    <Icon
+                      name={iconConfirmName}
+                      type="font-awesome"
+                      onPress={handleConfirmPassowrdIcon}
+                    />
+                  }
                 />
-              }
-            />
-          </View>
+              </View>
 
-          <View style={registerStyles.buttonContainer}>
-            <Pressable onPress={() => props.navigation.navigate("VerifyCode")}>
-              <LinearGradient
-                colors={[colors.PRIMARY, colors.SECONDARY]}
-                start={[0, 0]}
-                end={[1, 1]}
-                location={[0.25, 1]}
-                style={registerStyles.button}
-              >
-                <Text style={registerStyles.buttonText}>Registrarme</Text>
-              </LinearGradient>
-            </Pressable>
+              <View style={registerStyles.buttonContainer}>
+                <Pressable
+                  onPress={() => props.navigation.navigate("VerifyCode")}
+                >
+                  <LinearGradient
+                    colors={[colors.PRIMARY, colors.SECONDARY]}
+                    start={[0, 0]}
+                    end={[1, 1]}
+                    location={[0.25, 1]}
+                    style={registerStyles.button}
+                  >
+                    <Text style={registerStyles.buttonText}>Registrarme</Text>
+                  </LinearGradient>
+                </Pressable>
+              </View>
+            </View>
           </View>
         </View>
-      </View>
-    </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -132,6 +146,7 @@ const registerStyles = StyleSheet.create({
     backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center",
+    flex: 1,
   },
   bodyContainer: {
     width: "100%",
