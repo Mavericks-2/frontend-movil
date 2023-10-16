@@ -27,7 +27,7 @@ export default function ActualPlanogram() {
       >
         <Text style={[actualPlanogramStyles.header,
         {
-          fontSize: width > 600 ? 24 : 16,
+          fontSize: width > 800 ? 24 : 16,
         }]}>
           Todavía no se ha registrado un nuevo planograma.
         </Text>
@@ -38,8 +38,8 @@ export default function ActualPlanogram() {
           ]}
         >
           <Text style={[actualPlanogramStyles.description,{
-            fontSize: width > 600 ? 16 : 12,
-            width: width > 600 ? "90%" : "80%",
+            fontSize: width > 800 ? 16 : 12,
+            width: width > 800 ? "90%" : "80%",
           }]}>
             Aquí encontrarás las actualizaciones que se manden desde OXXO.
           </Text>
@@ -57,7 +57,7 @@ export default function ActualPlanogram() {
         ]}
       >
         <Text style={[actualPlanogramStyles.header, {
-          fontSize: width > 600 ? 24 : 16,
+          fontSize: width > 800 ? width < 1200 ? 18 : 24 : 16,
         }]}>
           ¡Se ha registrado un nuevo planograma!
         </Text>
@@ -68,7 +68,7 @@ export default function ActualPlanogram() {
           ]}
         >
           <Text style={[actualPlanogramStyles.description,{
-            fontSize: width > 600 ? 16 : 12,
+            fontSize: width > 1200 ? 16 : 12,
           }]}>
             Realiza el acomodo de la góndola según te lo indique el siguiente
             planograma.
@@ -84,8 +84,8 @@ export default function ActualPlanogram() {
         style={[
           actualPlanogramStyles.imageContainer,
           {
-            height: width > 600 ? width > height ? height * 0.55 : height * 0.40 : width * 0.6,
-            width: width > height ? width * 0.6 : width * 0.8,
+            height: width > 800 ? width < 1200 ? height * .4 : width > height ? height * 0.65 : height * 0.40 : height * 0.4,
+            width: width < 1200 ? width * .5 : width > height ? width * 0.6 : width * 0.8,
           },
         ]}
       >
@@ -104,7 +104,7 @@ export default function ActualPlanogram() {
     <View
       style={[
         actualPlanogramStyles.mainContainer,
-        { marginTop: planogram === null ? 0 : width > 600 ? width > height ? height * 0.05 : height * 0.15 : 32, 
+        { marginTop: planogram === null ? 0 : width > 800 ? width > height ? height * 0.05 : height * 0.15 : 32, 
           gap: width > height ? 32 : 80,
           justifyContent: planogram === null ? "center" : "flex-start" ,
         },

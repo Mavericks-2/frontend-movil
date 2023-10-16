@@ -53,8 +53,8 @@ export default function Register(props) {
             style={[
               registerStyles.bodyContainer,
               {
-                gap: width < 600 ? 32 : 64,
-                padding: width < 600 ? 16 : 32,
+                gap: width < 800 ? 32 : 64,
+                padding: width < 800 ? 16 : 32,
               },
             ]}
           >
@@ -63,7 +63,7 @@ export default function Register(props) {
                 registerStyles.header,
                 {
                   width: width * 0.8,
-                  fontSize: width < 600 ? 24 : 32,
+                  fontSize: width < 800 ? 24 : 32,
                 },
               ]}
             >
@@ -73,7 +73,7 @@ export default function Register(props) {
               style={[
                 registerStyles.inputs,
                 {
-                  gap: width < 600 ? 16 : 32,
+                  gap: width < 800 ? 16 : 32,
                 },
               ]}
             >
@@ -188,12 +188,13 @@ const registerStyles = StyleSheet.create({
     height: 48,
     color: "white",
     borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
   },
   buttonText: {
     fontSize: 18,
     fontWeight: "700",
     color: "white",
     textAlign: "center",
-    lineHeight: 48,
   },
 });

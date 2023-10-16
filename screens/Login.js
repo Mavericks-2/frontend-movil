@@ -62,7 +62,7 @@ export default function Login(props) {
                 style={[
                   LoginStyles.header,
                   {
-                    fontSize: width < 600 ? 24 : 28,
+                    fontSize: width < 800 ? 24 : 28,
                   },
                 ]}
               >
@@ -179,13 +179,14 @@ const LoginStyles = StyleSheet.create({
     height: 48,
     color: "white",
     borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
   },
   buttonText: {
     fontSize: 18,
     fontWeight: "700",
     color: "white",
     textAlign: "center",
-    lineHeight: 48,
   },
   registerContainer: {
     width: "100%",

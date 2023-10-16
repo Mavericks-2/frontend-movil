@@ -50,10 +50,10 @@ export default function BottomTabCustom({ state, descriptors, navigation }) {
             onLongPress={onLongPress}
             style={{ flex: 1 }}
           >
-            <Icon name={options.iconName} size={width > 600 ? 24 : 16} color={isFocused ? colors.PRIMARY : "#222"} /> 
+            <Icon name={options.iconName} size={width > 800 ? 24 : 16} color={isFocused ? colors.PRIMARY : "#222"} /> 
             <Text style={{ color: isFocused ? colors.PRIMARY : "#222", textAlign: "center", 
-              fontSize: width > 600 ? 16 : 12,
-              marginTop: width > 600 ? 8 : 4,
+              fontSize: width > 800 ? 16 : 12,
+              marginTop: width > 800 ? 8 : 4,
           }}>
               {label}
             </Text>

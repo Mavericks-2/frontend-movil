@@ -19,7 +19,7 @@ export default function EvaluatePlanogram() {
       style={[
         evalueatePlanogramStyles.mainContainer,
         {
-          marginTop: width > 600 ? (width > height ? 32 : 90) : 32,
+          marginTop: width > 800 ? (width > height ? 32 : 90) : 32,
         },
       ]}
     >
@@ -27,27 +27,27 @@ export default function EvaluatePlanogram() {
         style={[
           evalueatePlanogramStyles.headerContainer,
           {
-            marginBottom: width > 600 ? (width > height ? 16 : 32) : 16,
-            gap: width > height ? 16 : 32,
-            padding: width > 600 ? 24 : 16,
+            marginBottom: width > 800 ? width < 1200 ? 16 : (width > height ? 16 : 32) : 16,
+            gap: width < 1200 ? 16 : width > height ? 16 : 32,
+            padding: width > 800 ? width < 1200 ? 16 : 24 : 16,
           },
         ]}
       >
         <View style={[evalueatePlanogramStyles.headerTextContainer, {
-          width: width > 600 ? "50%" : "60%",
+          width: width > 800 ?  width < 1200 ? "60%" : "50%" : "60%",
         }]}>
           <Text style={[evalueatePlanogramStyles.headerText,
           {
-            fontSize: width > 600 ? 16 : 12,
+            fontSize: width > 800 ? width < 1200 ? 14 : 16 : 12,
           }]}>
-            {width > 600 ? "Registra tu acomódo para evaluar el planograma" : "Evalúa tu acomódo"}
+            {width > 800 ? "Registra tu acomódo para evaluar el planograma" : "Evalúa tu acomódo"}
           </Text>
           <Text style={[evalueatePlanogramStyles.descriptionText,{
-            fontSize: width > 600 ? 14 : 10,
-            width: width > 600 ? "90%" : "80%",
+            fontSize: width > 800 ? width < 1200 ? 12 : 14 : 10,
+            width: width > 800 ? "90%" : "80%",
           }]}>
             {
-              width > 600 ?
+              width > 1200 ?
               "Asegúrate de ajustar los productos dentro de los espacios marcados"
               :
               "Toma una foto de tu acomódo y compara."
@@ -68,13 +68,13 @@ export default function EvaluatePlanogram() {
           evalueatePlanogramStyles.cameraContainer,
           {
             width: width * 0.9,
-            height: width > 600 ? width > height ? height * 0.5 : height * 0.6 : height * 0.4,
+            height: width > 1200 ? width > height ? height * 0.5 : height * 0.6 : height * 0.4,
           },
         ]}
       >
         <CameraComponent
           width={width * 0.9}
-          height={width > 600 ? width > height ? height * 0.5 : height * 0.6 : height * 0.4}
+          height={width > 1200 ? width > height ? height * 0.5 : height * 0.6 : height * 0.4}
           photoTaked={photoTaked}
         />
       </View>

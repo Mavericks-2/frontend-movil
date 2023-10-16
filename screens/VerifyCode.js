@@ -37,18 +37,18 @@ export default function VerifyCode(props) {
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={[verifyCodeStyles.mainContainer, {
-          gap: width > 600 ? 128 : 64,
+          gap: width > 800 ? 128 : 64,
         }]}>
           <View style={verifyCodeStyles.headerContainer}>
             <Text style={[verifyCodeStyles.header,{
-              fontSize: width > 600 ? 32 : 18,
+              fontSize: width > 800 ? 32 : 18,
             }]}>
               Ingresa el código de confirmación
             </Text>
             <Text 
             style={
               {
-                fontSize: width > 600 ? 16 : 12,
+                fontSize: width > 800 ? 16 : 12,
                 textAlign: "center",
                 width: "80%",
               }
@@ -58,14 +58,14 @@ export default function VerifyCode(props) {
             </Text>
           </View>
           <View style={[verifyCodeStyles.inputsContainer,{
-            gap: width > 600 ? 32 : 24,
+            gap: width > 800 ? 32 : 24,
           }]}>
             <TextInput
               style={[
                 verifyCodeStyles.input,
                 { borderColor: focus[0] ? colors.PRIMARY : "black", 
-                width: width > 600 ? 64 : 40,
-                height: width > 600 ? 64 : 40,
+                width: width > 800 ? 64 : 40,
+                height: width > 800 ? 64 : 40,
                 },
               ]}
               keyboardType="numeric"
@@ -78,8 +78,8 @@ export default function VerifyCode(props) {
               style={[
                 verifyCodeStyles.input,
                 { borderColor: focus[1] ? colors.PRIMARY : "black", 
-                width: width > 600 ? 64 : 40,
-                height: width > 600 ? 64 : 40,
+                width: width > 800 ? 64 : 40,
+                height: width > 800 ? 64 : 40,
                 },
               ]}
               keyboardType="numeric"
@@ -92,8 +92,8 @@ export default function VerifyCode(props) {
               style={[
                 verifyCodeStyles.input,
                 { borderColor: focus[2] ? colors.PRIMARY : "black", 
-                width: width > 600 ? 64 : 40,
-                height: width > 600 ? 64 : 40,
+                width: width > 800 ? 64 : 40,
+                height: width > 800 ? 64 : 40,
                 },
               ]}
               keyboardType="numeric"
@@ -106,8 +106,8 @@ export default function VerifyCode(props) {
               style={[
                 verifyCodeStyles.input,
                 { borderColor: focus[3] ? colors.PRIMARY : "black", 
-                width: width > 600 ? 64 : 40,
-                height: width > 600 ? 64 : 40,
+                width: width > 800 ? 64 : 40,
+                height: width > 800 ? 64 : 40,
                 },
               ]}
               keyboardType="numeric"
@@ -119,8 +119,8 @@ export default function VerifyCode(props) {
             
           </View>
           <View style={[verifyCodeStyles.buttonContainer, {
-            width: width > 600 ? "50%" : "60%",
-            marginTop: width > 600 ? 24 : 0,
+            width: width > 800 ? "50%" : "60%",
+            marginTop: width > 800 ? 24 : 0,
           }]}>
             <Pressable onPress={() => props.navigation.navigate("Home")}>
               <LinearGradient
@@ -131,7 +131,7 @@ export default function VerifyCode(props) {
                 style={verifyCodeStyles.button}
               >
                 <Text style={[verifyCodeStyles.buttonText, {
-                  fontSize: width > 600 ? 18 : 16,
+                  fontSize: width > 800 ? 18 : 16,
                 }]}>Verificar</Text>
               </LinearGradient>
             </Pressable>
@@ -182,11 +182,12 @@ const verifyCodeStyles = StyleSheet.create({
     backgroundColor: "black",
     color: "white",
     borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
   },
   buttonText: {
     fontWeight: "700",
     color: "white",
     textAlign: "center",
-    lineHeight: 48,
   },
 });

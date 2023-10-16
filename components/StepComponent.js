@@ -29,11 +29,11 @@ export default function StepComponent(props) {
     <View style={stepStyles.container}>
       <View style={stepStyles.textContainer}>
         <Text style={[stepStyles.header,{
-          fontSize: width > 600 ? 18 : 14,
+          fontSize: width > 1200 ? 18 : 14,
         }]}>Error en repisa 1, producto 10</Text>
         <Text style={[stepStyles.subheader,{
-          fontSize: width > 600 ? 16 : 12,
-          lineHeight: width > 600 ? 24 : 16,
+          fontSize: width > 1200 ? 16 : 12,
+          lineHeight: width > 1200 ? 24 : 16,
         }]}>Se detectó el producto "tal" en donde se esperaba un producto "tal"</Text>
       </View>
       <CheckBox
@@ -41,7 +41,7 @@ export default function StepComponent(props) {
         onPress={() => setSelection(!isSelected)}
         checkedIcon={"check-square"}
         checkedColor={colors.SECONDARY}
-        size={width > 600 ? 30 : 24}
+        size={width > 1200 ? 30 : 24}
       />
     </View>
   );

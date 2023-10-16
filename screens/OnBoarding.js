@@ -101,14 +101,14 @@ export default function OnBoarding(props) {
                 <View
                   style={[
                     OnBoardingStyles.textContainer,
-                    { width: width, marginTop: width > 700 ? 64 : 24 },
+                    { width: width, marginTop: width > 1200 ? 64 : 24 },
                   ]}
                   key={`text-container-${index}`}
                 >
                   <Text
                     style={[
                       OnBoardingStyles.header,
-                      { fontSize: width > 700 ? 28 : 16 },
+                      { fontSize: width > 1200 ? 28 : 16 },
                     ]}
                     key={`text-header-${index}`}
                   >
@@ -117,7 +117,7 @@ export default function OnBoarding(props) {
                   <Text
                     style={[
                       OnBoardingStyles.description,
-                      { fontSize: width > 700 ? 18 : 14 },
+                      { fontSize: width > 1200 ? 18 : 14 },
                     ]}
                     key={`text-description-${index}`}
                   >
@@ -142,7 +142,7 @@ export default function OnBoarding(props) {
                       location={[0.25, 1]}
                       style={[
                         OnBoardingStyles.button,
-                        { width: width - 48, height: width > 700 ? 48 : 40 },
+                        { width: width - 48, height: width > 1200 ? 48 : 40 },
                       ]}
                     >
                       <Text
@@ -178,7 +178,7 @@ export default function OnBoarding(props) {
 
           const dotSize = dotPosition.interpolate({
             inputRange: [index - 1, index, index + 1],
-            outputRange: width > 700 ? [12, 24, 12] : [8, 16, 8],
+            outputRange: width > 1200 ? [12, 24, 12] : [8, 16, 8],
             extrapolate: "clamp",
           });
 
@@ -198,7 +198,7 @@ export default function OnBoarding(props) {
                   width: dotSize,
                   height: dotSize,
                   backgroundColor: dotColor,
-                  marginHorizontal: width > 700 ? 12 : 6,
+                  marginHorizontal: width > 1200 ? 12 : 6,
                 },
               ]}
               opacity={opacity}
@@ -215,7 +215,7 @@ export default function OnBoarding(props) {
       <View
         style={[
           OnBoardingStyles.dotRootContainer,
-          { bottom: height > 700 ? "20%" : "16%" },
+          { bottom: height > 800 ? "20%" : width > 800 ? "20%" : "16%" },
         ]}
       >
         {renderDots()}
