@@ -3,7 +3,7 @@ import { View, StyleSheet } from "react-native";
 import Svg, { Line } from "react-native-svg";
 
 const LineDrawing = (props) => {
-  const lineDrawingArray = [
+  const lineDrawingArray = props.lines || [
     {
       x1: 0,
       y1: 75,
@@ -469,7 +469,7 @@ const LineDrawing = (props) => {
       adjustedLineDrawingArray.push(adjustedLine);
     });
     let rectangles = convertLinesToRectangles(adjustedLineDrawingArray);
-    console.log(rectangles);
+    console.log("Rectangles:",rectangles);
     return adjustedLineDrawingArray;
   };
 

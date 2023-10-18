@@ -87,6 +87,7 @@ export default function EvaluatePlanogram(props) {
           width={width * 0.9}
           height={width > 1200 ? width > height ? height * 0.5 : height * 0.6 : height * 0.4}
           photoTaked={photoTaked}
+          lines = {props.lines}
         />
       </View>
     </View>

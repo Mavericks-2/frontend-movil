@@ -102,7 +102,7 @@ export default function CameraComponent(props) {
   ) : (
     <Camera style={styles["camera-container"]} ref={cameraRef}>
       <View style={styles["camera-red-box"]}>
-        <LineDrawing width={props.width} height={props.height} />
+        <LineDrawing width={props.width} height={props.height} lines={props.lines} />
       </View>
       <StatusBar style="auto" />
     </Camera>

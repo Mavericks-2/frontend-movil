@@ -10,6 +10,7 @@ export default function Home(props) {
   const { width, height } = useWindowDimensions();
   const [planogramClasses, setPlanogramClasses] = useState([]);
   const [actualPlanogramClasses, setActualPlanogramClasses] = useState([]);
+  const [planogramLines, setPlanogramLines ] = useState(null);
 
   const setStyleBySelected = (index) => {
     if (index === selected) {
@@ -32,9 +33,9 @@ export default function Home(props) {
 
   const setComponentBySelected = () => {
     if (selected === 0) {
-      return <ActualPlanogram setPlanogramClasses={setPlanogramClasses} />;
+      return <ActualPlanogram setPlanogramClasses={setPlanogramClasses} setLines={setPlanogramLines} />;
     } else if (selected === 1) {
-      return <EvaluatePlanogram setPlanogramClasses={setActualPlanogramClasses} />;
+      return <EvaluatePlanogram setPlanogramClasses={setActualPlanogramClasses} lines={planogramLines} />;
     } else {
       return <Feedback planogramClasses={planogramClasses} actualPlanogramClases={actualPlanogramClasses}/>;
     }
