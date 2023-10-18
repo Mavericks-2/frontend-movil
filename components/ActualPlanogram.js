@@ -5,12 +5,13 @@ import {
   Image,
   useWindowDimensions,
 } from "react-native";
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import colors from "../constants/colors";
+import { getPlanogramConfig } from "../services";
 
 export default function ActualPlanogram() {
-  const [planogram, setPlanogram] = useState(1);
+  const [planogram, setPlanogram] = useState(null);
   const { width, height } = useWindowDimensions();
 
   const emptyPlanogram = (
@@ -47,6 +48,7 @@ export default function ActualPlanogram() {
       </View>
     </Fragment>
   );
+
 
   const planogramFilled = (
     <Fragment>
@@ -90,15 +92,25 @@ export default function ActualPlanogram() {
         ]}
       >
         <Image
-          source={require("../assets/GondolaEx.jpeg")}
+          source={{uri: planogram}}
           style={{
             resizeMode: "contain",
             width: width > height ? "75%" : "90%",
+            height: width > height ? "75%" : "90%",
           }}
         />
       </LinearGradient>
+
     </Fragment>
   );
+
+  useEffect(() => {
+    getPlanogramConfig().then((response) => {
+      setPlanogram(response);
+    }).catch((error) => {
+      console.log(error);
+    });
+  }, []);
 
   return (
     <View
