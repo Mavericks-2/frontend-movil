@@ -5,14 +5,25 @@ import {
   useWindowDimensions,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import colors from "../constants/colors";
 import CameraComponent from "./CameraComponent";
+import { classifyImage } from "../services";
 
-export default function EvaluatePlanogram() {
+export default function EvaluatePlanogram(props) {
   const [photoTaked, setPhotoTaked] = useState(false);
-
   const { width, height } = useWindowDimensions();
+
+  useEffect(() => {
+    if (photoTaked) {
+      classifyImage().then((res) => {
+        props.setPlanogramClasses(res);
+      }).catch((err) => {
+        console.log(err);
+      });
+    }
+  }
+  , [photoTaked]);
 
   return (
     <View

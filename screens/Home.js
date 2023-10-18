@@ -8,6 +8,7 @@ import Feedback from "../components/Feedback";
 export default function Home(props) {
   const [selected, setSelected] = useState(0);
   const { width, height } = useWindowDimensions();
+  const [planogramClasses, setPlanogramClasses] = useState([]);
 
   const setStyleBySelected = (index) => {
     if (index === selected) {
@@ -32,9 +33,9 @@ export default function Home(props) {
     if (selected === 0) {
       return <ActualPlanogram />;
     } else if (selected === 1) {
-      return <EvaluatePlanogram />;
+      return <EvaluatePlanogram setPlanogramClasses={setPlanogramClasses} />;
     } else {
-      return <Feedback />;
+      return <Feedback planogramClasses={planogramClasses} />;
     }
   }
 
