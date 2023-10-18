@@ -10,7 +10,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import colors from "../constants/colors";
 import { getPlanogramConfig } from "../services";
 
-export default function ActualPlanogram() {
+export default function ActualPlanogram(props) {
   const [planogram, setPlanogram] = useState(null);
   const { width, height } = useWindowDimensions();
 
@@ -106,7 +106,8 @@ export default function ActualPlanogram() {
 
   useEffect(() => {
     getPlanogramConfig().then((response) => {
-      setPlanogram(response);
+      setPlanogram(response.url_imagen);
+      props.setPlanogramClasses(response.matriz_productos.productos);
     }).catch((error) => {
       console.log(error);
     });

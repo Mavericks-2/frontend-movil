@@ -98,3 +98,23 @@ export const classifyImage = async () => {
 
   return res;
 };
+
+export const compareImages = async (planogram, actualPlanogram) => {
+  const res = await axios.post(`${MODEL_BASE_URL}/compareImages`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: {
+      planogram: {
+        "coordenadas": planogram,
+      },
+      actualPlanogram: {
+        "coordenadas": actualPlanogram,
+      },
+    },
+  }).then((res) => {
+    return res.data.resultMatrix;
+  });
+
+  return res;
+}

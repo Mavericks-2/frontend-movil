@@ -1,4 +1,4 @@
 import { getPlanogramConfig } from "./planogramService";
-import { classifyImage } from "./modelService";
+import { classifyImage, compareImages } from "./modelService";
 
-export { getPlanogramConfig, classifyImage };
+export { getPlanogramConfig, classifyImage, compareImages };

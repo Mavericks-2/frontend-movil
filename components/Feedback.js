@@ -10,10 +10,11 @@ import React, { Fragment, useEffect, useState } from "react";
 import LinearProgressComponent from "./LinearProgressComponent";
 import StepComponent from "./StepComponent";
 import colors from "../constants/colors";
+import { compareImages } from "../services";
 
-export default function Feedback() {
-  const [progress, setProgress] = useState([0, 0, 0, 0]);
-  const [steps, setSteps] = useState([0, 0, 0, 0]);
+export default function Feedback(props) {
+  const [progress, setProgress] = useState([]);
+  const [steps, setSteps] = useState([]);
   const [completedSteps, setCompletedSteps] = useState(false);
   const { width, height } = useWindowDimensions();
 
@@ -24,6 +25,25 @@ export default function Feedback() {
       progress.filter((element) => element === 1).length !== progress.length;
     setCompletedSteps(completedSteps);
   }, [progress]);
+
+  useEffect(() => {
+    compareImages(props.planogramClasses, props.actualPlanogramClases)
+      .then((res) => {
+        let errors = res.filter((element) => !element.isCorrect);
+        setSteps(errors);
+      })
+      .catch((err) => {
+        console.log("Error: ", err);
+      });
+  }, []);
+
+  useEffect(() => {
+    let newProgressValues = [];
+    steps.forEach((step) => {
+      newProgressValues.push(0);
+    });
+    setProgress(newProgressValues);
+  }, [steps]);
 
   return (
     <View style={feedbackStyles.container}>
@@ -59,6 +79,7 @@ export default function Feedback() {
               key={index}
               progressValues={progress}
               setProgressValues={setProgress}
+              step={step}
             />
           </Fragment>
         ))}

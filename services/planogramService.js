@@ -9,8 +9,7 @@ export const getPlanogramConfig = async () => {
             "Content-Type": "application/json",
         },
     }).then((res) => {
-        return res.data.planogram.url_imagen;
+        return res.data.planogram;
     });
-
     return res;
 }
