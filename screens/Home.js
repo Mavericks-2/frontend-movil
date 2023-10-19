@@ -1,9 +1,9 @@
-import { View, Text, Pressable, useWindowDimensions, StyleSheet } from "react-native";
+import { View, Text, Pressable, useWindowDimensions, StyleSheet, Image } from "react-native";
 import React, { useState } from "react";
 import ActualPlanogram from "../components/ActualPlanogram";
 import EvaluatePlanogram from "../components/EvaluatePlanogram";
 import Feedback from "../components/Feedback";
-
+import Logo from "../assets/oxxo_logo.png"
 
 export default function Home(props) {
   const [selected, setSelected] = useState(0);
@@ -45,7 +45,7 @@ export default function Home(props) {
   return (
     <View style={homeStyles.mainContainer}>
       <Pressable onPress={() => props.navigation.navigate("Login")}>
-        <Text style={homeStyles.title}>Planogram Inspector</Text>
+        <Image source={Logo} style={{ width: 35, height: 15, resizeMode: 'contain'}} />
       </Pressable>
       <View style={homeStyles.topBarContainer}>
         <Pressable
