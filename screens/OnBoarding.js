@@ -178,7 +178,7 @@ export default function OnBoarding(props) {
 
           const dotSize = dotPosition.interpolate({
             inputRange: [index - 1, index, index + 1],
-            outputRange: width > 1200 ? [12, 24, 12] : [8, 16, 8],
+            outputRange: width > 1200 ? [12, 24, 12] : width < 800 ? [8, 12, 8] : [8, 16, 8],
             extrapolate: "clamp",
           });
 
@@ -199,7 +199,7 @@ export default function OnBoarding(props) {
                   height: dotSize,
                   backgroundColor: dotColor,
                   marginHorizontal: width > 1200 ? 12 : 6,
-                  borderRadius: dotSize ? 0 : dotSize / 2,
+                  borderRadius: 24,
                 },
               ]}
               opacity={opacity}
