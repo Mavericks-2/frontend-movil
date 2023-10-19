@@ -107,7 +107,7 @@ export default function ActualPlanogram(props) {
   useEffect(() => {
     getPlanogramConfig().then((response) => {
       setPlanogram(response.url_imagen);
-      props.setLines(response.lineas.lineas);
+      props.setLines(response.lineas);
       props.setPlanogramClasses(response.matriz_productos.productos);
     }).catch((error) => {
       console.log(error);
