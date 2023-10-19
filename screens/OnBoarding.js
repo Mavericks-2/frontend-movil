@@ -17,18 +17,18 @@ export default function OnBoarding(props) {
 
   const onBoardingSteps = [
     {
-      header: "Valida tu planograma en segundos.",
-      description: "Explicación paso a paso de como usar la aplicación.",
+      header: "Recibe nuevas configuraciones de planograma.",
+      description: "En la pantalla de Planograma Actual se mostrará el planograma más reciente.",
       image: require("../assets/gondola1.jpeg"),
     },
     {
-      header: "Valida tu planograma en segundos 1.",
-      description: "Explicación paso a paso de como usar la aplicación.",
+      header: "Captura tu acomódo.",
+      description: "Una vez realizado tu acomódo, toma una fotografía asegurándote de que cada producto esté dentro de los recuadros que se muestran.",
       image: require("../assets/gondola2.jpeg"),
     },
     {
-      header: "Valida tu planograma en segundos 2.",
-      description: "Explicación paso a paso de como usar la aplicación.",
+      header: "Recibe retroalimentación.",
+      description: "Se te mostrará una lista de productos que se detectaron en posiciones incorrectas.",
       image: require("../assets/gondola3.jpeg"),
     },
   ];
