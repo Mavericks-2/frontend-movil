@@ -79,7 +79,7 @@ export default function CameraComponent(props) {
             height: props.height,
           },
         }],
-        { compress: 0} // Ajusta el valor de compresión según tus necesidades
+        { compress: 1} // Ajusta el valor de compresión según tus necesidades
       );
       return compressed;
     } catch (error) {

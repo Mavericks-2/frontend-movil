@@ -199,6 +199,7 @@ export default function OnBoarding(props) {
                   height: dotSize,
                   backgroundColor: dotColor,
                   marginHorizontal: width > 1200 ? 12 : 6,
+                  borderRadius: dotSize ? 0 : dotSize / 2,
                 },
               ]}
               opacity={opacity}
@@ -280,8 +281,5 @@ const OnBoardingStyles = StyleSheet.create({
   dotContainer: {
     flexDirection: "row",
     height: 24,
-  },
-  dot: {
-    borderRadius: "50%",
   },
 });
