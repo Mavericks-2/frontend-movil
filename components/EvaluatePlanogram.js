@@ -12,18 +12,20 @@ import { classifyImage } from "../services";
 
 export default function EvaluatePlanogram(props) {
   const [photoTaked, setPhotoTaked] = useState(false);
+  const [rectangles, setRectangles] = useState([]);
   const { width, height } = useWindowDimensions();
 
   useEffect(() => {
-    if (photoTaked) {
-      classifyImage().then((res) => {
-        props.setPlanogramClasses(res);
-      }).catch((err) => {
-        console.log(err);
-      });
+    if (rectangles.length > 0) {
+      classifyImage(rectangles)
+        .then((res) => {
+          props.setPlanogramClasses(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-  }
-  , [photoTaked]);
+  }, [rectangles]);
 
   return (
     <View
@@ -38,31 +40,45 @@ export default function EvaluatePlanogram(props) {
         style={[
           evalueatePlanogramStyles.headerContainer,
           {
-            marginBottom: width > 800 ? width < 1200 ? 16 : (width > height ? 16 : 32) : 16,
+            marginBottom:
+              width > 800 ? (width < 1200 ? 16 : width > height ? 16 : 32) : 16,
             gap: width < 1200 ? 16 : width > height ? 16 : 32,
-            padding: width > 800 ? width < 1200 ? 16 : 24 : 16,
+            padding: width > 800 ? (width < 1200 ? 16 : 24) : 16,
           },
         ]}
       >
-        <View style={[evalueatePlanogramStyles.headerTextContainer, {
-          width: width > 800 ?  width < 1200 ? "60%" : "50%" : "60%",
-        }]}>
-          <Text style={[evalueatePlanogramStyles.headerText,
-          {
-            fontSize: width > 800 ? width < 1200 ? 14 : 16 : 12,
-          }]}>
-            {width > 800 ? "Registra tu acomódo para evaluar el planograma" : "Evalúa tu acomódo"}
-          </Text>
-          <Text style={[evalueatePlanogramStyles.descriptionText,{
-            fontSize: width > 800 ? width < 1200 ? 12 : 14 : 10,
-            width: width > 800 ? "90%" : "80%",
-          }]}>
+        <View
+          style={[
+            evalueatePlanogramStyles.headerTextContainer,
             {
-              width > 1200 ?
-              "Asegúrate de ajustar los productos dentro de los espacios marcados"
-              :
-              "Toma una foto de tu acomódo y compara."
-            }
+              width: width > 800 ? (width < 1200 ? "60%" : "50%") : "60%",
+            },
+          ]}
+        >
+          <Text
+            style={[
+              evalueatePlanogramStyles.headerText,
+              {
+                fontSize: width > 800 ? (width < 1200 ? 14 : 16) : 12,
+              },
+            ]}
+          >
+            {width > 800
+              ? "Registra tu acomódo para evaluar el planograma"
+              : "Evalúa tu acomódo"}
+          </Text>
+          <Text
+            style={[
+              evalueatePlanogramStyles.descriptionText,
+              {
+                fontSize: width > 800 ? (width < 1200 ? 12 : 14) : 10,
+                width: width > 800 ? "90%" : "80%",
+              },
+            ]}
+          >
+            {width > 1200
+              ? "Asegúrate de ajustar los productos dentro de los espacios marcados"
+              : "Toma una foto de tu acomódo y compara."}
           </Text>
         </View>
         <TouchableOpacity
@@ -79,15 +95,27 @@ export default function EvaluatePlanogram(props) {
           evalueatePlanogramStyles.cameraContainer,
           {
             width: width * 0.9,
-            height: width > 1200 ? width > height ? height * 0.5 : height * 0.6 : height * 0.4,
+            height:
+              width > 1200
+                ? width > height
+                  ? height * 0.5
+                  : height * 0.6
+                : height * 0.4,
           },
         ]}
       >
         <CameraComponent
           width={width * 0.9}
-          height={width > 1200 ? width > height ? height * 0.5 : height * 0.6 : height * 0.4}
+          height={
+            width > 1200
+              ? width > height
+                ? height * 0.5
+                : height * 0.6
+              : height * 0.4
+          }
           photoTaked={photoTaked}
-          lines = {props.lines}
+          lines={props.lines}
+          setRectangles={setRectangles}
         />
       </View>
     </View>

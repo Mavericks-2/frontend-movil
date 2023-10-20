@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import Svg, { Line } from "react-native-svg";
 
 const LineDrawing = (props) => {
   const lineDrawingArray = props.lines || [];
+  const [adjustedLineDrawingArray, setAdjustedLineDrawingArray] = useState([]);
+
+  useEffect(() => {
+    setAdjustedLineDrawingArray(getAdjustedLineDrawingArray(props.width, props.height));
+  }, []);
+
+  useEffect(() => {
+    if (props.photoTaked) {
+      let rectangles = convertLinesToRectangles(adjustedLineDrawingArray);
+      props.setRectangles(rectangles);
+    }
+  }, [props.photoTaked]);
 
   const getAdjustedLineDrawingArray = (width, height) => {
     const adjustedLineDrawingArray = [];
@@ -16,8 +28,6 @@ const LineDrawing = (props) => {
       };
       adjustedLineDrawingArray.push(adjustedLine);
     });
-    let rectangles = convertLinesToRectangles(adjustedLineDrawingArray);
-    console.log("Rectangles:",rectangles);
     return adjustedLineDrawingArray;
   };
 
@@ -76,7 +86,7 @@ const LineDrawing = (props) => {
   return (
     <View style={lineDrawingStyles.container}>
       <Svg style={lineDrawingStyles.redSvg}>
-        {getAdjustedLineDrawingArray(props.width, props.height).map(
+        {adjustedLineDrawingArray.map(
           (line, index) => {
             return (
               <Line

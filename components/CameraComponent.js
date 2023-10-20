@@ -12,8 +12,7 @@ import { Camera } from "expo-camera";
 import { shareAsync } from "expo-sharing";
 import * as MediaLibrary from "expo-media-library";
 import * as ImageManipulator from "expo-image-manipulator";
-import LineDrawing from './LineDrawing';
-
+import LineDrawing from "./LineDrawing";
 
 export default function CameraComponent(props) {
   const [hasPermission, setHasPermission] = useState();
@@ -40,9 +39,8 @@ export default function CameraComponent(props) {
     }
   }, [props.photoTaked]);
 
-
   const takePic = async () => {
-    try{
+    try {
       const options = {
         quality: 1,
         base64: true,
@@ -51,8 +49,7 @@ export default function CameraComponent(props) {
       let newPhoto = await cameraRef.current.takePictureAsync(options);
       newPhoto = await resize(newPhoto);
       setPhoto(newPhoto);
-    }
-    catch(error){
+    } catch (error) {
       console.error("Error al tomar la foto", error.message);
     }
   };
@@ -73,13 +70,15 @@ export default function CameraComponent(props) {
     try {
       const compressed = await ImageManipulator.manipulateAsync(
         photo.uri,
-        [{
-          resize: {
-            width: props.width,
-            height: props.height,
+        [
+          {
+            resize: {
+              width: props.width,
+              height: props.height,
+            },
           },
-        }],
-        { compress: 1} // Ajusta el valor de compresión según tus necesidades
+        ],
+        { compress: 1 } // Ajusta el valor de compresión según tus necesidades
       );
       return compressed;
     } catch (error) {
@@ -89,20 +88,24 @@ export default function CameraComponent(props) {
 
   return !hasPermission ? (
     <Text>
-      No se ha otorgado permiso para usar la cámara, por favor otorga el permiso desde configuraciones.
+      No se ha otorgado permiso para usar la cámara, por favor otorga el permiso
+      desde configuraciones.
     </Text>
   ) : photo ? (
     <SafeAreaView style={styles["camera-container"]}>
-      <Image
-        style={styles["camera-preview"]}
-        source={{ uri: photo.uri }}
-      />
+      <Image style={styles["camera-preview"]} source={{ uri: photo.uri }} />
       <Button title="Compartir" onPress={sharePic} />
     </SafeAreaView>
   ) : (
     <Camera style={styles["camera-container"]} ref={cameraRef}>
       <View style={styles["camera-red-box"]}>
-        <LineDrawing width={props.width} height={props.height} lines={props.lines} />
+        <LineDrawing
+          width={props.width}
+          height={props.height}
+          lines={props.lines}
+          setRectangles = {props.setRectangles}
+          photoTaked = {props.photoTaked}
+        />
       </View>
       <StatusBar style="auto" />
     </Camera>
@@ -129,7 +132,7 @@ const styles = StyleSheet.create({
   "camera-red-box": {
     width: "100%",
     height: "100%",
-    zIndex: 5 ,
+    zIndex: 5,
     position: "absolute",
   },
 });
