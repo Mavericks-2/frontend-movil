@@ -42,7 +42,6 @@ const LineDrawing = (props) => {
     let columnLines = [];
     for (let i = 0; i < lineArray.length; i++) {
       if (lineArray[i].x1 === lineArray[i].x2) {
-        let row = -1;
         for (let j = 0; j < rowLines.length; j++) {
           let rowLine = rowLines[j];
           if (rowLine.y1 === lineArray[i].y2) {
@@ -50,10 +49,10 @@ const LineDrawing = (props) => {
             break;
           }
         }
-        if (row >= 0) {
-          lineArray[i].row = row;
-          columnLines.push(lineArray[i]);
-        }
+
+        lineArray[i].row = row;
+        columnLines.push(lineArray[i]);
+
       }
     }
 
