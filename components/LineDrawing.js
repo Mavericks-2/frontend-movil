@@ -7,7 +7,9 @@ const LineDrawing = (props) => {
   const [adjustedLineDrawingArray, setAdjustedLineDrawingArray] = useState([]);
 
   useEffect(() => {
-    setAdjustedLineDrawingArray(getAdjustedLineDrawingArray(props.width, props.height));
+    setAdjustedLineDrawingArray(
+      getAdjustedLineDrawingArray(props.width, props.height)
+    );
   }, []);
 
   useEffect(() => {
@@ -38,8 +40,17 @@ const LineDrawing = (props) => {
         rowLines.push(lineArray[i]);
       }
     }
+    
+    let lastRowLine = {
+      x1: 0,
+      y1: props.height,
+      x2: props.width,
+      y2: props.height,
+    };
 
-    let columnLines = [];
+    rowLines.push(lastRowLine);
+
+    let rowColumnLines = {};
     for (let i = 0; i < lineArray.length; i++) {
       if (lineArray[i].x1 === lineArray[i].x2) {
         for (let j = 0; j < rowLines.length; j++) {
@@ -50,33 +61,55 @@ const LineDrawing = (props) => {
           }
         }
 
-        lineArray[i].row = row;
-        columnLines.push(lineArray[i]);
-
+        if (rowColumnLines[row]) {
+          rowColumnLines[row].push(lineArray[i]);
+        } else {
+          rowColumnLines[row] = [lineArray[i]];
+        }
       }
     }
 
-    let rectangles = [];
-    let prev = { x1: 0, y1: 0 };
-    let row = 0;
-    for (let i = 0; i < columnLines.length; i++) {
-      if (columnLines[i].x1 > props.width) {
-        continue;
-      }
-      if (columnLines[i].row !== row) {
-        prev = { x1: 0, y1: columnLines[i].y1 };
-      }
-      // create a rectangle
-      let rectangle = {
-        x: prev.x1,
-        y: prev.y1,
-        width: columnLines[i].x1 - prev.x1,
-        height: columnLines[i].y2 - prev.y1,
+    let rowColumnLinesKeys = Object.keys(rowColumnLines);
+    for (let i = 0; i < rowColumnLinesKeys.length; i++) {
+      let rowKey = rowColumnLinesKeys[i];
+      let firstColumnLine = {
+        x1: 0,
+        y1: rowColumnLines[rowKey][0].y1,
+        x2: 0,
+        y2: rowColumnLines[rowKey][0].y2,
       };
-      rectangles.push(rectangle);
+      let lastColumnLine = {
+        x1: props.width,
+        y1: rowColumnLines[rowKey][0].y1,
+        x2: props.width,
+        y2: rowColumnLines[rowKey][0].y2,
+      };
 
-      prev = columnLines[i];
-      row = columnLines[i].row;
+      rowColumnLines[rowKey].push(firstColumnLine);
+      rowColumnLines[rowKey].push(lastColumnLine);
+
+      rowColumnLines[rowKey].sort((a, b) => {
+        return a.x1 - b.x1;
+      });
+    }
+
+    let rectangles = [];
+
+    for (let i = 0; i < rowColumnLinesKeys.length; i++) {
+      let rowKey = rowColumnLinesKeys[i];
+      for (let j = 0; j < rowColumnLines[rowKey].length - 1; j++) {
+        let columnLine = rowColumnLines[rowKey][j];
+        let nextColumnLine = rowColumnLines[rowKey][j + 1];
+
+        let rectangle = {
+          x: columnLine.x1,
+          y: columnLine.y1,
+          width: nextColumnLine.x1 - columnLine.x1,
+          height: columnLine.y2 - columnLine.y1,
+        };
+
+        rectangles.push(rectangle);
+      }
     }
 
     return rectangles;
@@ -85,21 +118,19 @@ const LineDrawing = (props) => {
   return (
     <View style={lineDrawingStyles.container}>
       <Svg style={lineDrawingStyles.redSvg}>
-        {adjustedLineDrawingArray.map(
-          (line, index) => {
-            return (
-              <Line
-                x1={line.x1}
-                y1={line.y1}
-                x2={line.x2}
-                y2={line.y2}
-                stroke="red"
-                strokeWidth="2"
-                key={index}
-              />
-            );
-          }
-        )}
+        {adjustedLineDrawingArray.map((line, index) => {
+          return (
+            <Line
+              x1={line.x1}
+              y1={line.y1}
+              x2={line.x2}
+              y2={line.y2}
+              stroke="red"
+              strokeWidth="2"
+              key={index}
+            />
+          );
+        })}
       </Svg>
     </View>
   );

@@ -30,7 +30,6 @@ export default function EvaluatePlanogram(props) {
   useEffect(() => {
     if (rectangles.length > 0 && base64Image) {
       handleUploadData();
-      setPhotoTaked(false);
     }
   }, [rectangles, base64Image]);
 
