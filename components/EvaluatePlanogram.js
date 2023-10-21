@@ -9,23 +9,30 @@ import React, { useState, useEffect } from "react";
 import colors from "../constants/colors";
 import CameraComponent from "./CameraComponent";
 import { classifyImage } from "../services";
+import { uploadImage } from "../services";
 
 export default function EvaluatePlanogram(props) {
   const [photoTaked, setPhotoTaked] = useState(false);
   const [rectangles, setRectangles] = useState([]);
+  const [base64Image, setBase64Image] = useState(null);
   const { width, height } = useWindowDimensions();
 
-  useEffect(() => {
-    if (rectangles.length > 0) {
-      classifyImage(rectangles)
-        .then((res) => {
-          props.setPlanogramClasses(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+  const handleUploadData = async () =>{
+    const response = await uploadImage(base64Image);
+    if (response === "ok"){
+      const classes = await classifyImage(rectangles).catch((err) => {
+        console.log(err);
+      });
+      props.setPlanogramClasses(classes);
     }
-  }, [rectangles]);
+  }
+
+  useEffect(() => {
+    if (rectangles.length > 0 && base64Image) {
+      handleUploadData();
+      setPhotoTaked(false);
+    }
+  }, [rectangles, base64Image]);
 
   return (
     <View
@@ -116,6 +123,7 @@ export default function EvaluatePlanogram(props) {
           photoTaked={photoTaked}
           lines={props.lines}
           setRectangles={setRectangles}
+          setBase64Image={setBase64Image}
         />
       </View>
     </View>

@@ -13,6 +13,7 @@ import { shareAsync } from "expo-sharing";
 import * as MediaLibrary from "expo-media-library";
 import * as ImageManipulator from "expo-image-manipulator";
 import LineDrawing from "./LineDrawing";
+import * as FileSystem from "expo-file-system";
 
 export default function CameraComponent(props) {
   const [hasPermission, setHasPermission] = useState();
@@ -38,6 +39,16 @@ export default function CameraComponent(props) {
       setPhoto(undefined);
     }
   }, [props.photoTaked]);
+
+  useEffect(() => {
+    if (photo) {
+      FileSystem.readAsStringAsync(photo.uri, {
+        encoding: "base64",
+      }).then((res) => {
+        props.setBase64Image(res);
+      });
+    }
+  }, [photo]);
 
   const takePic = async () => {
     try {
@@ -103,8 +114,8 @@ export default function CameraComponent(props) {
           width={props.width}
           height={props.height}
           lines={props.lines}
-          setRectangles = {props.setRectangles}
-          photoTaked = {props.photoTaked}
+          setRectangles={props.setRectangles}
+          photoTaked={props.photoTaked}
         />
       </View>
       <StatusBar style="auto" />

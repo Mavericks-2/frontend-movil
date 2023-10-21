@@ -39,3 +39,18 @@ export const compareImages = async (planogram, actualPlanogram) => {
 
   return res;
 }
+
+export const uploadImage = async (base64Image) => {
+  const res = await axios
+    .post(`${MODEL_BASE_URL}/uploadImage`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      imagen: base64Image,
+    })
+    .then((res) => {
+      return res.data;
+    });
+  
+  return res.message;
+}
