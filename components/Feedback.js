@@ -47,7 +47,10 @@ export default function Feedback(props) {
 
   return (
     <View style={feedbackStyles.container}>
-      <View style={feedbackStyles.progressBarContainer}>
+      {
+        steps.length > 0 ? (
+          <Fragment>
+ <View style={feedbackStyles.progressBarContainer}>
         {steps.map((step, index) => (
           <Fragment key={index}>
             <LinearProgressComponent
@@ -108,6 +111,15 @@ export default function Feedback(props) {
           }]}>Evaluar nuevamente</Text>
         </Pressable>
       </View>
+          </Fragment>
+        ) : (
+          <View style={[feedbackStyles.emptyContainer, {marginTop: height*.3}]}>
+            <Text style={feedbackStyles.emptyHeader}>! Excelente ¡</Text>
+            <Text style={feedbackStyles.emptyBody}>Tu góndola coincide con el planograma.</Text>
+          </View> 
+        )
+      }
+     
     </View>
   );
 }
@@ -139,6 +151,23 @@ const feedbackStyles = StyleSheet.create({
   buttonText: {
     color: "#fff",
     fontWeight: "bold",
+    textAlign: "center",
+  },
+  emptyContainer: {
+    width: "90%",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "column",
+    gap: 32,
+  },
+  emptyHeader: {
+    color: colors.PRIMARY,
+    fontWeight: "bold",
+    fontSize: 32,
+  },
+  emptyBody: {
+    color: "black",
+    fontSize: 24,
     textAlign: "center",
   },
 });
