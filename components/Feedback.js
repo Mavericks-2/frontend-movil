@@ -114,7 +114,7 @@ export default function Feedback(props) {
           </Fragment>
         ) : (
           <View style={[feedbackStyles.emptyContainer, {marginTop: height*.3}]}>
-            <Text style={feedbackStyles.emptyHeader}>! Excelente ¡</Text>
+            <Text style={feedbackStyles.emptyHeader}>¡ Excelente !</Text>
             <Text style={feedbackStyles.emptyBody}>Tu góndola coincide con el planograma.</Text>
           </View> 
         )
