@@ -15,7 +15,12 @@ export default function EvaluatePlanogram(props) {
   const [photoTaked, setPhotoTaked] = useState(false);
   const [rectangles, setRectangles] = useState([]);
   const [base64Image, setBase64Image] = useState(null);
+  const [camaraContainerSize, setCamaraContainerSize] = useState({
+    width: 0,
+    height: 0,
+  });
   const { width, height } = useWindowDimensions();
+
 
   const handleUploadData = async () =>{
     const response = await uploadImage(base64Image);
@@ -100,29 +105,21 @@ export default function EvaluatePlanogram(props) {
         style={[
           evalueatePlanogramStyles.cameraContainer,
           {
-            width: width * 0.9,
-            height:
-              width > 1200
-                ? width > height
-                  ? height * 0.5
-                  : height * 0.6
-                : height * 0.4,
+            width: camaraContainerSize.width,
+            height: camaraContainerSize.height,
           },
         ]}
       >
         <CameraComponent
-          width={width * 0.9}
+          width={camaraContainerSize.width}
           height={
-            width > 1200
-              ? width > height
-                ? height * 0.5
-                : height * 0.6
-              : height * 0.4
+            camaraContainerSize.height
           }
           photoTaked={photoTaked}
           lines={props.lines}
           setRectangles={setRectangles}
           setBase64Image={setBase64Image}
+          setCameraContainerSize={setCamaraContainerSize}
         />
       </View>
     </View>

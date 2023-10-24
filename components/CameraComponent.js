@@ -116,6 +116,7 @@ export default function CameraComponent(props) {
           lines={props.lines}
           setRectangles={props.setRectangles}
           photoTaked={props.photoTaked}
+          setCameraContainerSize={props.setCameraContainerSize}
         />
       </View>
       <StatusBar style="auto" />

@@ -8,7 +8,7 @@ const LineDrawing = (props) => {
 
   useEffect(() => {
     setAdjustedLineDrawingArray(
-      getAdjustedLineDrawingArray(props.width, props.height)
+      lineDrawingArray
     );
   }, []);
 
@@ -19,18 +19,32 @@ const LineDrawing = (props) => {
     }
   }, [props.photoTaked]);
 
-  const getAdjustedLineDrawingArray = (width, height) => {
-    const adjustedLineDrawingArray = [];
-    lineDrawingArray.forEach((line) => {
-      const adjustedLine = {
-        x1: (line.x1 * width) / 500,
-        y1: (line.y1 * height) / 250,
-        x2: (line.x2 * width) / 500,
-        y2: (line.y2 * height) / 250,
-      };
-      adjustedLineDrawingArray.push(adjustedLine);
-    });
-    return adjustedLineDrawingArray;
+  useEffect(() => {
+    if(adjustedLineDrawingArray.length > 0){
+      let containerSize = getContainerSize();
+      props.setCameraContainerSize(containerSize);
+    }
+  }, [adjustedLineDrawingArray]);
+
+  const getContainerSize = () => {
+    let containerSize = {
+      width: 0,
+      height: 0,
+    };
+    let maxWidth = 0;
+    let maxHeight = 0;
+    for (let i = 0; i < adjustedLineDrawingArray.length; i++) {
+      let line = adjustedLineDrawingArray[i];
+      if (line.x2 > maxWidth) {
+        maxWidth = line.x2;
+      }
+      if (line.y2 > maxHeight) {
+        maxHeight = line.y2;
+      }
+    }
+    containerSize.width = maxWidth;
+    containerSize.height = maxHeight;
+    return containerSize;
   };
 
   const convertLinesToRectangles = (lineArray) => {
