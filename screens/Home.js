@@ -1,5 +1,5 @@
 import { View, Text, Pressable, useWindowDimensions, StyleSheet, Image } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ActualPlanogram from "../components/ActualPlanogram";
 import EvaluatePlanogram from "../components/EvaluatePlanogram";
 import Feedback from "../components/Feedback";
@@ -11,6 +11,15 @@ export default function Home(props) {
   const [planogramClasses, setPlanogramClasses] = useState([]);
   const [actualPlanogramClasses, setActualPlanogramClasses] = useState([]);
   const [planogramLines, setPlanogramLines ] = useState(null);
+  const [hasPlanogram, setHasPlanogram] = useState(false);
+
+  useEffect(() => {
+    if (planogramClasses.length === 0) {
+      setHasPlanogram(false);
+    } else {
+      setHasPlanogram(true);
+    }
+  }, [planogramClasses]);
 
   const setStyleBySelected = (index) => {
     if (index === selected) {
@@ -65,6 +74,7 @@ export default function Home(props) {
           onPress={() => {
             setSelected(1);
           }}
+          disabled={!hasPlanogram}
         >
           <View
             style={
@@ -78,6 +88,7 @@ export default function Home(props) {
           onPress={() => {
             setSelected(2);
           }}
+          disabled={!hasPlanogram}
         >
           <View
             style={
