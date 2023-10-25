@@ -3,4 +3,6 @@ export default Colors = {
     SECONDARY: "#FFB300",
     PRIMARY_60: "#C57578",
     SECONDARY_60: "#FBCC67",
+    CARDINFO_PRIMARY: "#FFAFB3",
+    CARDINFO_SECONDARY: "#FFD177",
 }
