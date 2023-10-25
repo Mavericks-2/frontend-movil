@@ -42,6 +42,7 @@ export default function BottomTabCustom({ state, descriptors, navigation }) {
 
         return (
           <TouchableOpacity
+            key={`bottom-tab-${index}`}
             accessibilityRole="button"
             accessibilityState={isFocused ? { selected: true } : {}}
             accessibilityLabel={options.tabBarAccessibilityLabel}
