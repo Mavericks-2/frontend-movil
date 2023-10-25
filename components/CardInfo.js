@@ -18,10 +18,10 @@ const CardInfo = () => {
         }]}
     >
       <Text style={[styles.infoHeader, {
-            fontSize: width > 700 ? 24 : 14,  
+            fontSize: width > 700 ? 16 : 14,  
       }]}>CardInfo</Text>
       <Text style={[styles.infoBody, {
-            fontSize: width > 700 ? 16 : 14,  
+            fontSize: width > 700 ? 24 : 14,  
       }]}>16</Text>
     </LinearGradient>
   )
