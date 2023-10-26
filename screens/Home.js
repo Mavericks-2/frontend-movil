@@ -12,6 +12,7 @@ export default function Home(props) {
   const [actualPlanogramClasses, setActualPlanogramClasses] = useState([]);
   const [planogramLines, setPlanogramLines ] = useState(null);
   const [hasPlanogram, setHasPlanogram] = useState(false);
+  const [uriImage, setUriImage] = useState(null);
 
   useEffect(() => {
     if (planogramClasses.length === 0) {
@@ -44,9 +45,9 @@ export default function Home(props) {
     if (selected === 0) {
       return <ActualPlanogram setPlanogramClasses={setPlanogramClasses} setLines={setPlanogramLines} />;
     } else if (selected === 1) {
-      return <EvaluatePlanogram setPlanogramClasses={setActualPlanogramClasses} lines={planogramLines} />;
+      return <EvaluatePlanogram setPlanogramClasses={setActualPlanogramClasses} lines={planogramLines} setUriImage={setUriImage} />;
     } else {
-      return <Feedback planogramClasses={planogramClasses} actualPlanogramClases={actualPlanogramClasses}/>;
+      return <Feedback planogramClasses={planogramClasses} actualPlanogramClases={actualPlanogramClasses} lines={planogramLines} image={uriImage} />;
     }
   }
 

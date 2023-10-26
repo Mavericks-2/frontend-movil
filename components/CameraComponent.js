@@ -59,6 +59,7 @@ export default function CameraComponent(props) {
       };
       let newPhoto = await cameraRef.current.takePictureAsync(options);
       newPhoto = await resize(newPhoto);
+      props.setUriImage(newPhoto.uri);
       setPhoto(newPhoto);
     } catch (error) {
       console.error("Error al tomar la foto", error.message);
@@ -105,7 +106,6 @@ export default function CameraComponent(props) {
   ) : photo ? (
     <SafeAreaView style={styles["camera-container"]}>
       <Image style={styles["camera-preview"]} source={{ uri: photo.uri }} />
-      <Button title="Compartir" onPress={sharePic} />
     </SafeAreaView>
   ) : (
     <Camera style={styles["camera-container"]} ref={cameraRef}>

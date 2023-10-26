@@ -7,8 +7,13 @@ const LineDrawing = (props) => {
   const [adjustedLineDrawingArray, setAdjustedLineDrawingArray] = useState([]);
 
   useEffect(() => {
+    let adjustedArray = lineDrawingArray;
+    if (props.adjust){
+      adjustedArray = adjustLines(lineDrawingArray);
+      props.setRectangles(convertLinesToRectangles(adjustedArray));
+    }
     setAdjustedLineDrawingArray(
-      lineDrawingArray
+      adjustedArray
     );
   }, []);
 
@@ -22,7 +27,9 @@ const LineDrawing = (props) => {
   useEffect(() => {
     if(adjustedLineDrawingArray.length > 0){
       let containerSize = getContainerSize();
-      props.setCameraContainerSize(containerSize);
+      if (props.setCameraContainerSize){
+        props.setCameraContainerSize(containerSize);
+      }
     }
   }, [adjustedLineDrawingArray]);
 
@@ -128,6 +135,38 @@ const LineDrawing = (props) => {
 
     return rectangles;
   };
+
+  const adjustLines = (lineArray) => {
+    const {width, height} = props;
+    const {width: imageWidth, height: imageHeight} = getWidthHeight(lineArray);
+    let adjustedLineArray = [];
+    for (let i = 0; i < lineArray.length; i++) {
+      let line = lineArray[i];
+      let adjustedLine = {
+        x1: (line.x1 * width) / imageWidth,
+        y1: (line.y1 * height) / imageHeight,
+        x2: (line.x2 * width) / imageWidth,
+        y2: (line.y2 * height) / imageHeight,
+      };
+      adjustedLineArray.push(adjustedLine);
+    }
+    return adjustedLineArray;
+  };
+
+  const getWidthHeight = (lineArray) => {
+    let width = 0;
+    let height = 0;
+    for (let i = 0; i < lineArray.length; i++) {
+      let line = lineArray[i];
+      if (line.x2 > width) {
+        width = line.x2;
+      }
+      if (line.y2 > height) {
+        height = line.y2;
+      }
+    }
+    return { width: width, height: height };
+  }
 
   return (
     <View style={lineDrawingStyles.container}>

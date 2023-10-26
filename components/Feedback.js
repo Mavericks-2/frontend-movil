@@ -11,10 +11,12 @@ import LinearProgressComponent from "./LinearProgressComponent";
 import StepComponent from "./StepComponent";
 import colors from "../constants/colors";
 import { compareImages } from "../services";
+import GraphicFeedback from "./GraphicFeedback";
 
 export default function Feedback(props) {
   const [progress, setProgress] = useState([]);
   const [steps, setSteps] = useState([]);
+  const [fullSteps, setFullSteps] = useState([]);
   const [completedSteps, setCompletedSteps] = useState(false);
   const { width, height } = useWindowDimensions();
 
@@ -31,6 +33,7 @@ export default function Feedback(props) {
       .then((res) => {
         let errors = res.filter((element) => !element.isCorrect);
         setSteps(errors);
+        setFullSteps(res);
       })
       .catch((err) => {
         console.log("Error: ", err);
@@ -61,8 +64,9 @@ export default function Feedback(props) {
           </Fragment>
         ))}
       </View>
+      <GraphicFeedback steps={fullSteps} lines={props.lines} image={props.image}/>
       <ScrollView
-        style={{ maxHeight: width > 1200 ? width > height ? height * .4 : height * 0.5 : height * 0.35 }}
+        style={{ maxHeight: width > 1200 ? width > height ? height * .4 : height * 0.5 : width > height ? height * 0.15 : width > 900 ? height * 0.35 : height * 0.20 }}
         showsVerticalScrollIndicator={true}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{

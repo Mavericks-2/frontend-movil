@@ -120,6 +120,7 @@ export default function EvaluatePlanogram(props) {
           setRectangles={setRectangles}
           setBase64Image={setBase64Image}
           setCameraContainerSize={setCamaraContainerSize}
+          setUriImage={props.setUriImage}
         />
       </View>
     </View>
