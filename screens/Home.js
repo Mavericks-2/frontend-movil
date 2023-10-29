@@ -4,6 +4,8 @@ import ActualPlanogram from "../components/ActualPlanogram";
 import EvaluatePlanogram from "../components/EvaluatePlanogram";
 import Feedback from "../components/Feedback";
 import Logo from "../assets/oxxo_logo.png"
+import { postComparedPhotos } from "../services";
+import { getPlanogramConfig } from "../services";
 
 export default function Home(props) {
   const [selected, setSelected] = useState(0);
@@ -14,13 +16,54 @@ export default function Home(props) {
   const [hasPlanogram, setHasPlanogram] = useState(false);
   const [uriImage, setUriImage] = useState(null);
 
+  const [idPlanogram, setPlanogram] = useState(null);
+  const [differencesMatrix, setDifferencesMatrix] = useState([]);
+  const idAcomodador = "990e8400-e29b-41d4-a716-446655440000";
+
   useEffect(() => {
     if (planogramClasses.length === 0) {
       setHasPlanogram(false);
     } else {
+      // console.log("Regresa matriz de planograma", planogramClasses);
       setHasPlanogram(true);
     }
   }, [planogramClasses]);
+
+  useEffect(() => {
+    if (actualPlanogramClasses.length > 0 && selected === 2) {
+      
+      const fetchData = async () => {
+        try {
+          const response = await getPlanogramConfig();
+          setPlanogram(response.id_planogram);
+          compareMatrices(planogramClasses, actualPlanogramClasses);  
+      } catch (error) {
+          console.log("Error while fetching data:", error);
+        }
+      };
+      fetchData();
+    }
+  }, [actualPlanogramClasses, selected]);
+
+  useEffect(() => {
+    if (idPlanogram !== null && differencesMatrix.length > 0 ){
+      // console.log("Matriz de diferencias", differencesMatrix);
+      // console.log("idPlanogram", idPlanogram);
+      const state = differencesMatrix.some(row => row.includes(1)) ? "desacomodado" : "acomodado";
+      // console.log("state", state);
+
+      const postData = async () => {
+        try {
+          const res = await postComparedPhotos(state, differencesMatrix, idAcomodador, idPlanogram);
+          console.log("Good:", state, differencesMatrix, idAcomodador, idPlanogram);
+          console.log(res);
+        } catch (error) {
+          console.log("Bad:", state, differencesMatrix, idAcomodador, idPlanogram);
+          console.log(error);
+        }
+      };
+      postData();
+    }}, [idPlanogram, differencesMatrix]);
 
   const setStyleBySelected = (index) => {
     if (index === selected) {
@@ -45,12 +88,32 @@ export default function Home(props) {
     if (selected === 0) {
       return <ActualPlanogram setPlanogramClasses={setPlanogramClasses} setLines={setPlanogramLines} />;
     } else if (selected === 1) {
+      // console.log("Regresa matriz de foto", actualPlanogramClasses);
       return <EvaluatePlanogram setPlanogramClasses={setActualPlanogramClasses} lines={planogramLines} setUriImage={setUriImage} />;
     } else {
       return <Feedback planogramClasses={planogramClasses} actualPlanogramClases={actualPlanogramClasses} lines={planogramLines} image={uriImage} />;
     }
   }
 
+  function compareMatrices(planogram, photoMatrix) {
+    console.log(planogram, photoMatrix);
+    const differenceMatrix = [];
+
+    for (let i = 0; i < planogram.length; i++) {
+      const row = planogram[i];
+      const photoRow = photoMatrix[i];
+
+      const differenceRow = [];
+      for (let j = 0; j < row.length; j++) {
+        const difference = row[j] !== photoRow[j];
+        differenceRow.push(difference ? 1 : 0);
+      }
+
+      differenceMatrix.push(differenceRow);
+    }
+    setDifferencesMatrix(differenceMatrix);
+    return differenceMatrix;
+  }
 
   return (
     <View style={homeStyles.mainContainer}>
