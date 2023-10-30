@@ -24,7 +24,6 @@ export default function Home(props) {
     if (planogramClasses.length === 0) {
       setHasPlanogram(false);
     } else {
-      // console.log("Regresa matriz de planograma", planogramClasses);
       setHasPlanogram(true);
     }
   }, [planogramClasses]);
@@ -47,18 +46,15 @@ export default function Home(props) {
 
   useEffect(() => {
     if (idPlanogram !== null && differencesMatrix.length > 0 ){
-      // console.log("Matriz de diferencias", differencesMatrix);
-      // console.log("idPlanogram", idPlanogram);
       const state = differencesMatrix.some(row => row.includes(1)) ? "desacomodado" : "acomodado";
-      // console.log("state", state);
 
       const postData = async () => {
         try {
           const res = await postComparedPhotos(state, differencesMatrix, idAcomodador, idPlanogram);
-          console.log("Good:", state, differencesMatrix, idAcomodador, idPlanogram);
-          console.log(res);
+          // console.log("Good:", state, differencesMatrix, idAcomodador, idPlanogram);
+          // console.log(res);
         } catch (error) {
-          console.log("Bad:", state, differencesMatrix, idAcomodador, idPlanogram);
+          // console.log("Bad:", state, differencesMatrix, idAcomodador, idPlanogram);
           console.log(error);
         }
       };
@@ -88,7 +84,6 @@ export default function Home(props) {
     if (selected === 0) {
       return <ActualPlanogram setPlanogramClasses={setPlanogramClasses} setLines={setPlanogramLines} />;
     } else if (selected === 1) {
-      // console.log("Regresa matriz de foto", actualPlanogramClasses);
       return <EvaluatePlanogram setPlanogramClasses={setActualPlanogramClasses} lines={planogramLines} setUriImage={setUriImage} />;
     } else {
       return <Feedback planogramClasses={planogramClasses} actualPlanogramClases={actualPlanogramClasses} lines={planogramLines} image={uriImage} />;
