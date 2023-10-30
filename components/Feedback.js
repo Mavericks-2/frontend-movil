@@ -107,7 +107,9 @@ export default function Feedback(props) {
               paddingHorizontal: width > 1200 ? 32 : 16,
             }
           ]}
-          onPress={() => {}}
+          onPress={() => {
+            props.setSelected(1);
+          }}
           disabled={completedSteps}
         >
           <Text style={[feedbackStyles.buttonText, {
