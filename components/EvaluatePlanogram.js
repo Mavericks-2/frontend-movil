@@ -4,6 +4,7 @@ import {
   StyleSheet,
   useWindowDimensions,
   TouchableOpacity,
+  ActivityIndicator
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import colors from "../constants/colors";
@@ -19,10 +20,12 @@ export default function EvaluatePlanogram(props) {
     width: 0,
     height: 0,
   });
+  const [loading, setLoading] = useState(false);
   const { width, height } = useWindowDimensions();
 
 
   const handleUploadData = async () =>{
+    setLoading(true);
     const response = await uploadImage(base64Image);
     if (response === "ok"){
       const classes = await classifyImage(rectangles).catch((err) => {
@@ -30,6 +33,7 @@ export default function EvaluatePlanogram(props) {
       });
       props.setPlanogramClasses(classes);
     }
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -47,60 +51,72 @@ export default function EvaluatePlanogram(props) {
         },
       ]}
     >
-      <View
-        style={[
-          evalueatePlanogramStyles.headerContainer,
-          {
-            marginBottom:
-              width > 800 ? (width < 1200 ? 16 : width > height ? 16 : 32) : 16,
-            gap: width < 1200 ? 16 : width > height ? 16 : 32,
-            padding: width > 800 ? (width < 1200 ? 16 : 24) : 16,
-          },
-        ]}
-      >
-        <View
+      {
+        loading ? 
+        (
+          <View style={evalueatePlanogramStyles.loadingContainer}>
+            <ActivityIndicator size="large" color={colors.PRIMARY} />
+            <Text style={evalueatePlanogramStyles.loadingText}>
+              Clasificando imagen...
+            </Text>
+          </View>
+        )
+        :
+        (<View
           style={[
-            evalueatePlanogramStyles.headerTextContainer,
+            evalueatePlanogramStyles.headerContainer,
             {
-              width: width > 800 ? (width < 1200 ? "60%" : "50%") : "60%",
+              marginBottom:
+                width > 800 ? (width < 1200 ? 16 : width > height ? 16 : 32) : 16,
+              gap: width < 1200 ? 16 : width > height ? 16 : 32,
+              padding: width > 800 ? (width < 1200 ? 16 : 24) : 16,
             },
           ]}
         >
-          <Text
+          <View
             style={[
-              evalueatePlanogramStyles.headerText,
+              evalueatePlanogramStyles.headerTextContainer,
               {
-                fontSize: width > 800 ? (width < 1200 ? 14 : 16) : 12,
+                width: width > 800 ? (width < 1200 ? "60%" : "50%") : "60%",
               },
             ]}
           >
-            {width > 800
-              ? "Registra tu acomódo para evaluar el planograma"
-              : "Evalúa tu acomódo"}
-          </Text>
-          <Text
-            style={[
-              evalueatePlanogramStyles.descriptionText,
-              {
-                fontSize: width > 800 ? (width < 1200 ? 12 : 14) : 10,
-                width: width > 800 ? "90%" : "80%",
-              },
-            ]}
+            <Text
+              style={[
+                evalueatePlanogramStyles.headerText,
+                {
+                  fontSize: width > 800 ? (width < 1200 ? 14 : 16) : 12,
+                },
+              ]}
+            >
+              {width > 800
+                ? "Registra tu acomódo para evaluar el planograma"
+                : "Evalúa tu acomódo"}
+            </Text>
+            <Text
+              style={[
+                evalueatePlanogramStyles.descriptionText,
+                {
+                  fontSize: width > 800 ? (width < 1200 ? 12 : 14) : 10,
+                  width: width > 800 ? "90%" : "80%",
+                },
+              ]}
+            >
+              {width > 1200
+                ? "Asegúrate de ajustar los productos dentro de los espacios marcados"
+                : "Toma una foto de tu acomódo y compara."}
+            </Text>
+          </View>
+          <TouchableOpacity
+            style={evalueatePlanogramStyles.button}
+            onPress={() => setPhotoTaked(!photoTaked)}
           >
-            {width > 1200
-              ? "Asegúrate de ajustar los productos dentro de los espacios marcados"
-              : "Toma una foto de tu acomódo y compara."}
-          </Text>
-        </View>
-        <TouchableOpacity
-          style={evalueatePlanogramStyles.button}
-          onPress={() => setPhotoTaked(!photoTaked)}
-        >
-          <Text style={evalueatePlanogramStyles.buttonText}>
-            {photoTaked ? "Descartar foto" : "Tomar foto"}
-          </Text>
-        </TouchableOpacity>
-      </View>
+            <Text style={evalueatePlanogramStyles.buttonText}>
+              {photoTaked ? "Descartar foto" : "Tomar foto"}
+            </Text>
+          </TouchableOpacity>
+        </View>)
+      }
       <View
         style={[
           evalueatePlanogramStyles.cameraContainer,
@@ -173,5 +189,17 @@ const evalueatePlanogramStyles = StyleSheet.create({
   cameraContainer: {
     backgroundColor: "black",
     borderRadius: 12,
+  },
+  loadingContainer: {
+    width: "80%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loadingText: {
+    fontSize: 16,
+    fontWeight: "800",
+    color: colors.PRIMARY,
+    textAlign: "center",
   },
 });
