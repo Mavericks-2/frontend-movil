@@ -12,7 +12,6 @@ export const postComparedPhotos = async (state, differencesMatrix, idAcomodador,
 
     return res.data;
   } catch (error) {
-    console.log(error);
     throw error;
   }
 };

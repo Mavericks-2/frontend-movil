@@ -50,10 +50,7 @@ export default function Home(props) {
       const postData = async () => {
         try {
           const res = await postComparedPhotos(state, differencesMatrix, idAcomodador, idPlanogram);
-          // console.log("Good:", state, differencesMatrix, idAcomodador, idPlanogram);
-          // console.log(res);
         } catch (error) {
-          // console.log("Bad:", state, differencesMatrix, idAcomodador, idPlanogram);
           console.log(error);
         }
       };
@@ -90,7 +87,6 @@ export default function Home(props) {
   }
 
   function compareMatrices(planogram, photoMatrix) {
-    console.log(planogram, photoMatrix);
     const differenceMatrix = [];
 
     for (let i = 0; i < planogram.length; i++) {

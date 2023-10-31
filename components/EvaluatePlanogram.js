@@ -13,15 +13,15 @@ import { classifyImage } from "../services";
 import { uploadImage } from "../services";
 
 export default function EvaluatePlanogram(props) {
+  const { width, height } = useWindowDimensions();
   const [photoTaked, setPhotoTaked] = useState(false);
   const [rectangles, setRectangles] = useState([]);
   const [base64Image, setBase64Image] = useState(null);
   const [camaraContainerSize, setCamaraContainerSize] = useState({
-    width: 0,
-    height: 0,
+    width: width*0.8,
+    height: height*0.4,
   });
   const [loading, setLoading] = useState(false);
-  const { width, height } = useWindowDimensions();
 
 
   const handleUploadData = async () =>{

@@ -14,6 +14,7 @@ import * as MediaLibrary from "expo-media-library";
 import * as ImageManipulator from "expo-image-manipulator";
 import LineDrawing from "./LineDrawing";
 import * as FileSystem from "expo-file-system";
+import * as ImagePicker from 'expo-image-picker';
 
 export default function CameraComponent(props) {
   const [hasPermission, setHasPermission] = useState();
@@ -58,7 +59,6 @@ export default function CameraComponent(props) {
         exif: false,
       };
       let newPhoto = await cameraRef.current.takePictureAsync(options);
-      newPhoto = await resize(newPhoto);
       props.setUriImage(newPhoto.uri);
       setPhoto(newPhoto);
     } catch (error) {
@@ -77,6 +77,7 @@ export default function CameraComponent(props) {
       setPhoto(undefined);
     });
   };
+
 
   const resize = async (photo) => {
     try {

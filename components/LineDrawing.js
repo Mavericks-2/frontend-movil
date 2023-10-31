@@ -5,6 +5,7 @@ import Svg, { Line } from "react-native-svg";
 const LineDrawing = (props) => {
   const lineDrawingArray = props.lines || [];
   const [adjustedLineDrawingArray, setAdjustedLineDrawingArray] = useState([]);
+  const [isConfigured, setIsConfigured] = useState(false);
 
   useEffect(() => {
     let adjustedArray = lineDrawingArray;
@@ -19,29 +20,36 @@ const LineDrawing = (props) => {
 
   useEffect(() => {
     if (props.photoTaked) {
+      // Ajustar las lineas como si fuera una imagen 
       let rectangles = convertLinesToRectangles(adjustedLineDrawingArray);
       props.setRectangles(rectangles);
     }
   }, [props.photoTaked]);
 
   useEffect(() => {
-    if(adjustedLineDrawingArray.length > 0){
-      let containerSize = getContainerSize();
+    if(adjustedLineDrawingArray.length > 0 && !isConfigured){
+      let newAdjustedArray = adjustedLineDrawingArray;
+      if (!props.adjust){
+        newAdjustedArray = adjustLines(lineDrawingArray);
+        setAdjustedLineDrawingArray(newAdjustedArray);
+      }
+      let containerSize = getContainerSize(newAdjustedArray);
       if (props.setCameraContainerSize){
         props.setCameraContainerSize(containerSize);
       }
+      setIsConfigured(true);
     }
-  }, [adjustedLineDrawingArray]);
+  }, [adjustedLineDrawingArray, isConfigured]);
 
-  const getContainerSize = () => {
+  const getContainerSize = (arrayLines) => {
     let containerSize = {
       width: 0,
       height: 0,
     };
     let maxWidth = 0;
     let maxHeight = 0;
-    for (let i = 0; i < adjustedLineDrawingArray.length; i++) {
-      let line = adjustedLineDrawingArray[i];
+    for (let i = 0; i < arrayLines.length; i++) {
+      let line = arrayLines[i];
       if (line.x2 > maxWidth) {
         maxWidth = line.x2;
       }
