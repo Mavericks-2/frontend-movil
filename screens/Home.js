@@ -6,6 +6,7 @@ import Feedback from "../components/Feedback";
 import Logo from "../assets/oxxo_logo.png"
 import { postComparedPhotos } from "../services";
 import { getPlanogramConfig } from "../services";
+import { productMatrixCatalog } from "../components/StepComponent";
 
 export default function Home(props) {
   const [selected, setSelected] = useState(0);
@@ -18,6 +19,7 @@ export default function Home(props) {
 
   const [idPlanogram, setPlanogram] = useState(null);
   const [differencesMatrix, setDifferencesMatrix] = useState([]);
+  const [productMatrix, setProductMatrix] = useState([]);
   const idAcomodador = "990e8400-e29b-41d4-a716-446655440000";
 
   useEffect(() => {
@@ -45,21 +47,27 @@ export default function Home(props) {
   }, [actualPlanogramClasses, selected]);
 
   useEffect(() => {
-    if (idPlanogram !== null && differencesMatrix.length > 0 ){
+    if (differencesMatrix.length > 0) {
+      sustituirErroresPorProductos(differencesMatrix, actualPlanogramClasses, productMatrixCatalog);
+    }
+  }, [differencesMatrix]);
+  
+  useEffect(() => {
+    if (idPlanogram !== null && differencesMatrix.length > 0 && productMatrix.length > 0){
       const state = differencesMatrix.some(row => row.includes(1)) ? "desacomodado" : "acomodado";
 
       const postData = async () => {
         try {
-          const res = await postComparedPhotos(state, differencesMatrix, idAcomodador, idPlanogram);
-          // console.log("Good:", state, differencesMatrix, idAcomodador, idPlanogram);
-          // console.log(res);
+          const res = await postComparedPhotos(state, differencesMatrix, productMatrix, idAcomodador, idPlanogram);
+          console.log("Good:", state, differencesMatrix, productMatrix, idAcomodador, idPlanogram);
+          console.log(res);
         } catch (error) {
-          // console.log("Bad:", state, differencesMatrix, idAcomodador, idPlanogram);
+          console.log("Bad:", state, differencesMatrix, productMatrix, idAcomodador, idPlanogram);
           console.log(error);
         }
       };
       postData();
-    }}, [idPlanogram, differencesMatrix]);
+    }}, [idPlanogram, differencesMatrix, productMatrix]);
 
   const setStyleBySelected = (index) => {
     if (index === selected) {
@@ -108,6 +116,24 @@ export default function Home(props) {
     }
     setDifferencesMatrix(differenceMatrix);
     return differenceMatrix;
+  }
+
+  function sustituirErroresPorProductos (differencesMatrix, actualPlanogramClasses, productMatrixCatalog) {
+    const matrizProductos = [];
+  
+    for (let i = 0; i < differencesMatrix.length; i++) {
+      const productRow = [];
+      for (let j = 0; j < differencesMatrix[i].length; j++) {
+        if (differencesMatrix[i][j] === 1) {
+          const productIndex = actualPlanogramClasses[i][j];
+          const productName = productMatrixCatalog[productIndex];
+          productRow.push(productName);
+        }
+      }
+      matrizProductos.push(productRow);
+    }
+    setProductMatrix(matrizProductos);
+    return productMatrix;
   }
 
   return (
