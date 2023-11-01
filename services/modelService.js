@@ -65,7 +65,6 @@ export const getImageSize = async () => {
       },
     })
     .then((res) => {
-      console.log("Res: ",res);
       return res.data;
     });
 
