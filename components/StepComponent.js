@@ -43,7 +43,7 @@ import colors from "../constants/colors";
 // }
 
 /* Catálogo para el modelo de 8 productos */
-const productMatrixCatalog = {
+export const productMatrixCatalog = {
   0: 'Cheetos Torciditos',
   1: 'Chips Fuego',
   2: 'Chips Jalapeño',

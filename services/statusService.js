@@ -1,11 +1,12 @@
 import { API_BASE_URL } from "../config";
 import axios from "axios";
 
-export const postComparedPhotos = async (state, differencesMatrix, idAcomodador, idPlanograma) => {
+export const postComparedPhotos = async (state, differencesMatrix, productMatrix, idAcomodador, idPlanograma) => {
   try {
     const res = await axios.post(`${API_BASE_URL}/status/postComparedPhotos`, {
       estado: state,
       matrizDiferencias: differencesMatrix,
+      matrizProductosF: productMatrix,
       id_acomodador: idAcomodador,
       id_planogram: idPlanograma,
     });
