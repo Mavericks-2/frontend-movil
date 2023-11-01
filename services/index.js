@@ -2,5 +2,6 @@ import { getPlanogramConfig } from "./planogramService";
 import { postComparedPhotos } from "./statusService";
 import { classifyImage, compareImages } from "./modelService";
 import { uploadImage } from "./modelService";
+import { signup, verifyToken, getUser, signin } from "./authenticationService";
 
-export { getPlanogramConfig, postComparedPhotos, classifyImage, compareImages, uploadImage};
+export { getPlanogramConfig, postComparedPhotos, classifyImage, compareImages, uploadImage, signup, verifyToken, getUser, signin };

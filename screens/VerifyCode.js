@@ -12,23 +12,39 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import colors from "../constants/colors";
+import { verifyToken } from "../services";
 
 
 export default function VerifyCode(props) {
-  const [firstInput, setFirstInput] = useState(0);
-  const [secondInput, setSecondInput] = useState(0);
-  const [thirdInput, setThirdInput] = useState(0);
-  const [fourthInput, setFourthInput] = useState(0);
+  const [firstInput, setFirstInput] = useState();
+  const [secondInput, setSecondInput] = useState();
+  const [thirdInput, setThirdInput] = useState();
+  const [fourthInput, setFourthInput] = useState();
+  const [fifthInput, setFifthInput] = useState();
+  const [sixthInput, setSixthInput] = useState();
 
   const { width, height } = useWindowDimensions();
+  const { email } = props.route.params;
 
-  const [focus, setFocus] = useState([false, false, false, false]);
+  const [focus, setFocus] = useState([false, false, false, false, false, false]);
 
   const handleTextChange = (text, setFunction) => {
     if (/^[0-9]*$/.test(text) || text === "") {
       setFunction(text);
     }
   };
+
+  const handleVerifyCode = async () => {
+    const verifyCode = firstInput + secondInput + thirdInput + fourthInput + fifthInput + sixthInput;
+    
+    const response = await verifyToken({ email: email, verifyCode }).catch((err) => {
+      console.log(err);
+    });
+
+    if (response === "ok") {
+      props.navigation.navigate("Home", { email: email });
+    }
+  }
 
   return (
     <KeyboardAvoidingView
@@ -64,65 +80,94 @@ export default function VerifyCode(props) {
               style={[
                 verifyCodeStyles.input,
                 { borderColor: focus[0] ? colors.PRIMARY : "black", 
-                width: width > 800 ? 64 : 40,
-                height: width > 800 ? 64 : 40,
+                width: width > 800 ? 56 : 32,
+                height: width > 800 ? 56 : 32,
                 },
               ]}
               keyboardType="numeric"
               maxLength={1}
               value={firstInput}
               onChangeText={(text) => handleTextChange(text, setFirstInput)}
-              onFocus={() => setFocus([true, false, false, false])}
+              onFocus={() => setFocus([true, false, false, false, false, false])}
             />
              <TextInput
               style={[
                 verifyCodeStyles.input,
                 { borderColor: focus[1] ? colors.PRIMARY : "black", 
-                width: width > 800 ? 64 : 40,
-                height: width > 800 ? 64 : 40,
+                width: width > 800 ? 56 : 32,
+                height: width > 800 ? 56 : 32,
                 },
               ]}
               keyboardType="numeric"
               maxLength={1}
               value={secondInput}
               onChangeText={(text) => handleTextChange(text, setSecondInput)}
-              onFocus={() => setFocus([false, true, false, false])}
+              onFocus={() => setFocus([false, true, false, false, false, false])}
             />
              <TextInput
               style={[
                 verifyCodeStyles.input,
                 { borderColor: focus[2] ? colors.PRIMARY : "black", 
-                width: width > 800 ? 64 : 40,
-                height: width > 800 ? 64 : 40,
+                width: width > 800 ? 56 : 32,
+                height: width > 800 ? 56 : 32,
                 },
               ]}
               keyboardType="numeric"
               maxLength={1}
               value={thirdInput}
               onChangeText={(text) => handleTextChange(text, setThirdInput)}
-              onFocus={() => setFocus([false, false, true, false])}
+              onFocus={() => setFocus([false, false, true, false, false, false])}
             />
              <TextInput
               style={[
                 verifyCodeStyles.input,
                 { borderColor: focus[3] ? colors.PRIMARY : "black", 
-                width: width > 800 ? 64 : 40,
-                height: width > 800 ? 64 : 40,
+                width: width > 800 ? 56 : 32,
+                height: width > 800 ? 56 : 32,
                 },
               ]}
               keyboardType="numeric"
               maxLength={1}
               value={fourthInput}
               onChangeText={(text) => handleTextChange(text, setFourthInput)}
-              onFocus={() => setFocus([false, false, false, true])}
+              onFocus={() => setFocus([false, false, false, true, false, false])}
             />
-            
+            <TextInput
+              style={[
+                verifyCodeStyles.input,
+                { borderColor: focus[3] ? colors.PRIMARY : "black", 
+                width: width > 800 ? 56 : 32,
+                height: width > 800 ? 56 : 32,
+                },
+              ]}
+              keyboardType="numeric"
+              maxLength={1}
+              value={fifthInput}
+              onChangeText={(text) => handleTextChange(text, setFifthInput)}
+              onFocus={() => setFocus([false, false, false, false, true, false])}
+            />
+            <TextInput
+              style={[
+                verifyCodeStyles.input,
+                { borderColor: focus[3] ? colors.PRIMARY : "black", 
+                width: width > 800 ? 56 : 32,
+                height: width > 800 ? 56 : 32,
+                },
+              ]}
+              keyboardType="numeric"
+              maxLength={1}
+              value={sixthInput}
+              onChangeText={(text) => handleTextChange(text, setSixthInput)}
+              onFocus={() => setFocus([false, false, false, false, false, true])}
+            />
           </View>
           <View style={[verifyCodeStyles.buttonContainer, {
             width: width > 800 ? "50%" : "60%",
             marginTop: width > 800 ? 24 : 0,
           }]}>
-            <Pressable onPress={() => props.navigation.navigate("Home")}>
+            <Pressable onPress={() => {
+              handleVerifyCode();
+            }}>
               <LinearGradient
                 colors={[colors.PRIMARY, colors.SECONDARY]}
                 start={[0, 0]}

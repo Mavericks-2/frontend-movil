@@ -1,15 +1,44 @@
 import { StyleSheet, Text, View, Pressable } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CardInfo from "../components/CardInfo";
 import { LinearGradient } from "expo-linear-gradient";
 import colors from "../constants/colors";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Account = (props) => {
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    const getUserData = async () => {
+      const user = await AsyncStorage.getItem("user").catch((err) => {
+        console.log(err);
+      });
+      if (user){
+        setUser(JSON.parse(user));
+      }
+    }
+    getUserData();
+  }, []);
+
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem("user").catch((err) => {
+      console.log(err);
+    });
+    props.navigation.navigate("Login");
+  }
+
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
-        <Text style={styles.header}>Ejemplo Nombre</Text>
-        <Text style={styles.body}>Ejemplo Correo</Text>
+        <Text style={styles.header}>{
+          user ? user.nombre + " " + user.apellido : "Nombre Apellido"
+        }</Text>
+        <Text style={styles.body}>
+          {
+            user ? user.correo : "ejemplo@correo"
+          }
+        </Text>
       </View>
       <View style={styles.cardsContainer}>
         <CardInfo />
@@ -18,7 +47,9 @@ const Account = (props) => {
         <CardInfo />
         <CardInfo />
       </View>
-      <Pressable onPress={() => props.navigation.navigate("Login")}>
+      <Pressable onPress={() => {
+        handleLogout();
+      }}>
         <LinearGradient
           colors={[colors.PRIMARY, colors.SECONDARY]}
           start={[0, 0]}

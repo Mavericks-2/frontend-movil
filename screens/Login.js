@@ -9,15 +9,20 @@ import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
 } from "react-native";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import colors from "../constants/colors";
 import { Input, Icon } from "@rneui/themed";
 import { LinearGradient } from "expo-linear-gradient";
+import { signin } from "../services";
 
 export default function Login(props) {
   const [iconName, setIconName] = useState("eye-slash");
   const [imageHeight, setImageHeight] = useState("100%");
   const [bodyGap, setBodyGap] = useState(16);
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
   const { width, height } = useWindowDimensions();
 
   const handlePassowrdIcon = () => {
@@ -38,10 +43,20 @@ export default function Login(props) {
     }
   }, [width, height]);
 
+  const handleLogin = async () => {
+    try {
+      await signin(user);
+
+      props.navigation.navigate("Home", { email: user.email });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{ flex: 1}}
+      style={{ flex: 1 }}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View
@@ -79,7 +94,10 @@ export default function Login(props) {
                 },
               ]}
             >
-              <Input placeholder="Ingresa correo electrónico" />
+              <Input
+                placeholder="Ingresa correo electrónico"
+                onChangeText={(text) => setUser({ ...user, email: text })}
+              />
               <Input
                 placeholder="Contraseña"
                 secureTextEntry={iconName === "eye-slash"}
@@ -90,6 +108,7 @@ export default function Login(props) {
                     onPress={handlePassowrdIcon}
                   />
                 }
+                onChangeText={(text) => setUser({ ...user, password: text })}
               />
               <View style={LoginStyles.forgotPassWordContainer}>
                 <Text style={LoginStyles.forgotPassWord}>
@@ -97,7 +116,11 @@ export default function Login(props) {
                 </Text>
               </View>
               <View style={LoginStyles.buttonContainer}>
-                <Pressable onPress={() => props.navigation.navigate("Home")}>
+                <Pressable
+                  onPress={() => {
+                    handleLogin();
+                  }}
+                >
                   <LinearGradient
                     colors={[colors.PRIMARY, colors.SECONDARY]}
                     start={[0, 0]}

@@ -137,9 +137,9 @@ export default function Home(props) {
 
   return (
     <View style={homeStyles.mainContainer}>
-      <Pressable onPress={() => props.navigation.navigate("Login")}>
+      <View>
         <Image source={Logo} style={{ width: 35, height: 15, resizeMode: 'contain'}} />
-      </Pressable>
+      </View>
       <View style={homeStyles.topBarContainer}>
         <Pressable
           onPress={() => {
