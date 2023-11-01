@@ -6,6 +6,7 @@ import Feedback from "../components/Feedback";
 import Logo from "../assets/oxxo_logo.png"
 import { postComparedPhotos, getPlanogramConfig } from "../services";
 import { productMatrixCatalog } from "../components/StepComponent";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Home(props) {
   const [selected, setSelected] = useState(0);
@@ -15,11 +16,22 @@ export default function Home(props) {
   const [planogramLines, setPlanogramLines ] = useState(null);
   const [hasPlanogram, setHasPlanogram] = useState(false);
   const [uriImage, setUriImage] = useState(null);
-
   const [idPlanogram, setPlanogram] = useState(null);
   const [differencesMatrix, setDifferencesMatrix] = useState([]);
   const [productMatrix, setProductMatrix] = useState([]);
-  const idAcomodador = "990e8400-e29b-41d4-a716-446655440000";
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    const getUserData = async () => {
+      const user = await AsyncStorage.getItem("user").catch((err) => {
+        console.log(err);
+      });
+      if (user){
+        setUser(JSON.parse(user));
+      }
+    }
+    getUserData();
+  }, []);
 
   useEffect(() => {
     if (planogramClasses.length === 0) {
@@ -34,7 +46,7 @@ export default function Home(props) {
       
       const fetchData = async () => {
         try {
-          const response = await getPlanogramConfig();
+          const response = await getPlanogramConfig(user);
           setPlanogram(response.id_planogram);
           compareMatrices(planogramClasses, actualPlanogramClasses);  
       } catch (error) {
@@ -57,11 +69,9 @@ export default function Home(props) {
 
       const postData = async () => {
         try {
-          const res = await postComparedPhotos(state, differencesMatrix, productMatrix, idAcomodador, idPlanogram);
-          // console.log("Good:", state, differencesMatrix, productMatrix, idAcomodador, idPlanogram);
-          // console.log(res);
+          await postComparedPhotos(state, differencesMatrix, productMatrix, user.id_acomodador, idPlanogram);
         } catch (error) {
-          // console.log("Bad:", state, differencesMatrix, productMatrix, idAcomodador, idPlanogram);
+          
           console.log(error);
         }
       };
@@ -89,9 +99,9 @@ export default function Home(props) {
 
   const setComponentBySelected = () => {
     if (selected === 0) {
-      return <ActualPlanogram setPlanogramClasses={setPlanogramClasses} setLines={setPlanogramLines} />;
+      return <ActualPlanogram setPlanogramClasses={setPlanogramClasses} setLines={setPlanogramLines} user={user} />;
     } else if (selected === 1) {
-      return <EvaluatePlanogram setPlanogramClasses={setActualPlanogramClasses} lines={planogramLines} setUriImage={setUriImage} />;
+      return <EvaluatePlanogram setPlanogramClasses={setActualPlanogramClasses} lines={planogramLines} setUriImage={setUriImage} user={user} />;
     } else {
       return <Feedback planogramClasses={planogramClasses} actualPlanogramClases={actualPlanogramClasses} lines={planogramLines} image={uriImage} setSelected={setSelected} />;
     }
