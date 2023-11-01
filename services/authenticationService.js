@@ -3,29 +3,29 @@ import axios from "axios";
 
 export const signup = async (user) => {
     const { email, password, name, lastName } = user
-    const response = await axios.post(`${API_BASE_URL}/signupAcomodador`, {
+    const response = await axios.post(`${API_BASE_URL}/auth/signupAcomodador`, {
         email,
         password,
         name,
         lastName
     });
 
-    return response.data;
+    return response.data.message;
 }
 
 export const verifyToken = async (user) => {
-    const { email, token } = user;
-    const response = await axios.post(`${API_BASE_URL}/verifyAcomodador`, {
+    const { email, verifyCode } = user;
+    const response = await axios.post(`${API_BASE_URL}/auth/verifyAcomodador`, {
         email,
-        token
+        verifyCode
     });
 
-    return response.data;
+    return response.data.message;
 }
 
 export const signin = async (user) => {
     const { email, password } = user;
-    const response = await axios.post(`${API_BASE_URL}/signinAcomodador`, {
+    const response = await axios.post(`${API_BASE_URL}/auth/signinAcomodador`, {
         email,
         password
     });
@@ -35,7 +35,7 @@ export const signin = async (user) => {
 
 export const getUser = async (user) => {
     const { email } = user;
-    const response = await axios.post(`${API_BASE_URL}/getUserAcomodador`, {
+    const response = await axios.post(`${API_BASE_URL}/auth/getUserAcomodador`, {
         email
     });
 

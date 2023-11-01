@@ -4,7 +4,7 @@ import ActualPlanogram from "../components/ActualPlanogram";
 import EvaluatePlanogram from "../components/EvaluatePlanogram";
 import Feedback from "../components/Feedback";
 import Logo from "../assets/oxxo_logo.png"
-import { postComparedPhotos, getPlanogramConfig } from "../services";
+import { postComparedPhotos, getPlanogramConfig, getUser } from "../services";
 
 export default function Home(props) {
   const [selected, setSelected] = useState(0);
