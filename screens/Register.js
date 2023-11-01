@@ -12,10 +12,16 @@ import React, { useState } from "react";
 import colors from "../constants/colors";
 import { Input, Icon } from "@rneui/themed";
 import { LinearGradient } from "expo-linear-gradient";
+import { signup } from "../services";
 
 export default function Register(props) {
   const [iconName, setIconName] = useState("eye-slash");
-  const [iconConfirmName, setIconConfirmName] = useState("eye-slash");
+  const [user, setUser] = useState({
+    name: "",
+    lastName: "",
+    email: "",
+    password: "",
+  });
   const { width, height } = useWindowDimensions();
 
   const handlePassowrdIcon = () => {
@@ -26,13 +32,14 @@ export default function Register(props) {
     }
   };
 
-  const handleConfirmPassowrdIcon = () => {
-    if (iconConfirmName === "eye-slash") {
-      setIconConfirmName("eye");
-    } else {
-      setIconConfirmName("eye-slash");
+  const handleRegister = async () => {
+    const response = await signup(user).catch((err) => {
+      console.log("Error: ", err);
+    });
+    if (response === "ok") {
+      props.navigation.navigate("VerifyCode", { email: user.email });
     }
-  };
+  }
 
   return (
     <KeyboardAvoidingView
@@ -79,12 +86,22 @@ export default function Register(props) {
             >
               <View style={registerStyles.input}>
                 <Text style={registerStyles.inputTitle}>Nombre</Text>
-                <Input placeholder="Juan Perez" />
+                <Input placeholder="Juan" 
+                onChangeText={(text) => setUser({ ...user, name: text })}
+                />
+              </View>
+              <View style={registerStyles.input}>
+                <Text style={registerStyles.inputTitle}>Apellido</Text>
+                <Input placeholder="Perez" 
+                onChangeText={(text) => setUser({ ...user, lastName: text })}
+                />
               </View>
 
               <View style={registerStyles.input}>
                 <Text style={registerStyles.inputTitle}>Correo</Text>
-                <Input placeholder="name@example.com" />
+                <Input placeholder="name@example.com"
+                onChangeText={(text) => setUser({ ...user, email: text })}
+                />
               </View>
               <View style={registerStyles.input}>
                 <Text style={registerStyles.inputTitle}>Contraseña</Text>
@@ -98,28 +115,13 @@ export default function Register(props) {
                       onPress={handlePassowrdIcon}
                     />
                   }
-                />
-              </View>
-              <View style={registerStyles.input}>
-                <Text style={registerStyles.inputTitle}>
-                  Confirmar contraseña
-                </Text>
-                <Input
-                  placeholder="Confirma tu contraseña"
-                  secureTextEntry={iconConfirmName === "eye-slash"}
-                  rightIcon={
-                    <Icon
-                      name={iconConfirmName}
-                      type="font-awesome"
-                      onPress={handleConfirmPassowrdIcon}
-                    />
-                  }
+                  onChangeText={(text) => setUser({ ...user, password: text })}
                 />
               </View>
 
               <View style={registerStyles.buttonContainer}>
                 <Pressable
-                  onPress={() => props.navigation.navigate("VerifyCode")}
+                  onPress={() => handleRegister()}
                 >
                   <LinearGradient
                     colors={[colors.PRIMARY, colors.SECONDARY]}

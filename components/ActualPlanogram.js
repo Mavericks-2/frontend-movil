@@ -13,6 +13,7 @@ import { getPlanogramConfig } from "../services";
 export default function ActualPlanogram(props) {
   const [planogram, setPlanogram] = useState(null);
   const { width, height } = useWindowDimensions();
+  const {user} = props;
 
   const emptyPlanogram = (
     <Fragment>
@@ -105,14 +106,16 @@ export default function ActualPlanogram(props) {
   );
 
   useEffect(() => {
-    getPlanogramConfig().then((response) => {
-      setPlanogram(response.url_imagen);
-      props.setLines(response.lineas);
-      props.setPlanogramClasses(response.matriz_productos.productos);
-    }).catch((error) => {
-      console.log(error);
-    });
-  }, []);
+    if (user) {
+      getPlanogramConfig(user).then((response) => {
+        setPlanogram(response.url_imagen);
+        props.setLines(response.lineas);
+        props.setPlanogramClasses(response.matriz_productos.productos);
+      }).catch((error) => {
+        console.log(error);
+      });
+    }
+  }, [user]);
 
   return (
     <View

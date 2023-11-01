@@ -1,12 +1,33 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Home, Account } from "../screens";
 import BottomTabCustom from "./BottomTabCustom";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getUser } from "../services";
 
 const Tab = createBottomTabNavigator();
 
-const BottomTabNavigator = () => {
+const BottomTabNavigator = (props) => {
+  const { email } = props.route.params;
+
+  const handleGetUserData = async () => {
+    const user = await getUser({email: email}).catch((err) => {
+      console.log(err);
+    });
+    if (user){
+      await AsyncStorage.setItem("user", JSON.stringify(user)).catch((err) => {
+        console.log(err);
+      });
+    }
+  }
+
+  useEffect(() => {
+    if (email){
+      handleGetUserData();
+    }
+  }, []);
+
   return (
     <Tab.Navigator
       initialRouteName="Home"

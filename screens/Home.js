@@ -5,6 +5,8 @@ import EvaluatePlanogram from "../components/EvaluatePlanogram";
 import Feedback from "../components/Feedback";
 import Logo from "../assets/oxxo_logo.png"
 import { postComparedPhotos, getPlanogramConfig } from "../services";
+import { productMatrixCatalog } from "../components/StepComponent";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Home(props) {
   const [selected, setSelected] = useState(0);
@@ -14,10 +16,22 @@ export default function Home(props) {
   const [planogramLines, setPlanogramLines ] = useState(null);
   const [hasPlanogram, setHasPlanogram] = useState(false);
   const [uriImage, setUriImage] = useState(null);
-
   const [idPlanogram, setPlanogram] = useState(null);
   const [differencesMatrix, setDifferencesMatrix] = useState([]);
-  const idAcomodador = "990e8400-e29b-41d4-a716-446655440000";
+  const [productMatrix, setProductMatrix] = useState([]);
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    const getUserData = async () => {
+      const user = await AsyncStorage.getItem("user").catch((err) => {
+        console.log(err);
+      });
+      if (user){
+        setUser(JSON.parse(user));
+      }
+    }
+    getUserData();
+  }, []);
 
   useEffect(() => {
     if (planogramClasses.length === 0) {
@@ -32,7 +46,7 @@ export default function Home(props) {
       
       const fetchData = async () => {
         try {
-          const response = await getPlanogramConfig();
+          const response = await getPlanogramConfig(user);
           setPlanogram(response.id_planogram);
           compareMatrices(planogramClasses, actualPlanogramClasses);  
       } catch (error) {
@@ -44,18 +58,25 @@ export default function Home(props) {
   }, [actualPlanogramClasses, selected]);
 
   useEffect(() => {
-    if (idPlanogram !== null && differencesMatrix.length > 0 ){
+    if (differencesMatrix.length > 0) {
+      sustituirErroresPorProductos(differencesMatrix, actualPlanogramClasses, productMatrixCatalog);
+    }
+  }, [differencesMatrix]);
+  
+  useEffect(() => {
+    if (idPlanogram !== null && differencesMatrix.length > 0 && productMatrix.length > 0){
       const state = differencesMatrix.some(row => row.includes(1)) ? "desacomodado" : "acomodado";
 
       const postData = async () => {
         try {
-          const res = await postComparedPhotos(state, differencesMatrix, idAcomodador, idPlanogram);
+          await postComparedPhotos(state, differencesMatrix, productMatrix, user.id_acomodador, idPlanogram);
         } catch (error) {
+          
           console.log(error);
         }
       };
       postData();
-    }}, [idPlanogram, differencesMatrix]);
+    }}, [idPlanogram, differencesMatrix, productMatrix]);
 
   const setStyleBySelected = (index) => {
     if (index === selected) {
@@ -78,9 +99,9 @@ export default function Home(props) {
 
   const setComponentBySelected = () => {
     if (selected === 0) {
-      return <ActualPlanogram setPlanogramClasses={setPlanogramClasses} setLines={setPlanogramLines} />;
+      return <ActualPlanogram setPlanogramClasses={setPlanogramClasses} setLines={setPlanogramLines} user={user} />;
     } else if (selected === 1) {
-      return <EvaluatePlanogram setPlanogramClasses={setActualPlanogramClasses} lines={planogramLines} setUriImage={setUriImage} />;
+      return <EvaluatePlanogram setPlanogramClasses={setActualPlanogramClasses} lines={planogramLines} setUriImage={setUriImage} user={user} />;
     } else {
       return <Feedback planogramClasses={planogramClasses} actualPlanogramClases={actualPlanogramClasses} lines={planogramLines} image={uriImage} setSelected={setSelected} />;
     }
@@ -105,11 +126,29 @@ export default function Home(props) {
     return differenceMatrix;
   }
 
+  function sustituirErroresPorProductos (differencesMatrix, actualPlanogramClasses, productMatrixCatalog) {
+    const matrizProductos = [];
+  
+    for (let i = 0; i < differencesMatrix.length; i++) {
+      const productRow = [];
+      for (let j = 0; j < differencesMatrix[i].length; j++) {
+        if (differencesMatrix[i][j] === 1) {
+          const productIndex = actualPlanogramClasses[i][j];
+          const productName = productMatrixCatalog[productIndex];
+          productRow.push(productName);
+        }
+      }
+      matrizProductos.push(productRow);
+    }
+    setProductMatrix(matrizProductos);
+    return productMatrix;
+  }
+
   return (
     <View style={homeStyles.mainContainer}>
-      <Pressable onPress={() => props.navigation.navigate("Login")}>
+      <View>
         <Image source={Logo} style={{ width: 35, height: 15, resizeMode: 'contain'}} />
-      </Pressable>
+      </View>
       <View style={homeStyles.topBarContainer}>
         <Pressable
           onPress={() => {
