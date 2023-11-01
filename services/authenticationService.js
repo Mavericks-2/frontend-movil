@@ -39,5 +39,5 @@ export const getUser = async (user) => {
         email
     });
 
-    return response.data;
+    return response.data.user;
 }

@@ -4,7 +4,7 @@ import ActualPlanogram from "../components/ActualPlanogram";
 import EvaluatePlanogram from "../components/EvaluatePlanogram";
 import Feedback from "../components/Feedback";
 import Logo from "../assets/oxxo_logo.png"
-import { postComparedPhotos, getPlanogramConfig, getUser } from "../services";
+import { postComparedPhotos, getPlanogramConfig } from "../services";
 
 export default function Home(props) {
   const [selected, setSelected] = useState(0);
@@ -111,9 +111,9 @@ export default function Home(props) {
 
   return (
     <View style={homeStyles.mainContainer}>
-      <Pressable onPress={() => props.navigation.navigate("Login")}>
+      <View>
         <Image source={Logo} style={{ width: 35, height: 15, resizeMode: 'contain'}} />
-      </Pressable>
+      </View>
       <View style={homeStyles.topBarContainer}>
         <Pressable
           onPress={() => {
