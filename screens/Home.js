@@ -4,8 +4,7 @@ import ActualPlanogram from "../components/ActualPlanogram";
 import EvaluatePlanogram from "../components/EvaluatePlanogram";
 import Feedback from "../components/Feedback";
 import Logo from "../assets/oxxo_logo.png"
-import { postComparedPhotos } from "../services";
-import { getPlanogramConfig } from "../services";
+import { postComparedPhotos, getPlanogramConfig } from "../services";
 import { productMatrixCatalog } from "../components/StepComponent";
 
 export default function Home(props) {
