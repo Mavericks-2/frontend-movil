@@ -9,13 +9,12 @@ import {
 import React, { useState, useEffect } from "react";
 import colors from "../constants/colors";
 import CameraComponent from "./CameraComponent";
-import { classifyImage } from "../services";
-import { uploadImage } from "../services";
+import { classifyImage, uploadImage, getImageSize } from "../services";
 
 export default function EvaluatePlanogram(props) {
   const { width, height } = useWindowDimensions();
   const [photoTaked, setPhotoTaked] = useState(false);
-  const [rectangles, setRectangles] = useState([]);
+  const [rectangles, setRectangles] = useState();
   const [base64Image, setBase64Image] = useState(null);
   const [camaraContainerSize, setCamaraContainerSize] = useState({
     width: width*0.8,
@@ -28,7 +27,14 @@ export default function EvaluatePlanogram(props) {
     setLoading(true);
     const response = await uploadImage(base64Image);
     if (response === "ok"){
-      const classes = await classifyImage(rectangles).catch((err) => {
+      const imageSize = await getImageSize().catch((err) => {
+        console.log(err);
+      });
+      let newRectangles = [...rectangles];
+      if (imageSize){
+        newRectangles = scaleRectangles(rectangles, imageSize);
+      }
+      const classes = await classifyImage(newRectangles).catch((err) => {
         console.log(err);
       });
       props.setPlanogramClasses(classes);
@@ -36,8 +42,21 @@ export default function EvaluatePlanogram(props) {
     setLoading(false);
   }
 
+  const scaleRectangles = (rectangles, imageSize) => {
+    const scaledRectangles = rectangles.map((rectangle) => {
+      const scaledRectangle = {
+        x: rectangle.x * (imageSize.width / camaraContainerSize.width),
+        y: rectangle.y * (imageSize.height / camaraContainerSize.height),
+        width: rectangle.width * (imageSize.width / camaraContainerSize.width),
+        height: rectangle.height * (imageSize.height / camaraContainerSize.height),
+      };
+      return scaledRectangle;
+    });
+    return scaledRectangles;
+  }
+
   useEffect(() => {
-    if (rectangles.length > 0 && base64Image) {
+    if (rectangles && base64Image) {
       handleUploadData();
     }
   }, [rectangles, base64Image]);
