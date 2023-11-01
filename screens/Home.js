@@ -58,10 +58,10 @@ export default function Home(props) {
       const postData = async () => {
         try {
           const res = await postComparedPhotos(state, differencesMatrix, productMatrix, idAcomodador, idPlanogram);
-          console.log("Good:", state, differencesMatrix, productMatrix, idAcomodador, idPlanogram);
-          console.log(res);
+          // console.log("Good:", state, differencesMatrix, productMatrix, idAcomodador, idPlanogram);
+          // console.log(res);
         } catch (error) {
-          console.log("Bad:", state, differencesMatrix, productMatrix, idAcomodador, idPlanogram);
+          // console.log("Bad:", state, differencesMatrix, productMatrix, idAcomodador, idPlanogram);
           console.log(error);
         }
       };
