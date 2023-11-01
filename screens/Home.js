@@ -108,7 +108,6 @@ export default function Home(props) {
   }
 
   function compareMatrices(planogram, photoMatrix) {
-    console.log(planogram, photoMatrix);
     const differenceMatrix = [];
 
     for (let i = 0; i < planogram.length; i++) {

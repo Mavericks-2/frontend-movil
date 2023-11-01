@@ -13,7 +13,6 @@ export const postComparedPhotos = async (state, differencesMatrix, productMatrix
 
     return res.data;
   } catch (error) {
-    console.log(error);
     throw error;
   }
 };

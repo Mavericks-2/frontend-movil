@@ -56,3 +56,17 @@ export const uploadImage = async (base64Image) => {
   
   return res.message;
 }
+
+export const getImageSize = async () => {
+  const res = await axios
+    .get(`${MODEL_BASE_URL}/getImageSize`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    .then((res) => {
+      return res.data;
+    });
+
+  return res;
+}
