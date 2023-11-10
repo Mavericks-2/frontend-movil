@@ -1,9 +1,9 @@
-import { API_BASE_URL } from "../config";
+import { EXPO_PUBLIC_API_BASE_URL } from "../config";
 import axios from "axios";
 
 export const signup = async (user) => {
     const { email, password, name, lastName } = user
-    const response = await axios.post(`${API_BASE_URL}/auth/signupAcomodador`, {
+    const response = await axios.post(`${EXPO_PUBLIC_API_BASE_URL}/auth/signupAcomodador`, {
         email,
         password,
         name,
@@ -15,7 +15,7 @@ export const signup = async (user) => {
 
 export const verifyToken = async (user) => {
     const { email, verifyCode } = user;
-    const response = await axios.post(`${API_BASE_URL}/auth/verifyAcomodador`, {
+    const response = await axios.post(`${EXPO_PUBLIC_API_BASE_URL}/auth/verifyAcomodador`, {
         email,
         verifyCode
     });
@@ -25,7 +25,7 @@ export const verifyToken = async (user) => {
 
 export const signin = async (user) => {
     const { email, password } = user;
-    const response = await axios.post(`${API_BASE_URL}/auth/signinAcomodador`, {
+    const response = await axios.post(`${EXPO_PUBLIC_API_BASE_URL}/auth/signinAcomodador`, {
         email,
         password
     });
@@ -35,7 +35,7 @@ export const signin = async (user) => {
 
 export const getUser = async (user) => {
     const { email } = user;
-    const response = await axios.post(`${API_BASE_URL}/auth/getUserAcomodador`, {
+    const response = await axios.post(`${EXPO_PUBLIC_API_BASE_URL}/auth/getUserAcomodador`, {
         email
     });
 

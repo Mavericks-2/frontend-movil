@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:8080';
-const MODEL_BASE_URL = process.env.MODEL_BASE_URL || 'http://localhost:8083';
+const EXPO_PUBLIC_API_BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+const EXPO_PUBLIC_MODEL_BASE_URL = process.env.EXPO_PUBLIC_MODEL_BASE_URL || 'http://localhost:8083';
 
-export { API_BASE_URL, MODEL_BASE_URL};
+export { EXPO_PUBLIC_API_BASE_URL, EXPO_PUBLIC_MODEL_BASE_URL};

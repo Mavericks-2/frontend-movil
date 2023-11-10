@@ -17,8 +17,8 @@ export default function EvaluatePlanogram(props) {
   const [rectangles, setRectangles] = useState();
   const [base64Image, setBase64Image] = useState(null);
   const [camaraContainerSize, setCamaraContainerSize] = useState({
-    width: width*0.8,
-    height: height*0.4,
+    width: 0,
+    height: 0,
   });
   const [loading, setLoading] = useState(false);
 
@@ -54,6 +54,50 @@ export default function EvaluatePlanogram(props) {
     });
     return scaledRectangles;
   }
+
+  const getContainerSize = (arrayLines) => {
+    let containerSize = {
+      width: 0,
+      height: 0,
+    };
+    let maxWidth = 0;
+    let maxHeight = 0;
+    let minHeight = 100000;
+
+    for (let i = 0; i < arrayLines.length; i++) {
+      let line = arrayLines[i];
+      if (line.x2 > maxWidth) {
+        maxWidth = line.x2;
+      }
+      if (line.y2 > maxHeight) {
+        maxHeight = line.y2;
+      }
+      if (line.y1 < minHeight) {
+        minHeight = line.y1;
+      }
+    }
+
+
+    for (let i = 0; i < arrayLines.length; i++) {
+      arrayLines[i].y1 = arrayLines[i].y1 - minHeight;
+      arrayLines[i].y2 = arrayLines[i].y2 - minHeight;
+    }
+
+    containerSize.width = maxWidth;
+    containerSize.height = maxHeight;
+    return containerSize;
+  };
+
+
+  useEffect(() => {
+    container = getContainerSize(props.lines);
+    const containerRatio = container.width / container.height;
+    newContainer = {
+      width: width ,
+      height: width  / containerRatio ,
+    };
+    setCamaraContainerSize(newContainer);
+  }, []);
 
   useEffect(() => {
     if (rectangles && base64Image) {

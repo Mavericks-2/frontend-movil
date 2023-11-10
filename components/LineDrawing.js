@@ -141,6 +141,21 @@ const LineDrawing = (props) => {
       }
     }
 
+     // Maintain rectangles close to the canvas borders
+     rectangles = rectangles.filter(
+      (rect) =>
+        rect.x !== 0 &&
+        rect.x + rect.width !== props.width
+    );
+
+    // get the length of the rectangles
+    let rectanglesLength = 0;
+    for (let i = 0; i < rectangles.length; i++) {
+      rectanglesLength += rectangles[i].width;
+    }
+
+    console.log("rectanglesLength", rectanglesLength);
+
     return rectangles;
   };
 

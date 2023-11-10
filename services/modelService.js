@@ -1,9 +1,9 @@
-import { MODEL_BASE_URL } from "../config";
+import { EXPO_PUBLIC_MODEL_BASE_URL } from "../config";
 import axios from "axios";
 
 export const classifyImage = async (rectangles) => {
   const res = await axios
-    .post(`${MODEL_BASE_URL}/classifyImage`, {
+    .post(`${EXPO_PUBLIC_MODEL_BASE_URL}/classifyImage`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -21,7 +21,7 @@ export const classifyImage = async (rectangles) => {
 };
 
 export const compareImages = async (planogram, actualPlanogram) => {
-  const res = await axios.post(`${MODEL_BASE_URL}/compareImages`, {
+  const res = await axios.post(`${EXPO_PUBLIC_MODEL_BASE_URL}/compareImages`, {
     headers: {
       "Content-Type": "application/json",
     },
@@ -42,7 +42,7 @@ export const compareImages = async (planogram, actualPlanogram) => {
 
 export const uploadImage = async (base64Image) => {
   const res = await axios
-    .post(`${MODEL_BASE_URL}/uploadImage`, {
+    .post(`${EXPO_PUBLIC_MODEL_BASE_URL}/uploadImage`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -59,7 +59,7 @@ export const uploadImage = async (base64Image) => {
 
 export const getImageSize = async () => {
   const res = await axios
-    .get(`${MODEL_BASE_URL}/getImageSize`, {
+    .get(`${EXPO_PUBLIC_MODEL_BASE_URL}/getImageSize`, {
       headers: {
         "Content-Type": "application/json",
       },
