@@ -47,8 +47,7 @@ export const uploadImage = async (base64Image) => {
         "Content-Type": "application/json",
       },
       imagen: base64Image,
-      scaleWidth: 0,
-      scaleHeight: 0,
+      transpose: true
     })
     .then((res) => {
       return res.data;

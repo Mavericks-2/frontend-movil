@@ -154,8 +154,6 @@ const LineDrawing = (props) => {
       rectanglesLength += rectangles[i].width;
     }
 
-    console.log("rectanglesLength", rectanglesLength);
-
     return rectangles;
   };
 
