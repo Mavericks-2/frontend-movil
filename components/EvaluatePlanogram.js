@@ -4,7 +4,7 @@ import {
   StyleSheet,
   useWindowDimensions,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import colors from "../constants/colors";
@@ -22,16 +22,15 @@ export default function EvaluatePlanogram(props) {
   });
   const [loading, setLoading] = useState(false);
 
-
-  const handleUploadData = async () =>{
+  const handleUploadData = async () => {
     setLoading(true);
     const response = await uploadImage(base64Image);
-    if (response === "ok"){
+    if (response === "ok") {
       const imageSize = await getImageSize().catch((err) => {
         console.log(err);
       });
       let newRectangles = [...rectangles];
-      if (imageSize){
+      if (imageSize) {
         newRectangles = scaleRectangles(rectangles, imageSize);
       }
       const classes = await classifyImage(newRectangles).catch((err) => {
@@ -40,7 +39,7 @@ export default function EvaluatePlanogram(props) {
       props.setPlanogramClasses(classes);
     }
     setLoading(false);
-  }
+  };
 
   const scaleRectangles = (rectangles, imageSize) => {
     const scaledRectangles = rectangles.map((rectangle) => {
@@ -48,12 +47,13 @@ export default function EvaluatePlanogram(props) {
         x: rectangle.x * (imageSize.width / camaraContainerSize.width),
         y: rectangle.y * (imageSize.height / camaraContainerSize.height),
         width: rectangle.width * (imageSize.width / camaraContainerSize.width),
-        height: rectangle.height * (imageSize.height / camaraContainerSize.height),
+        height:
+          rectangle.height * (imageSize.height / camaraContainerSize.height),
       };
       return scaledRectangle;
     });
     return scaledRectangles;
-  }
+  };
 
   const getContainerSize = (arrayLines) => {
     let containerSize = {
@@ -77,7 +77,6 @@ export default function EvaluatePlanogram(props) {
       }
     }
 
-
     for (let i = 0; i < arrayLines.length; i++) {
       arrayLines[i].y1 = arrayLines[i].y1 - minHeight;
       arrayLines[i].y2 = arrayLines[i].y2 - minHeight;
@@ -88,13 +87,12 @@ export default function EvaluatePlanogram(props) {
     return containerSize;
   };
 
-
   useEffect(() => {
     container = getContainerSize(props.lines);
     const containerRatio = container.width / container.height;
     newContainer = {
-      width: width ,
-      height: width  / containerRatio ,
+      width: width,
+      height: width / containerRatio,
     };
     setCamaraContainerSize(newContainer);
   }, []);
@@ -114,23 +112,46 @@ export default function EvaluatePlanogram(props) {
         },
       ]}
     >
-      {
-        loading ? 
-        (
-          <View style={evalueatePlanogramStyles.loadingContainer}>
-            <ActivityIndicator size="large" color={colors.PRIMARY} />
-            <Text style={evalueatePlanogramStyles.loadingText}>
-              Clasificando imagen...
-            </Text>
-          </View>
-        )
-        :
-        (<View
+      <View
+        style={[
+          evalueatePlanogramStyles.cameraContainer,
+          {
+            width: camaraContainerSize.width,
+            height: camaraContainerSize.height,
+          },
+        ]}
+      >
+        <CameraComponent
+          width={camaraContainerSize.width}
+          height={camaraContainerSize.height}
+          photoTaked={photoTaked}
+          lines={props.lines}
+          setRectangles={setRectangles}
+          setBase64Image={setBase64Image}
+          setCameraContainerSize={setCamaraContainerSize}
+          setUriImage={props.setUriImage}
+        />
+      </View>
+      {loading ? (
+        <View style={evalueatePlanogramStyles.loadingContainer}>
+          <ActivityIndicator size="large" color={colors.SECONDARY} />
+          <Text style={evalueatePlanogramStyles.loadingText}>
+            Clasificando imagen...
+          </Text>
+        </View>
+      ) : (
+        <View
           style={[
             evalueatePlanogramStyles.headerContainer,
             {
               marginBottom:
-                width > 800 ? (width < 1200 ? 16 : width > height ? 16 : 32) : 16,
+                width > 800
+                  ? width < 1200
+                    ? 16
+                    : width > height
+                    ? 16
+                    : 32
+                  : 16,
               gap: width < 1200 ? 16 : width > height ? 16 : 32,
               padding: width > 800 ? (width < 1200 ? 16 : 24) : 16,
             },
@@ -178,30 +199,8 @@ export default function EvaluatePlanogram(props) {
               {photoTaked ? "Descartar foto" : "Tomar foto"}
             </Text>
           </TouchableOpacity>
-        </View>)
-      }
-      <View
-        style={[
-          evalueatePlanogramStyles.cameraContainer,
-          {
-            width: camaraContainerSize.width,
-            height: camaraContainerSize.height,
-          },
-        ]}
-      >
-        <CameraComponent
-          width={camaraContainerSize.width}
-          height={
-            camaraContainerSize.height
-          }
-          photoTaked={photoTaked}
-          lines={props.lines}
-          setRectangles={setRectangles}
-          setBase64Image={setBase64Image}
-          setCameraContainerSize={setCamaraContainerSize}
-          setUriImage={props.setUriImage}
-        />
-      </View>
+        </View>
+      )}
     </View>
   );
 }
@@ -212,6 +211,7 @@ const evalueatePlanogramStyles = StyleSheet.create({
     height: "100%",
     justifyContent: "flex-start",
     alignItems: "center",
+    gap: 16,
   },
   headerContainer: {
     width: "90%",
@@ -256,13 +256,14 @@ const evalueatePlanogramStyles = StyleSheet.create({
   loadingContainer: {
     width: "80%",
     height: "100%",
+    position: "absolute",
     justifyContent: "center",
     alignItems: "center",
   },
   loadingText: {
     fontSize: 16,
     fontWeight: "800",
-    color: colors.PRIMARY,
+    color: colors.SECONDARY,
     textAlign: "center",
   },
 });

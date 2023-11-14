@@ -87,9 +87,9 @@ export default function StepComponent(props) {
           ]}
         >
           Se detectó el producto{" "}
-          {productMatrixCatalog[props.step["currentProduct"]]} en donde se
+          {productMatrixCatalog[props.step["expectedProduct"]]} en donde se
           esperaba un producto{" "}
-          {productMatrixCatalog[props.step["expectedProduct"]]}
+          {productMatrixCatalog[props.step["currentProduct"]]}
         </Text>
       </View>
       <CheckBox
