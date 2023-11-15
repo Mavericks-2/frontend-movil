@@ -3,7 +3,7 @@ import React from 'react';
 import { LinearGradient } from "expo-linear-gradient";
 import colors from '../constants/colors';
 
-const CardInfo = () => {
+const CardInfo = (props) => {
     const { width, height } = useWindowDimensions();
   return (
     <LinearGradient
@@ -12,17 +12,17 @@ const CardInfo = () => {
         end={[1, 0]}
         location={[0.25, 1]}
         style={[styles.cardContainer, {
-            width: width > 700 ? 150 : 100,
-            height: width > 700 ? 150 : 100,
+            width: width > 700 ? 175 : 125,
+            height: width > 700 ? 175 : 125,
         
         }]}
     >
       <Text style={[styles.infoHeader, {
             fontSize: width > 700 ? 16 : 14,  
-      }]}>CardInfo</Text>
+      }]}>{props.title || "CardInfo"}</Text>
       <Text style={[styles.infoBody, {
             fontSize: width > 700 ? 24 : 14,  
-      }]}>16</Text>
+      }]}>{props.data || "Data"}</Text>
     </LinearGradient>
   )
 }
@@ -39,10 +39,12 @@ const styles = StyleSheet.create({
     infoHeader: {
         fontWeight: "600",
         color: "black",
+        textAlign: "center",
     },
     infoBody: {
         fontWeight: "600",
         color: colors.PRIMARY,
         fontSize: 16,
+        textAlign: "center",
     }
 });

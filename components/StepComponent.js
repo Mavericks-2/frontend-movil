@@ -3,45 +3,15 @@ import React, { useState, useEffect } from "react";
 import { CheckBox } from "@rneui/themed";
 import colors from "../constants/colors";
 
-/* Catálogo para el modelo de 8 productos */
+
 export const productMatrixCatalog = [
-  "BitzAlmendrasConSal",
-  "BitzCacahuateEnchilado",
-  "BitzCacahuateHabanero",
-  "BitzCacahuatesEnchilados",
-  "BotaneraChilito",
-  "CacahuatesJaponésLeo",
-  "CacahuatesSalBokados",
-  "CheetosFlaminHot",
-  "CheetosTorciditos",
-  "ChipsFuego",
-  "ChipsJalapeño",
-  "ChipsPapatinas",
-  "Churrumais",
-  "DelPrimoSalsaGuacamole",
-  "DoritosNachos",
-  "FritosLimonYSal",
-  "HutNuts",
-  "LeoMixBotanero",
-  "MaruchanCarneDeRes",
-  "MaruchanPolloConVegetales",
-  "NestléCarnationLecheEvaporada",
-  "NestléLaLecheraOriginal",
-  "NissinCamaronPicante",
-  "NissinCarneDeRes",
-  "PopKarameladas",
-  "Rancheritos",
-  "RufflesQueso",
-  "Runners",
-  "SabritasSal",
-  "SalsaBúfaloClásica",
-  "SemillasDeCalabazaBokados",
-  "SemillasDeGirasol",
-  "TajínDulce",
-  "TakisFuego",
-  "TakisOriginal",
-  "Tostitos",
-];
+  'CheetosTorciditos',
+ 'ChipsJalapeño',
+ 'DoritosNachos',
+ 'PopKarameladas',
+ 'Rancheritos',
+ 'Runners',
+]
 
 export default function StepComponent(props) {
   const [isSelected, setSelection] = useState(false);

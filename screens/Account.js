@@ -4,9 +4,16 @@ import CardInfo from "../components/CardInfo";
 import { LinearGradient } from "expo-linear-gradient";
 import colors from "../constants/colors";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getAccuracy, getMostFailedProduct, getNumberScanns, getNumberScannsProducts} from "../services";
 
 const Account = (props) => {
   const [user, setUser] = useState();
+  const [data, setData] = useState({
+    "Producto más fallado": "Producto",
+    "Escaneos realizados": 0,
+    "Productos escaneados": 0,
+    "Precisión de acomodo": 0,
+  });
 
   useEffect(() => {
     const getUserData = async () => {
@@ -19,6 +26,31 @@ const Account = (props) => {
     }
     getUserData();
   }, []);
+
+  useEffect(() => {
+    const getData = async () => {
+      if (user){
+        try {
+          const accuracy = await getAccuracy(user.id_acomodador);
+          const mostFailedProduct = await getMostFailedProduct(user.id_acomodador);
+          const numberScanns = await getNumberScanns(user.id_acomodador);
+          const numberScannsProducts = await getNumberScannsProducts(user.id_acomodador);
+
+          setData({
+            "Producto más fallado": mostFailedProduct,
+            "Escaneos realizados": numberScanns,
+            "Productos escaneados": numberScannsProducts,
+            "Precisión de acomodo": accuracy.toString()+ "%",
+          });
+        }
+        catch (err) {
+          console.log(err);
+        }
+        
+      }
+    }
+    getData();
+  }, [user]);
 
   const handleLogout = async () => {
     await AsyncStorage.removeItem("user").catch((err) => {
@@ -41,11 +73,17 @@ const Account = (props) => {
         </Text>
       </View>
       <View style={styles.cardsContainer}>
-        <CardInfo />
-        <CardInfo />
-        <CardInfo />
-        <CardInfo />
-        <CardInfo />
+        {
+          Object.keys(data).map((key, index) => {
+            return (
+              <CardInfo
+                key={index}
+                title={key}
+                data={data[key]}
+              />
+            )
+          })
+        }
       </View>
       <Pressable onPress={() => {
         handleLogout();
