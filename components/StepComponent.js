@@ -3,15 +3,21 @@ import React, { useState, useEffect } from "react";
 import { CheckBox } from "@rneui/themed";
 import colors from "../constants/colors";
 
-
 export const productMatrixCatalog = [
-  'CheetosTorciditos',
- 'ChipsJalapeño',
- 'DoritosNachos',
- 'PopKarameladas',
- 'Rancheritos',
- 'Runners',
-]
+  "CheetosTorciditos",
+  "ChipsJalapeño",
+  "Churrumais",
+  "DoritosNachos",
+  "FritosLimonYSal",
+  "HutNuts",
+  "PopKarameladas",
+  "Rancheritos",
+  "RufflesQueso",
+  "Runners",
+  "TakisFuego",
+  "TakisOriginal",
+  "Tostitos",
+];
 
 export default function StepComponent(props) {
   const [isSelected, setSelection] = useState(false);
