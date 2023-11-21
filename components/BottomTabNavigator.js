@@ -1,3 +1,25 @@
+/**
+ * @fileOverview Componente que maneja la navegación inferior.
+ *
+ * @component BottomTabNavigator
+ *
+ * @requires react
+ * @requires react-native
+ * @requires react-navigation/bottom-tabs
+ * @requires ../screens
+ * @requires ./BottomTabCustom
+ * @requires react-native-async-storage/async-storage
+ * @requires ../services
+ * 
+ * @exports BottomTabNavigator
+ * 
+ * @param  {Object}  props  Props recibidas por el componente.
+ * 
+ * @example
+ *  <BottomTabNavigator />
+ * 
+ */
+
 import { StyleSheet, Text, View } from "react-native";
 import React, { useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";

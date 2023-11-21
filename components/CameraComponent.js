@@ -1,3 +1,44 @@
+/**
+ * @fileOverview Componente que muestra la cámara.
+ * 
+ * @component CameraComponent
+ * 
+ * @requires react
+ * @requires react-native
+ * @requires expo-status-bar
+ * @requires expo-camera
+ * @requires expo-sharing
+ * @requires expo-media-library
+ * @requires expo-image-manipulator
+ * @requires expo-file-system
+ * @requires expo-image-picker
+ * @requires ./LineDrawing
+ * 
+ * @exports CameraComponent
+ * 
+ * @param  {Array} lines  Líneas del planograma.
+ * @param  {Function} setRectangles  Función que actualiza el estado de los rectángulos.
+ * @param  {Function} setUriImage  Función que actualiza el estado de la imagen.
+ * @param  {Function} setBase64Image  Función que actualiza el estado de la imagen en base64.
+ * @param  {Number} width  Ancho de la imagen.
+ * @param  {Number} height  Alto de la imagen.
+ * @param  {Boolean} photoTaked  Indica si se tomó una foto.
+ * @param  {Function} setCameraContainerSize  Función que actualiza el estado del tamaño del contenedor de la cámara.
+ * 
+ * @example
+ *  <CameraComponent
+ *    lines={lines}
+ *    setRectangles={setRectangles}
+ *    setUriImage={setUriImage}
+ *    setBase64Image={setBase64Image}
+ *    width={width}
+ *    height={height}
+ *    photoTaked={photoTaked}
+ *    setCameraContainerSize={setCameraContainerSize}
+ *  />
+ * 
+ */
+
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,

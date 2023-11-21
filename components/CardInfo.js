@@ -1,3 +1,26 @@
+/**
+ * @fileOverview Componente que muestra la información en una tarjeta.
+ * 
+ * @component CardInfo
+ * 
+ * @requires react
+ * @requires react-native
+ * @requires expo-linear-gradient
+ * @requires ../constants/colors
+ * 
+ * @exports CardInfo
+ * 
+ * @param  {String}  title  Título de la tarjeta.
+ * @param  {String}  data  Datos de la tarjeta.
+ * 
+ * @example
+ * <CardInfo
+ *  title="Título"
+ *  data="Datos"
+ *  />
+ * 
+ */
+
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import React from 'react';
 import { LinearGradient } from "expo-linear-gradient";

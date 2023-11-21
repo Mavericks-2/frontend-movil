@@ -1,3 +1,35 @@
+/**
+ * @fileOverview Componente que muestra las líneas del planograma.
+ * 
+ * @component LineDrawing
+ * 
+ * @requires react
+ * @requires react-native
+ * @requires react-native-svg
+ * 
+ * @exports LineDrawing
+ * 
+ * @param  {Array}  lines  Líneas del planograma.
+ * @param  {Number}  width  Ancho de la imagen.
+ * @param  {Number}  height  Alto de la imagen.
+ * @param  {Function}  setRectangles  Función que actualiza el estado de los rectángulos.
+ * @param  {Boolean}  adjust  Indica si se deben ajustar las líneas.
+ * @param  {Boolean}  photoTaked  Indica si se tomó una foto.
+ * @param  {Function}  setCameraContainerSize  Función que actualiza el estado del tamaño del contenedor de la cámara.
+ * 
+ * @example
+ *  <LineDrawing
+ *    lines={lines}
+ *    width={width}
+ *    height={height}
+ *    setRectangles={setRectangles}
+ *    adjust={true}
+ *    photoTaked={photoTaked}
+ *    setCameraContainerSize={setCameraContainerSize}
+ *  />
+ * 
+ */
+
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import Svg, { Line } from "react-native-svg";

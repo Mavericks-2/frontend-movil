@@ -1,3 +1,24 @@
+/**
+ * @fileOverview Componente que maneja la pantalla principal de la aplicación.
+ * 
+ * @component Home
+ * 
+ * @requires react
+ * @requires react-native
+ * @requires react-native-async-storage/async-storage
+ * @requires ../components/ActualPlanogram
+ * @requires ../components/EvaluatePlanogram
+ * @requires ../components/Feedback
+ * @requires ../services
+ * @requires ../assets/oxxo_logo.png
+ *
+ * @exports Home
+ * 
+ * @example
+ * <Home />
+ * 
+ */
+
 import { View, Text, Pressable, useWindowDimensions, StyleSheet, Image } from "react-native";
 import React, { useEffect, useState } from "react";
 import ActualPlanogram from "../components/ActualPlanogram";
@@ -8,7 +29,7 @@ import { postComparedPhotos, getPlanogramConfig } from "../services";
 import { productMatrixCatalog } from "../components/StepComponent";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function Home(props) {
+export default function Home() {
   const [selected, setSelected] = useState(0);
   const { width, height } = useWindowDimensions();
   const [planogramClasses, setPlanogramClasses] = useState([]);

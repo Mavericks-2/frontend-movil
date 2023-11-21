@@ -1,3 +1,35 @@
+/**
+ * @fileOverview Componente que muestra el feedback de la evaluación.
+ * 
+ * @component Feedback
+ * 
+ * @requires react
+ * @requires react-native
+ * @requires ../constants/colors
+ * @requires ../services
+ * @requires ./LinearProgressComponent
+ * @requires ./StepComponent
+ * @requires ./GraphicFeedback
+ * 
+ * @exports Feedback
+ * 
+ * @param  {Array}  planogramClasses  Clases del planograma.
+ * @param  {Array}  actualPlanogramClases  Clases del planograma actual.
+ * @param  {Array}  lines  Líneas del planograma.
+ * @param  {String}  image  Imagen del planograma.
+ * @param  {Function}  setSelected  Función que actualiza el estado de la pantalla seleccionada.
+ * 
+ * @example
+ *  <Feedback
+ *    planogramClasses={planogramClasses}
+ *    actualPlanogramClases={actualPlanogramClases}
+ *    lines={lines}
+ *    image={image}
+ *    setSelected={setSelected}
+ *  />
+ * 
+ */
+
 import {
   View,
   StyleSheet,

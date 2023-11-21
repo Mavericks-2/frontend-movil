@@ -1,3 +1,27 @@
+/**
+ * @fileOverview Componente que muestra un menú de navegación inferior personalizado.
+ *
+ * @component BottomTabCustom
+ *
+ * @requires react-native
+ * @requires rneui/base
+ * @requires ../constants/colors
+ * 
+ * @exports BottomTabCustom
+ * 
+ * @param  {Object}  state  Estado de la navegación.
+ * @param  {Object}  descriptors  Descriptores de la navegación.
+ * @param  {Object}  navigation  Objeto de navegación.
+ * 
+ * @example
+ *  <BottomTabCustom
+ *    state={state}
+ *    descriptors={descriptors}
+ *    navigation={navigation}
+ *  />
+ * 
+ */
+
 import { View, Text, TouchableOpacity, StyleSheet, useWindowDimensions} from "react-native";
 import { Icon } from "@rneui/base";
 import colors from "../constants/colors";

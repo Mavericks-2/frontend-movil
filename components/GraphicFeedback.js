@@ -1,3 +1,28 @@
+/**
+ * @fileOverview Componente que muestra el feedback gráfico de la evaluación.
+ * 
+ * @component GraphicFeedback
+ * 
+ * @requires react
+ * @requires react-native
+ * @requires react-native-svg
+ * @requires ./LineDrawing
+ * 
+ * @exports GraphicFeedback
+ * 
+ * @param  {Array}  lines  Líneas del planograma.
+ * @param  {Array}  steps  Pasos de la evaluación.
+ * @param  {String}  image  Imagen del planograma.
+ *  
+ * @example
+ *  <GraphicFeedback
+ *    lines={lines}
+ *    steps={steps}
+ *    image={image}
+ *  />
+ * 
+ */
+
 import { StyleSheet, useWindowDimensions, View, Image } from "react-native";
 import React, { useState, useEffect } from "react";
 import LineDrawing from "./LineDrawing";

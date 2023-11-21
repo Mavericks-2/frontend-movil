@@ -1,3 +1,22 @@
+/**
+ * @fileOverview Componente que maneja la pantalla onboarding.
+ * 
+ * @component OnBoarding
+ * 
+ * @requires react
+ * @requires react-native
+ * @requires expo-linear-gradient
+ * @requires ../constants/colors
+ * 
+ * @exports OnBoarding
+ * 
+ * @param {Object}  props  Propiedades para el componente de pantalla onboarding.
+ * 
+ * @example
+ * <OnBoarding />
+ * 
+ */
+
 import {
   View,
   Text,

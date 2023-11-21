@@ -1,3 +1,25 @@
+/**
+ * @fileOverview Pantalla de cuenta.
+ * 
+ * @module Account
+ * 
+ * @requires react
+ * @requires react-native
+ * @requires react-native-linear-gradient
+ * @requires ../constants/colors
+ * @requires ../components/CardInfo
+ * @requires ../services
+ * @requires react-native-async-storage/async-storage
+ * 
+ * @exports Account
+ * 
+ * @param  {Object}  props  Propiedades para el componente de pantalla de cuenta.
+ * 
+ * @example
+ * <Account />
+ * 
+ */
+
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import React, { useEffect, useState } from "react";
 import CardInfo from "../components/CardInfo";

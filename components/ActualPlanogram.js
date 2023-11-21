@@ -1,3 +1,30 @@
+/**
+ * @fileOverview Componente que muestra el planograma actual.
+ *
+ * @component ActualPlanogram
+ *
+ * @requires react
+ * @requires react-native
+ * @requires react-native-linear-gradient
+ * @requires ../constants/colors
+ * @requires ../services
+ * 
+ * @exports ActualPlanogram
+ * 
+ * @param  {Object}  user  Información del usuario.
+ * @param  {Function}  setLines  Función que actualiza el estado de las líneas.
+ * @param  {Function}  setPlanogramClasses  Función que actualiza el estado de las clases del planograma.
+ * 
+ * 
+ * @example
+ *  <ActualPlanogram
+ *    user={user}
+ *    setLines={setLines}
+ *    setPlanogramClasses={setPlanogramClasses}
+ *  />
+ * 
+ */
+
 import {
   View,
   Text,

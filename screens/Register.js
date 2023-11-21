@@ -1,3 +1,24 @@
+/**
+ * @fileOverview Pantalla de registro.
+ * 
+ * @module Register
+ * 
+ * @requires react
+ * @requires react-native
+ * @requires rneui/themed
+ * @requires ../constants/colors
+ * @requires expo-linear-gradient
+ * @requires ../services
+ * 
+ * @exports Register
+ * 
+ * @param  {Object}  props  Propiedades para el componente de pantalla de registro.
+ * 
+ * @example
+ * <Register />
+ * 
+ */
+
 import {
   View,
   Text,

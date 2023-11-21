@@ -1,3 +1,28 @@
+/**
+ * @fileOverview Componente que muestra un paso de la evaluación.
+ * 
+ * @component StepComponent
+ * 
+ * @requires react
+ * @requires react-native
+ * @requires rneui/themed
+ * @requires ../constants/colors
+ * 
+ * @exports StepComponent
+ * 
+ * @param  {Object}  step  Paso de la evaluación.
+ * @param  {Array}  progressValues  Valores del progreso de la evaluación.
+ * @param  {Function}  setProgressValues  Función que actualiza el estado de los valores del progreso de la evaluación.
+ * 
+ * @example
+ *  <StepComponent
+ *    step={step}
+ *    progressValues={progressValues}
+ *    setProgressValues={setProgressValues}
+ *  />
+ * 
+ */
+
 import { View, Text, StyleSheet, useWindowDimensions } from "react-native";
 import React, { useState, useEffect } from "react";
 import { CheckBox } from "@rneui/themed";

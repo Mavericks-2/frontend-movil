@@ -1,3 +1,23 @@
+/**
+ * @fileOverview Pantalla de verificación de código.
+ * 
+ * @module VerifyCode
+ * 
+ * @requires react
+ * @requires react-native
+ * @requires expo-linear-gradient
+ * @requires ../constants/colors
+ * @requires ../services
+ * 
+ * @exports VerifyCode
+ * 
+ * @param  {Object}  props  Propiedades para el componente de pantalla de verificación de código.
+ * 
+ * @example
+ * <VerifyCode />
+ *
+ */
+
 import {
   View,
   Text,

@@ -1,3 +1,29 @@
+/**
+ * @fileOverview Componente que muestra la pantalla de evaluación del planograma.
+ * 
+ * @component EvaluatePlanogram
+ * 
+ * @requires react
+ * @requires react-native
+ * @requires ../constants/colors
+ * @requires ./CameraComponent
+ * @requires ../services
+ * 
+ * @exports EvaluatePlanogram
+ * 
+ * @param  {Array}  lines  Líneas del planograma.
+ * @param  {Function}  setPlanogramClasses  Función que actualiza el estado de las clases del planograma.
+ * @param  {Function}  setUriImage  Función que actualiza el estado de la imagen.
+ * 
+ * @example
+ *  <EvaluatePlanogram
+ *    lines={lines}
+ *    setPlanogramClasses={setPlanogramClasses}
+ *    setUriImage={setUriImage}
+ *  />
+ * 
+ */
+
 import {
   View,
   Text,

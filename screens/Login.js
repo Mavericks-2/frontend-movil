@@ -1,3 +1,24 @@
+/**
+ * @fileOverview Componente que maneja la pantalla de inicio de sesión.
+ * 
+ * @component Login
+ * 
+ * @requires react
+ * @requires react-native
+ * @requires ../constants/colors
+ * @requires @rneui/themed
+ * @requires expo-linear-gradient
+ * @requires ../services
+ * 
+ * @exports Login
+ * 
+ * @param  {Object}  props  Propiedades para el componente de pantalla de inicio de sesión.
+ * 
+ * @example
+ *  <Login />
+ * 
+ */
+
 import {
   View,
   Text,
