@@ -29,7 +29,7 @@ import { postComparedPhotos, getPlanogramConfig } from "../services";
 import { productMatrixCatalog } from "../components/StepComponent";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function Home() {
+export default function Home(props) {
   const [selected, setSelected] = useState(0);
   const { width, height } = useWindowDimensions();
   const [planogramClasses, setPlanogramClasses] = useState([]);
@@ -51,7 +51,7 @@ export default function Home() {
         setUser(JSON.parse(user));
       }
     }
-    getUserData();
+    setTimeout(()=>getUserData(), 500);
   }, []);
 
   useEffect(() => {
