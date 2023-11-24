@@ -1,22 +1,22 @@
 /**
  * @fileOverview Componente que maneja la pantalla de inicio de sesión.
- * 
+ *
  * @component Login
- * 
+ *
  * @requires react
  * @requires react-native
  * @requires ../constants/colors
  * @requires @rneui/themed
  * @requires expo-linear-gradient
  * @requires ../services
- * 
+ *
  * @exports Login
- * 
+ *
  * @param  {Object}  props  Propiedades para el componente de pantalla de inicio de sesión.
- * 
+ *
  * @example
  *  <Login />
- * 
+ *
  */
 
 import {
@@ -29,6 +29,7 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
+  ActivityIndicator,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import colors from "../constants/colors";
@@ -44,6 +45,8 @@ export default function Login(props) {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const { width, height } = useWindowDimensions();
 
   const handlePassowrdIcon = () => {
@@ -65,13 +68,15 @@ export default function Login(props) {
   }, [width, height]);
 
   const handleLogin = async () => {
+    setLoading(true);
     try {
       await signin(user);
 
       props.navigation.navigate("Home", { email: user.email });
     } catch (error) {
-      console.log(error);
+      setErrorMessage("Correo y/o contraseña incorrecto");
     }
+    setLoading(false);
   };
 
   return (
@@ -133,7 +138,7 @@ export default function Login(props) {
               />
               <View style={LoginStyles.forgotPassWordContainer}>
                 <Text style={LoginStyles.forgotPassWord}>
-                  ¿Olvidaste tu contraseña?
+                  {errorMessage}
                 </Text>
               </View>
               <View style={LoginStyles.buttonContainer}>
@@ -149,7 +154,11 @@ export default function Login(props) {
                     location={[0.25, 1]}
                     style={LoginStyles.button}
                   >
-                    <Text style={LoginStyles.buttonText}>Inicia sesión</Text>
+                    {loading ? (
+                      <ActivityIndicator color="white" />
+                    ) : (
+                      <Text style={LoginStyles.buttonText}>Inicia sesión</Text>
+                    )}
                   </LinearGradient>
                 </Pressable>
               </View>

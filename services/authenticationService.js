@@ -13,6 +13,8 @@
 import { EXPO_PUBLIC_API_BASE_URL } from "../config";
 import axios from "axios";
 
+axios.defaults.timeout = 10000;
+
 /**
  * 
  * Llamada a la API para registrar un usuario.

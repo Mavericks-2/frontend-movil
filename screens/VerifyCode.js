@@ -28,9 +28,10 @@ import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
   Keyboard,
+  ActivityIndicator
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import colors from "../constants/colors";
 import { verifyToken } from "../services";
 
@@ -42,6 +43,13 @@ export default function VerifyCode(props) {
   const [fourthInput, setFourthInput] = useState();
   const [fifthInput, setFifthInput] = useState();
   const [sixthInput, setSixthInput] = useState();
+  const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const input1Ref = useRef();
+  const input2Ref = useRef();
+  const input3Ref = useRef();
+  const input4Ref = useRef();
+  const input5Ref = useRef();
 
   const { width, height } = useWindowDimensions();
   const { email } = props.route.params;
@@ -54,7 +62,17 @@ export default function VerifyCode(props) {
     }
   };
 
+  const newHandleTextChange = (text, setFunction, ref) => {
+    if (/^[0-9]*$/.test(text) || text === "") {
+      setFunction(text);
+      if (text !== "") {
+        ref.current.focus();
+      }
+    }
+  }
+
   const handleVerifyCode = async () => {
+    setLoading(true);
     const verifyCode = firstInput + secondInput + thirdInput + fourthInput + fifthInput + sixthInput;
     
     const response = await verifyToken({ email: email, verifyCode }).catch((err) => {
@@ -64,6 +82,10 @@ export default function VerifyCode(props) {
     if (response === "ok") {
       props.navigation.navigate("Home", { email: email });
     }
+    else {
+      setErrorMessage("Código incorrecto");
+    }
+    setLoading(false);
   }
 
   return (
@@ -104,10 +126,11 @@ export default function VerifyCode(props) {
                 height: width > 800 ? 56 : 32,
                 },
               ]}
+              autoFocus={true}
               keyboardType="numeric"
               maxLength={1}
               value={firstInput}
-              onChangeText={(text) => handleTextChange(text, setFirstInput)}
+              onChangeText={(text) => newHandleTextChange(text, setFirstInput, input1Ref)}
               onFocus={() => setFocus([true, false, false, false, false, false])}
             />
              <TextInput
@@ -121,8 +144,9 @@ export default function VerifyCode(props) {
               keyboardType="numeric"
               maxLength={1}
               value={secondInput}
-              onChangeText={(text) => handleTextChange(text, setSecondInput)}
+              onChangeText={(text) => newHandleTextChange(text, setSecondInput, input2Ref)}
               onFocus={() => setFocus([false, true, false, false, false, false])}
+              ref={input1Ref}
             />
              <TextInput
               style={[
@@ -135,8 +159,9 @@ export default function VerifyCode(props) {
               keyboardType="numeric"
               maxLength={1}
               value={thirdInput}
-              onChangeText={(text) => handleTextChange(text, setThirdInput)}
+              onChangeText={(text) => newHandleTextChange(text, setThirdInput, input3Ref)}
               onFocus={() => setFocus([false, false, true, false, false, false])}
+              ref={input2Ref}
             />
              <TextInput
               style={[
@@ -149,13 +174,14 @@ export default function VerifyCode(props) {
               keyboardType="numeric"
               maxLength={1}
               value={fourthInput}
-              onChangeText={(text) => handleTextChange(text, setFourthInput)}
+              onChangeText={(text) => newHandleTextChange(text, setFourthInput, input4Ref)}
               onFocus={() => setFocus([false, false, false, true, false, false])}
+              ref={input3Ref}
             />
             <TextInput
               style={[
                 verifyCodeStyles.input,
-                { borderColor: focus[3] ? colors.PRIMARY : "black", 
+                { borderColor: focus[4] ? colors.PRIMARY : "black", 
                 width: width > 800 ? 56 : 32,
                 height: width > 800 ? 56 : 32,
                 },
@@ -163,13 +189,14 @@ export default function VerifyCode(props) {
               keyboardType="numeric"
               maxLength={1}
               value={fifthInput}
-              onChangeText={(text) => handleTextChange(text, setFifthInput)}
+              onChangeText={(text) => newHandleTextChange(text, setFifthInput, input5Ref)}
               onFocus={() => setFocus([false, false, false, false, true, false])}
+              ref={input4Ref}
             />
             <TextInput
               style={[
                 verifyCodeStyles.input,
-                { borderColor: focus[3] ? colors.PRIMARY : "black", 
+                { borderColor: focus[5] ? colors.PRIMARY : "black", 
                 width: width > 800 ? 56 : 32,
                 height: width > 800 ? 56 : 32,
                 },
@@ -179,7 +206,13 @@ export default function VerifyCode(props) {
               value={sixthInput}
               onChangeText={(text) => handleTextChange(text, setSixthInput)}
               onFocus={() => setFocus([false, false, false, false, false, true])}
+              ref={input5Ref}
             />
+          </View>
+          <View style={verifyCodeStyles.errorMessageContainer}>
+            <Text style={verifyCodeStyles.errorMessage}>
+              {errorMessage}
+            </Text>
           </View>
           <View style={[verifyCodeStyles.buttonContainer, {
             width: width > 800 ? "50%" : "60%",
@@ -195,9 +228,13 @@ export default function VerifyCode(props) {
                 location={[0.25, 1]}
                 style={verifyCodeStyles.button}
               >
-                <Text style={[verifyCodeStyles.buttonText, {
-                  fontSize: width > 800 ? 18 : 16,
-                }]}>Verificar</Text>
+                {loading ? (
+                  <ActivityIndicator color="white" />
+                ) : (
+                  <Text style={[verifyCodeStyles.buttonText, {
+                    fontSize: width > 800 ? 18 : 16,
+                  }]}>Verificar</Text>
+                )}
               </LinearGradient>
             </Pressable>
           </View>
@@ -254,5 +291,16 @@ const verifyCodeStyles = StyleSheet.create({
     fontWeight: "700",
     color: "white",
     textAlign: "center",
+  },
+  errorMessageContainer: {
+    width: "80%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: 8,
+  },
+  errorMessage: {
+    color: "red",
+    fontSize: 12,
   },
 });

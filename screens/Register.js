@@ -1,22 +1,22 @@
 /**
  * @fileOverview Pantalla de registro.
- * 
+ *
  * @module Register
- * 
+ *
  * @requires react
  * @requires react-native
  * @requires rneui/themed
  * @requires ../constants/colors
  * @requires expo-linear-gradient
  * @requires ../services
- * 
+ *
  * @exports Register
- * 
+ *
  * @param  {Object}  props  Propiedades para el componente de pantalla de registro.
- * 
+ *
  * @example
  * <Register />
- * 
+ *
  */
 
 import {
@@ -28,12 +28,13 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
+  ActivityIndicator,
 } from "react-native";
 import React, { useState } from "react";
 import colors from "../constants/colors";
 import { Input, Icon } from "@rneui/themed";
 import { LinearGradient } from "expo-linear-gradient";
-import { signup } from "../services";
+import { signup, getUser } from "../services";
 
 export default function Register(props) {
   const [iconName, setIconName] = useState("eye-slash");
@@ -43,6 +44,9 @@ export default function Register(props) {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
+  const [passwordErrorMesage, setPasswordErrorMessage] = useState("");
+  const [emailErrorMessage, setEmailErrorMessage] = useState("");
   const { width, height } = useWindowDimensions();
 
   const handlePassowrdIcon = () => {
@@ -54,13 +58,44 @@ export default function Register(props) {
   };
 
   const handleRegister = async () => {
-    const response = await signup(user).catch((err) => {
-      console.log("Error: ", err);
-    });
-    if (response === "ok") {
+    setLoading(true);
+    try {
+      await signup(user);
       props.navigation.navigate("VerifyCode", { email: user.email });
+    } catch (e) {
+      let emailError = await validateEmail(user.email);
+      let passwordError = validatePassword(user.password);
+      setEmailErrorMessage(emailError);
+      setPasswordErrorMessage(passwordError);
     }
-  }
+    setLoading(false);
+  };
+
+  const validatePassword = (password) => {
+    let error =
+      "La contraseña debe tener al menos 8 caracteres, una letra mayúscula, un caracter especial y un número.";
+    let regex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8,}$/;
+    if (regex.test(password)) {
+      error = "";
+    }
+    return error;
+  };
+
+  const validateEmail = async (email) => {
+    let error = "El correo electrónico no es válido.";
+    let regex = /\S+@\S+\.\S+/;
+    if (regex.test(email)) {
+      error = "";
+      try {
+        getUser(email);
+        error = "El correo electrónico ya está registrado.";
+      } catch (e) {
+        error = "";
+      }
+    }
+    return error;
+  };
 
   return (
     <KeyboardAvoidingView
@@ -107,21 +142,25 @@ export default function Register(props) {
             >
               <View style={registerStyles.input}>
                 <Text style={registerStyles.inputTitle}>Nombre</Text>
-                <Input placeholder="Juan" 
-                onChangeText={(text) => setUser({ ...user, name: text })}
+                <Input
+                  placeholder="Juan"
+                  onChangeText={(text) => setUser({ ...user, name: text })}
                 />
               </View>
               <View style={registerStyles.input}>
                 <Text style={registerStyles.inputTitle}>Apellido</Text>
-                <Input placeholder="Perez" 
-                onChangeText={(text) => setUser({ ...user, lastName: text })}
+                <Input
+                  placeholder="Perez"
+                  onChangeText={(text) => setUser({ ...user, lastName: text })}
                 />
               </View>
 
               <View style={registerStyles.input}>
                 <Text style={registerStyles.inputTitle}>Correo</Text>
-                <Input placeholder="name@example.com"
-                onChangeText={(text) => setUser({ ...user, email: text })}
+                <Input
+                  placeholder="name@example.com"
+                  onChangeText={(text) => setUser({ ...user, email: text })}
+                  errorMessage={emailErrorMessage}
                 />
               </View>
               <View style={registerStyles.input}>
@@ -136,14 +175,13 @@ export default function Register(props) {
                       onPress={handlePassowrdIcon}
                     />
                   }
+                  errorMessage={passwordErrorMesage}
                   onChangeText={(text) => setUser({ ...user, password: text })}
                 />
               </View>
 
               <View style={registerStyles.buttonContainer}>
-                <Pressable
-                  onPress={() => handleRegister()}
-                >
+                <Pressable onPress={() => handleRegister()}>
                   <LinearGradient
                     colors={[colors.PRIMARY, colors.SECONDARY]}
                     start={[0, 0]}
@@ -151,7 +189,11 @@ export default function Register(props) {
                     location={[0.25, 1]}
                     style={registerStyles.button}
                   >
-                    <Text style={registerStyles.buttonText}>Registrarme</Text>
+                    {loading ? (
+                      <ActivityIndicator color="white" />
+                    ) : (
+                      <Text style={registerStyles.buttonText}>Registrarme</Text>
+                    )}
                   </LinearGradient>
                 </Pressable>
               </View>

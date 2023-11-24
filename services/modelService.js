@@ -14,6 +14,7 @@
 import { EXPO_PUBLIC_MODEL_BASE_URL } from "../config";
 import axios from "axios";
 
+axios.defaults.timeout = 10000;
 
 /**
  * 
@@ -89,7 +90,7 @@ export const uploadImage = async (base64Image) => {
         "Content-Type": "application/json",
       },
       imagen: base64Image,
-      transpose: true
+      transpose: true,
     })
     .then((res) => {
       return res.data;

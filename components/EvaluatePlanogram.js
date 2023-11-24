@@ -47,22 +47,23 @@ export default function EvaluatePlanogram(props) {
     height: 0,
   });
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const handleUploadData = async () => {
     setLoading(true);
-    const response = await uploadImage(base64Image);
-    if (response === "ok") {
-      const imageSize = await getImageSize().catch((err) => {
-        console.log(err);
-      });
-      let newRectangles = [...rectangles];
-      if (imageSize) {
-        newRectangles = scaleRectangles(rectangles, imageSize);
+    try{
+      const response = await uploadImage(base64Image);
+      if (response === "ok") {
+        const imageSize = await getImageSize();
+        let newRectangles = [...rectangles];
+        if (imageSize) {
+          newRectangles = scaleRectangles(rectangles, imageSize);
+        }
+        const classes = await classifyImage(newRectangles);
+        props.setPlanogramClasses(classes);
       }
-      const classes = await classifyImage(newRectangles).catch((err) => {
-        console.log(err);
-      });
-      props.setPlanogramClasses(classes);
+    } catch (err) {
+      setErrorMessage("Ocurrió un error al clasificar la imagen.");
     }
     setLoading(false);
   };
@@ -183,42 +184,46 @@ export default function EvaluatePlanogram(props) {
             },
           ]}
         >
-          <View
-            style={[
-              evalueatePlanogramStyles.headerTextContainer,
-              {
-                width: width > 800 ? (width < 1200 ? "60%" : "50%") : "60%",
-              },
-            ]}
-          >
-            <Text
+          {
+            <View
               style={[
-                evalueatePlanogramStyles.headerText,
+                evalueatePlanogramStyles.headerTextContainer,
                 {
-                  fontSize: width > 800 ? (width < 1200 ? 14 : 16) : 12,
+                  width: width > 800 ? (width < 1200 ? "60%" : "50%") : "60%",
                 },
               ]}
             >
-              {width > 800
-                ? "Registra tu acomódo para evaluar el planograma"
-                : "Evalúa tu acomódo"}
-            </Text>
-            <Text
-              style={[
-                evalueatePlanogramStyles.descriptionText,
-                {
-                  fontSize: width > 800 ? (width < 1200 ? 12 : 14) : 10,
-                  width: width > 800 ? "90%" : "80%",
-                },
-              ]}
-            >
-              {width > 1200
-                ? "Asegúrate de ajustar los productos dentro de los espacios marcados"
-                : "Toma una foto de tu acomódo y compara."}
-            </Text>
-          </View>
+              <Text
+                style={[
+                  evalueatePlanogramStyles.headerText,
+                  {
+                    fontSize: width > 800 ? (width < 1200 ? 14 : 16) : 12,
+                    color: "black",
+                  },
+                ]}
+              >
+                {photoTaked ? errorMessage ? errorMessage : "Acomódo clasificado" :  width > 800
+                  ? "Registra tu acomódo para evaluar el planograma"
+                  : "Evalúa tu acomódo"}
+              </Text>
+              <Text
+                style={[
+                  evalueatePlanogramStyles.descriptionText,
+                  {
+                    fontSize: width > 800 ? (width < 1200 ? 12 : 14) : 10,
+                    width: width > 800 ? "90%" : "80%",
+                  },
+                ]}
+              >
+                {photoTaked ? errorMessage ? "Favor de evaluar nuevamente el acomódo." : "Puedes ver los resultados en la pestaña de Retroalimentación" : width > 1200
+                  ? "Asegúrate de ajustar los productos dentro de los espacios marcados"
+                  : "Toma una foto de tu acomódo y compara."}
+              </Text>
+            </View>
+          }
+          
           <TouchableOpacity
-            style={evalueatePlanogramStyles.button}
+            style={[evalueatePlanogramStyles.button]}
             onPress={() => setPhotoTaked(!photoTaked)}
           >
             <Text style={evalueatePlanogramStyles.buttonText}>
@@ -242,7 +247,6 @@ const evalueatePlanogramStyles = StyleSheet.create({
   headerContainer: {
     width: "90%",
     flexDirection: "row",
-    justifyContent: "space-between",
     backgroundColor: "#F8F9FE",
     borderRadius: 12,
   },
@@ -252,7 +256,6 @@ const evalueatePlanogramStyles = StyleSheet.create({
   },
   headerText: {
     fontWeight: "800",
-    color: "black",
     textAlign: "justify",
   },
   descriptionText: {

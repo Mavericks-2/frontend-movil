@@ -27,6 +27,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import colors from "../constants/colors";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getAccuracy, getMostFailedProduct, getNumberScanns, getNumberScannsProducts} from "../services";
+import { CommonActions } from '@react-navigation/native';
 
 const Account = (props) => {
   const [user, setUser] = useState();
@@ -78,7 +79,12 @@ const Account = (props) => {
     await AsyncStorage.removeItem("user").catch((err) => {
       console.log(err);
     });
-    props.navigation.navigate("Login");
+    props.navigation.dispatch(
+      CommonActions.reset({
+               index: 0,
+               routes: [{ name: 'Login' }],
+          })
+       );
   }
 
 

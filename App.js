@@ -67,6 +67,16 @@ export default function App() {
               component={Login}
               options={{ headerShown: false }}
             />
+            <Stack.Screen
+              name="Register"
+              component={Register}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="VerifyCode"
+              component={VerifyCode}
+              options={{ headerShown: false }}
+            />
           </Fragment>
         )}
       </Stack.Navigator>
