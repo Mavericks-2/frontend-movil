@@ -134,9 +134,6 @@ export default function EvaluatePlanogram(props) {
     <View
       style={[
         evalueatePlanogramStyles.mainContainer,
-        {
-          marginTop: width > 800 ? (width > height ? 32 : 90) : 32,
-        },
       ]}
     >
       <View
@@ -224,10 +221,17 @@ export default function EvaluatePlanogram(props) {
           
           <TouchableOpacity
             style={[evalueatePlanogramStyles.button]}
-            onPress={() => setPhotoTaked(!photoTaked)}
+            onPress={() => {
+              if (errorMessage || !photoTaked){
+                setPhotoTaked(!photoTaked);
+              }
+              else{
+                props.setSelected(2);
+              }
+            }}
           >
             <Text style={evalueatePlanogramStyles.buttonText}>
-              {photoTaked ? "Descartar foto" : "Tomar foto"}
+              {photoTaked ? errorMessage ?  "Volver a tomar foto" : "Ver resultados" : "Tomar foto"}
             </Text>
           </TouchableOpacity>
         </View>
@@ -271,6 +275,7 @@ const evalueatePlanogramStyles = StyleSheet.create({
     alignItems: "center",
     borderColor: colors.PRIMARY,
     borderWidth: 1,
+    width: "35%",
   },
   buttonText: {
     fontSize: 12,

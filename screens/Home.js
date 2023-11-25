@@ -120,9 +120,9 @@ export default function Home(props) {
 
   const setComponentBySelected = () => {
     if (selected === 0) {
-      return <ActualPlanogram setPlanogramClasses={setPlanogramClasses} setLines={setPlanogramLines} user={user} />;
+      return <ActualPlanogram setPlanogramClasses={setPlanogramClasses} setLines={setPlanogramLines} user={user} setSelected={setSelected} />;
     } else if (selected === 1) {
-      return <EvaluatePlanogram setPlanogramClasses={setActualPlanogramClasses} lines={planogramLines} setUriImage={setUriImage} user={user} />;
+      return <EvaluatePlanogram setPlanogramClasses={setActualPlanogramClasses} lines={planogramLines} setUriImage={setUriImage} user={user} setSelected={setSelected} />;
     } else {
       return <Feedback planogramClasses={planogramClasses} actualPlanogramClases={actualPlanogramClasses} lines={planogramLines} image={uriImage} setSelected={setSelected} />;
     }
