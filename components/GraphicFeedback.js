@@ -138,4 +138,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     zIndex: 6,
   },
+  image: {
+    resizeMode: "contain",
+  },
 });
